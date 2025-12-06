@@ -1,5 +1,8 @@
-import { defineConfig } from "vitest/config"
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-    plugins:[]
-})
+  test: {
+    name: "unit",
+    include: ["src/**/*.spec.ts"], // include files spec.ts format
+  },
+});
