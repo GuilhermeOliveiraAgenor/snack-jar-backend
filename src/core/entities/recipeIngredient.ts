@@ -44,6 +44,19 @@ export class RecipeIngredient {
   get recipeId() {
     return this.props.recipeId;
   }
+
+  get createdAt(): Date | null {
+    return this.props.createdAt;
+  }
+
+  get updatedAt(): Date | null {
+    return this.props.updatedAt;
+  }
+
+  get deletedAt(): Date | null {
+    return this.props.updatedAt;
+  }
+
   set createdAt(createdAt: Date) {
     this.props.createdAt = createdAt;
     this.touch();

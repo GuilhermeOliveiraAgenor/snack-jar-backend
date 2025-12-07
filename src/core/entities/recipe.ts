@@ -55,6 +55,18 @@ export class Recipe {
     return this.props.userId;
   }
 
+  get createdAt(): Date | null {
+    return this.props.createdAt;
+  }
+
+  get updatedAt(): Date | null {
+    return this.props.updatedAt;
+  }
+
+  get deletedAt(): Date | null {
+    return this.props.updatedAt;
+  }
+
   set title(title: string) {
     this.props.title = title;
     this.touch();
