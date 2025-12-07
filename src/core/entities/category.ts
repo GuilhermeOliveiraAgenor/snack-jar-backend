@@ -2,6 +2,7 @@ import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
 
 export interface CategoryProps {
   // create interface
+  name: string;
   description: string; // fields
   createdAt: Date;
   updatedAt: Date | null;
@@ -25,6 +26,10 @@ export class Category {
     return this._id;
   }
 
+  get name() {
+    return this.props.name;
+  }
+
   get description() {
     return this.props.description;
   }
@@ -41,6 +46,12 @@ export class Category {
     return this.props.deletedAt;
   }
   // set
+
+  set name(name: string) {
+    this.props.name = name;
+    this.touch();
+  }
+
   set description(description: string) {
     this.props.description = description;
     this.touch();
