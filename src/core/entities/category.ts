@@ -13,9 +13,12 @@ export class Category {
     private readonly _id: UniqueEntityID, // create id table
     private props: CategoryProps, // import fields from interface
   ) {
-    this.props.createdAt = props.createdAt ?? new Date(); // optional fields
-    this.props.updatedAt = props.updatedAt ?? null;
-    this.props.deletedAt = props.deletedAt ?? null;
+    this.props = {
+      ...props,
+      createdAt: props.createdAt ?? new Date(), // optional fields
+      updatedAt: props.updatedAt ?? null,
+      deletedAt: props.deletedAt ?? null,
+    };
   }
   // get
   get id() {

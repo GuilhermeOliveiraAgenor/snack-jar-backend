@@ -4,9 +4,9 @@ export interface StatusProps {
   // create interface
   code: string;
   description: string; // fields
-  createdAt: Date;
-  updatedAt: Date | null;
-  deletedAt: Date | null;
+  createdAt?: Date;
+  updatedAt?: Date | null;
+  deletedAt?: Date | null;
 }
 
 export class Status {
@@ -14,9 +14,12 @@ export class Status {
     private readonly _id: UniqueEntityID, // create id table
     private props: StatusProps, // import fields from interface
   ) {
-    this.props.createdAt = props.createdAt ?? new Date(); // optional fields
-    this.props.updatedAt = props.updatedAt ?? null;
-    this.props.deletedAt = props.deletedAt ?? null;
+    this.props = {
+      ...props, // create fields
+      createdAt: props.createdAt ?? new Date(), // optional fields
+      updatedAt: props.updatedAt ?? null,
+      deletedAt: props.deletedAt ?? null,
+    };
   }
   // get
   get id() {
@@ -31,15 +34,15 @@ export class Status {
     return this.props.description;
   }
 
-  get createdAt() {
+  get createdAt(): Date | null | undefined {
     return this.props.createdAt;
   }
 
-  get updatedAt(): Date | null {
+  get updatedAt(): Date | null | undefined {
     return this.props.updatedAt;
   }
 
-  get deletedAt(): Date | null {
+  get deletedAt(): Date | null | undefined {
     return this.props.deletedAt;
   }
   // set

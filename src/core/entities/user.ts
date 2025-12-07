@@ -14,8 +14,11 @@ export class User {
     private readonly _id: UniqueEntityID, // create id
     private props: UserProps, // import fields props
   ) {
-    this.props.createdAt = props.createdAt ?? new Date(); /// optional fields
-    this.props.updatedAt = props.updatedAt ?? null;
+    this.props = {
+      ...props,
+      createdAt: props.createdAt ?? new Date(), // optional fields
+      updatedAt: props.updatedAt ?? null,
+    };
   }
   get name() {
     return this.props.name;
@@ -63,6 +66,6 @@ export class User {
   }
 
   private touch() {
-    this.props.updatedAt = this.updatedAt;
+    this.props.updatedAt = new Date();
   }
 }

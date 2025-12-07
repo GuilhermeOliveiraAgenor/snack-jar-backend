@@ -1,12 +1,10 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
 
-export interface RecipeProps {
-  title: string;
-  description: string;
-  preparationTime: number;
-  categoryId: UniqueEntityID;
-  statusId: UniqueEntityID;
-  userId: UniqueEntityID;
+export interface RecipeIngredientProps {
+  ingredient: string;
+  amount: number;
+  unit: number;
+  recipeId: UniqueEntityID;
   createdAt: Date | null;
   createdBy: UniqueEntityID | null;
   updatedAt: Date | null;
@@ -15,10 +13,10 @@ export interface RecipeProps {
   deletedBy: UniqueEntityID | null;
 }
 
-export class Recipe {
+export class RecipeIngredient {
   constructor(
     private readonly _id: UniqueEntityID,
-    private props: RecipeProps,
+    private props: RecipeIngredientProps,
   ) {
     this.props = {
       ...props,
@@ -31,60 +29,21 @@ export class Recipe {
     };
   }
 
-  get title() {
-    return this.props.title;
+  get ingredient() {
+    return this.props.ingredient;
   }
 
-  get description() {
-    return this.props.description;
+  get amount() {
+    return this.props.amount;
   }
 
-  get preparationTime() {
-    return this.props.preparationTime;
+  get unit() {
+    return this.props.unit;
   }
 
-  get categoryId() {
-    return this.props.categoryId;
+  get recipeId() {
+    return this.props.recipeId;
   }
-
-  get statusId() {
-    return this.props.statusId;
-  }
-
-  get userId() {
-    return this.props.userId;
-  }
-
-  set title(title: string) {
-    this.props.title = title;
-    this.touch();
-  }
-
-  set description(description: string) {
-    this.props.description = description;
-    this.touch();
-  }
-
-  set preparationTime(preparationTime: number) {
-    this.props.preparationTime = preparationTime;
-    this.touch();
-  }
-
-  set categoryId(categoryId: UniqueEntityID) {
-    this.props.categoryId = categoryId;
-    this.touch();
-  }
-
-  set statusId(statusId: UniqueEntityID) {
-    this.props.statusId = statusId;
-    this.touch();
-  }
-
-  set userId(userId: UniqueEntityID) {
-    this.props.userId = userId;
-    this.touch();
-  }
-
   set createdAt(createdAt: Date) {
     this.props.createdAt = createdAt;
     this.touch();
