@@ -1,4 +1,3 @@
-import { ca, id } from "zod/v4/locales";
 import { categoriesRepository } from "../../src/application/repositories/categories-repository";
 import { Category } from "../../src/core/entities/category";
 
@@ -15,7 +14,11 @@ export class InMemoryCategoriesRepository implements categoriesRepository {
   async findMany(): Promise<Category[]> {
     return this.items;
   }
-  async findByName(description: string): Promise<Category | null> {
-    
+  async findByName(name: string): Promise<Category | null> {
+    const category = this.items.find((item) => item.name == name);
+    if (!category) {
+      return null;
+    }
+    return category;
   }
 }
