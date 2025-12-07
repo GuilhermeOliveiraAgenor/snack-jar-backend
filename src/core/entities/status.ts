@@ -1,3 +1,5 @@
+import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+
 export interface StatusProps {
   // create interface
   code: string;
@@ -9,7 +11,7 @@ export interface StatusProps {
 
 export class Status {
   constructor(
-    private readonly _id: string, // create id table
+    private readonly _id: UniqueEntityID, // create id table
     private props: StatusProps, // import fields from interface
   ) {
     this.props.createdAt = props.createdAt ?? new Date(); // optional fields

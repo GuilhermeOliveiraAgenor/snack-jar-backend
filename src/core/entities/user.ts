@@ -1,3 +1,5 @@
+import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+
 export interface UserProps {
   // create interface
   name: string;
@@ -9,7 +11,7 @@ export interface UserProps {
 
 export class User {
   constructor(
-    private readonly _id: string, // create id
+    private readonly _id: UniqueEntityID, // create id
     private props: UserProps, // import fields props
   ) {
     this.props.createdAt = props.createdAt ?? new Date(); /// optional fields
