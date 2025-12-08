@@ -2,6 +2,7 @@ import { Category } from "../../core/entities/category";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 import { categoriesRepository } from "../repositories/categories-repository";
 import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id";
+import { AlreadyExistsError } from "../errors/already-exists-error";
 
 interface CreateCategoryUseCaseRequest {
   // create data request
@@ -24,14 +25,17 @@ export class CreateCategoryUseCase {
     // verify if category already exists
     const categoryName = await this.categoriesRepository.findByName(name);
     if (categoryName) {
-      throw new ResourceNotFoundError("Category");
+      throw new AlreadyExistsError("Category");
     }
 
+    // create object
     const category = Category.create({
       name,
       description,
     });
 
-    await this.categoriesRepository.create(category);
+    await this.categoriesRepository.create(category); // pass to repository
+
+    return { category };
   }
 }
