@@ -13,14 +13,21 @@ export class Category {
   constructor(
     private readonly _id: UniqueEntityID, // create id table
     private props: CategoryProps, // import fields from interface
-  ) {
-    this.props = {
-      ...props,
-      createdAt: props.createdAt ?? new Date(), // optional fields
-      updatedAt: props.updatedAt ?? null,
-      deletedAt: props.deletedAt ?? null,
-    };
+  ) {}
+
+  static create(props: { name: string; description: string }, id?: UniqueEntityID) {
+    const category = new Category(
+      id ?? new UniqueEntityID(), // create id
+      {
+        ...props, // import fields
+        createdAt: new Date(),
+        updatedAt: null,
+        deletedAt: null,
+      },
+    );
+    return category;
   }
+
   // get
   get id() {
     return this._id;
