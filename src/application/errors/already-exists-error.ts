@@ -1,5 +1,7 @@
-export class AlreadyExistsError extends Error {
+import { BaseError } from "../../core/errors/base-error";
+
+export class AlreadyExistsError extends BaseError {
   constructor(resource: string) {
-    super(`${resource} already exists`);
+    super(409, `notFound.${resource}`, "Not Found");
   }
 }
