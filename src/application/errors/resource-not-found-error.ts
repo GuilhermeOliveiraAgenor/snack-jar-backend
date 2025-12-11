@@ -1,5 +1,7 @@
-export class ResourceNotFoundError extends Error {
+import { BaseError } from "../../core/errors/base-error";
+
+export class NotFoundError extends BaseError {
   constructor(resource: string) {
-    super(`${resource} not found`);
+    super(409, `notFound.${resource}`, "Not Found");
   }
 }

@@ -4,5 +4,8 @@
     },
     "internal":{
         "internal": "INTERNAL_SERVER_ERROR"
+    },
+    "already-exists": {
+        "category": "CATEGORY_ALREADY_EXISTS"
     }
 }
