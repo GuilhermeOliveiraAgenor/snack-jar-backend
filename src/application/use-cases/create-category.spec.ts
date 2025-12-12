@@ -20,30 +20,31 @@ describe("Category Use Case", () => {
 
     const result = await sut.execute(category);
 
-    expect(result.category).toBeInstanceOf(Category);
+    expect(result.isSuccess()).toBe(true);
     expect(inMemoryCategoriesRepository.items).toHaveLength(1);
-    expect(result.category).toMatchObject({
+    expect(result.value.category).toMatchObject({
       name: "Salgados",
       description: "Pratos salgados",
     });
   });
 
-  it("should not be able to register duplicated category", async () => {
-    // primeiro cadastro
-    await sut.execute({
+  it("should not be able to register category with same name", async () => {
+    const category1 = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
     });
 
-    // segundo cadastro -> DEVE FALHAR
-    await expect(
-      sut.execute({
-        name: "Salgados",
-        description: "Pratos salgados",
-      }),
-    ).rejects.toBeInstanceOf(AlreadyExistsError);
+    await sut.execute(category1);
 
-    // deve continuar com 1 item apenas
+    const category2 = Category.create({
+      name: "Salgados",
+      description: "Pratos salgados",
+    });
+
+    const result = await sut.execute(category2);
+
+    expect(result.isError()).toBe(true);
     expect(inMemoryCategoriesRepository.items).toHaveLength(1);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
 });
