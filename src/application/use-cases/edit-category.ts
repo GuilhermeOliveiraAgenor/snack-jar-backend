@@ -6,9 +6,9 @@ import { categoriesRepository } from "../repositories/categories-repository";
 
 // create request
 interface EditCategoryUseCaseRequest {
-  id: Category["_id"];
   name: Category["name"];
   description: Category["description"];
+  id: Category["_id"];
 }
 
 // create response
@@ -21,9 +21,9 @@ export class EditCategoryUseCase {
   constructor(private categoriesRepository: categoriesRepository) {}
 
   async execute({
-    id,
     name,
     description,
+    id,
   }: EditCategoryUseCaseRequest): Promise<EditCategoryUseCaseResponse> {
     const category = await this.categoriesRepository.findById(id.toString());
 

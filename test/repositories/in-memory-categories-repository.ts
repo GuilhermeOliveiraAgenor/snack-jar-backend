@@ -8,7 +8,7 @@ export class InMemoryCategoriesRepository implements categoriesRepository {
     this.items.push(category);
   }
   async save(category: Category): Promise<void> {
-    const itemIndex = this.items.findIndex((item) => item.id.toString() === category.id.toString());
+    const itemIndex = this.items.findIndex((item) => item.id === category.id);
     this.items[itemIndex] = category;
   }
   async findMany(): Promise<Category[]> {
