@@ -8,7 +8,7 @@ export class InMemoryCategoriesRepository implements categoriesRepository {
     this.items.push(category);
   }
   async save(category: Category): Promise<void> {
-    const itemIndex = this.items.findIndex((item) => item.id === category.id);
+    const itemIndex = this.items.findIndex((item) => item.id.toString() === category.id.toString());
     this.items[itemIndex] = category;
   }
   async findMany(): Promise<Category[]> {
@@ -16,6 +16,13 @@ export class InMemoryCategoriesRepository implements categoriesRepository {
   }
   async findByName(name: string): Promise<Category | null> {
     const category = this.items.find((item) => item.name == name);
+    if (!category) {
+      return null;
+    }
+    return category;
+  }
+  async findById(id: string): Promise<Category | null> {
+    const category = this.items.find((item) => item.id.toString() == id);
     if (!category) {
       return null;
     }

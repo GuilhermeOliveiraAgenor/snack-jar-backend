@@ -5,4 +5,5 @@ export interface categoriesRepository {
   save(category: Category): Promise<void>;
   findMany(): Promise<Category[]>;
   findByName(name: string): Promise<Category | null>;
+  findById(id: string): Promise<Category | null>;
 }
