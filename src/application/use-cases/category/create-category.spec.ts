@@ -1,6 +1,6 @@
-import { InMemoryCategoriesRepository } from "../../../test/repositories/in-memory-categories-repository";
-import { Category } from "../../core/entities/category";
-import { AlreadyExistsError } from "../errors/already-exists-error";
+import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { Category } from "../../../core/entities/category";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { CreateCategoryUseCase } from "./create-category";
 import { describe, it, expect, beforeEach } from "vitest";
 

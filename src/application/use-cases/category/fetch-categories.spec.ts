@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { InMemoryCategoriesRepository } from "../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { FetchCategoriesUseCase } from "./fetch-categories";
 import { beforeEach } from "vitest";
-import { Category } from "../../core/entities/category";
-import { NotFoundError } from "../errors/resource-not-found-error";
+import { Category } from "../../../core/entities/category";
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: FetchCategoriesUseCase;

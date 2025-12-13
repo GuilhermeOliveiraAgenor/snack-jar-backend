@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { InMemoryCategoriesRepository } from "../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { EditCategoryUseCase } from "./edit-category";
-import { Category } from "../../core/entities/category";
-import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id";
-import { NotFoundError } from "../errors/resource-not-found-error";
+import { Category } from "../../../core/entities/category";
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
+import { NotFoundError } from "../../errors/resource-not-found-error";
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: EditCategoryUseCase;

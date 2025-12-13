@@ -1,8 +1,8 @@
-import { Either, success, failure } from "../../core/either";
-import { Category } from "../../core/entities/category";
-import { AlreadyExistsError } from "../errors/already-exists-error";
-import { NotFoundError } from "../errors/resource-not-found-error";
-import { categoriesRepository } from "../repositories/categories-repository";
+import { Either, success, failure } from "../../../core/either";
+import { Category } from "../../../core/entities/category";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { NotFoundError } from "../../errors/resource-not-found-error";
+import { categoriesRepository } from "../../repositories/categories-repository";
 
 // create request
 interface EditCategoryUseCaseRequest {

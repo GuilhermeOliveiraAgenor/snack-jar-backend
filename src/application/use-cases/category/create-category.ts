@@ -1,7 +1,7 @@
-import { Category } from "../../core/entities/category";
-import { categoriesRepository } from "../repositories/categories-repository";
-import { AlreadyExistsError } from "../errors/already-exists-error";
-import { Either, failure, success } from "../../core/either";
+import { Category } from "../../../core/entities/category";
+import { categoriesRepository } from "../../repositories/categories-repository";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { Either, failure, success } from "../../../core/either";
 
 interface CreateCategoryUseCaseRequest {
   // create data request
