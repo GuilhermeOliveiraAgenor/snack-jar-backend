@@ -4,7 +4,7 @@ import { NotFoundError } from "../errors/resource-not-found-error";
 import { CategoriesRepository } from "../repositories/categories-repository";
 
 type FetchCategoriesUseCaseResponse = Either<
-  NotFoundError,
+  null,
   {
     category: Category[];
   }
