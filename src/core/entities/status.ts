@@ -13,14 +13,18 @@ export class Status {
   constructor(
     private readonly _id: UniqueEntityID, // create id table
     private props: StatusProps, // import fields from interface
-  ) {
-    this.props = {
-      ...props, // create fields
-      createdAt: props.createdAt ?? new Date(), // optional fields
-      updatedAt: props.updatedAt ?? null,
-      deletedAt: props.deletedAt ?? null,
-    };
+  ) {}
+
+  static create(props: { code: string; description: string }, id?: UniqueEntityID) {
+    const status = new Status(id ?? new UniqueEntityID(), {
+      ...props,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    });
+    return status;
   }
+
   // get
   get id() {
     return this._id;

@@ -16,7 +16,6 @@ export class InMemoryStatusRepository implements StatusRepository {
   }
   async findById(id: string): Promise<Status | null> {
     const status = this.items.find((item) => item.id.toString() === id);
-
     if (!status) {
       return null;
     }
