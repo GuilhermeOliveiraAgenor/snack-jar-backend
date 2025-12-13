@@ -1,7 +1,7 @@
-import { categoriesRepository } from "../../src/application/repositories/categories-repository";
+import { CategoriesRepository } from "../../src/application/repositories/categories-repository";
 import { Category } from "../../src/core/entities/category";
 
-export class InMemoryCategoriesRepository implements categoriesRepository {
+export class InMemoryCategoriesRepository implements CategoriesRepository {
   public items: Category[] = []; // array data
 
   async create(category: Category): Promise<void> {
