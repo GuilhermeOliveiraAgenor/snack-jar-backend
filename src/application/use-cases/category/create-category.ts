@@ -1,5 +1,5 @@
 import { Category } from "../../../core/entities/category";
-import { categoriesRepository } from "../../repositories/categories-repository";
+import { CategoriesRepository } from "../../repositories/categories-repository";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { Either, failure, success } from "../../../core/either";
 
@@ -18,7 +18,7 @@ type CreateCategoryUseCaseResponse = Either<
 >;
 
 export class CreateCategoryUseCase {
-  constructor(private categoriesRepository: categoriesRepository) {} // define repository
+  constructor(private categoriesRepository: CategoriesRepository) {} // define repository
 
   async execute({
     name,
