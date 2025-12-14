@@ -13,13 +13,17 @@ export class User {
   constructor(
     private readonly _id: UniqueEntityID, // create id
     private props: UserProps, // import fields props
-  ) {
-    this.props = {
+  ) {}
+
+  static create(props: { name: string; email: string; password: string }, id?: UniqueEntityID) {
+    const user = new User(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: props.createdAt ?? new Date(), // optional fields
-      updatedAt: props.updatedAt ?? null,
-    };
+      createdAt: new Date(),
+      updatedAt: null,
+    });
+    return user;
   }
+
   get name() {
     return this.props.name;
   }
