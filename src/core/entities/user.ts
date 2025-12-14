@@ -24,6 +24,10 @@ export class User {
     return user;
   }
 
+  get id() {
+    return this._id;
+  }
+
   get name() {
     return this.props.name;
   }
