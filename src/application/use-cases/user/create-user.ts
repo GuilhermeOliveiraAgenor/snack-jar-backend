@@ -1,7 +1,8 @@
-import { Either } from "../../../core/either";
+import { Either, failure, success } from "../../../core/either";
 import { User } from "../../../core/entities/user";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { UserRepository } from "../../repositories/user-repository";
+import { IHashProvider } from "../../../core/cryptography/IHashProvider";
 
 interface CreateUserUseCaseRequest {
   name: User["name"];
@@ -17,14 +18,39 @@ type CreateUserUseCaseResponse = Either<
 >;
 
 export class CreateUserUseCase {
-  constructor(private userRepository: UserRepository) {}
+  // import repositories user and bcrypt hash functions
+  constructor(
+    private userRepository: UserRepository,
+    private hashProvider: IHashProvider,
+  ) {}
 
   async execute({
     name,
     email,
     password,
-  }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse>;
+  }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
+    const userWithSameEmail = await this.userRepository.findByEmail(email);
+    // verify client already exists
 
-  // const userWithSameEmail = await this.userRepository.
+    if (userWithSameEmail) {
+      return failure(new AlreadyExistsError("user"));
+    }
 
+    // hash password
+    const hashedPassword = await this.hashProvider.hash(password);
+
+    //create user
+    const user = User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    // pass to repository
+    await this.userRepository.create(user);
+
+    return success({
+      user,
+    });
+  }
 }
