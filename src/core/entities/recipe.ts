@@ -6,7 +6,6 @@ export interface RecipeProps {
   preparationTime: number;
   categoryId: UniqueEntityID;
   statusId: UniqueEntityID;
-  userId: UniqueEntityID;
   createdAt: Date | null;
   createdBy: UniqueEntityID | null;
   updatedAt: Date | null;
@@ -19,16 +18,30 @@ export class Recipe {
   constructor(
     private readonly _id: UniqueEntityID,
     private props: RecipeProps,
+  ) {}
+
+  static create(
+    props: {
+      title: string;
+      description: string;
+      preparationTime: number;
+      categoryId: UniqueEntityID;
+      statusId: UniqueEntityID;
+      createdBy: UniqueEntityID;
+    },
+    id?: UniqueEntityID,
   ) {
-    this.props = {
+    const recipe = new Recipe(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: props.createdAt ?? new Date(),
-      updatedAt: props.updatedAt ?? null,
-      deletedAt: props.deletedAt ?? null,
-      createdBy: props.createdBy ?? null,
-      updatedBy: props.updatedBy ?? null,
-      deletedBy: props.deletedBy ?? null,
-    };
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      createdBy: props.createdBy,
+      updatedBy: null,
+      deletedBy: null,
+    });
+
+    return recipe;
   }
 
   get title() {
@@ -49,10 +62,6 @@ export class Recipe {
 
   get statusId() {
     return this.props.statusId;
-  }
-
-  get userId() {
-    return this.props.userId;
   }
 
   get createdAt(): Date | null {
@@ -89,11 +98,6 @@ export class Recipe {
 
   set statusId(statusId: UniqueEntityID) {
     this.props.statusId = statusId;
-    this.touch();
-  }
-
-  set userId(userId: UniqueEntityID) {
-    this.props.userId = userId;
     this.touch();
   }
 
