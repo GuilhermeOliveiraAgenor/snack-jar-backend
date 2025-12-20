@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { InMemoryStatusRepository } from "../../../../test/repositories/in-memory-status-repository";
-import { EditStatusUseCase } from "./edit-status";
 import { Status } from "../../../core/entities/status";
+import { EditStatusUseCase } from "../status/edit-status";
+import { InMemoryStatusRepository } from "../../../../test/repositories/in-memory-status-repository";
 
 let inMemoryStatusRepository: InMemoryStatusRepository;
 let sut: EditStatusUseCase;
@@ -31,8 +31,10 @@ describe("Edit Status Use Case", () => {
 
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryStatusRepository.items).toHaveLength(1);
-    expect(result.value.status).toMatchObject({
-      code: "Inativo",
-    });
+    if (result.isSuccess()) {
+      expect(result.value.status).toMatchObject({
+        code: "Inativo",
+      });
+    }
   });
 });

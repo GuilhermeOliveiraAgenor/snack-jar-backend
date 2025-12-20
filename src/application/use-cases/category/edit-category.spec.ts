@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { EditCategoryUseCase } from "./edit-category";
 import { Category } from "../../../core/entities/category";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { EditCategoryUseCase } from "../category/edit-category";
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: EditCategoryUseCase;
@@ -32,12 +32,15 @@ describe("Edit Category Use Case", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    expect(result.value.category).toMatchObject({
-      name: "Prato doce",
-    });
+    expect(inMemoryCategoriesRepository.items).toHaveLength(1);
+    if (result.isSuccess()) {
+      expect(result.value.category).toMatchObject({
+        name: "Prato doce",
+      });
+    }
   });
 
-  it("should be not able to edit category not exists", async () => {
+  it("should not be able to edit category not exists", async () => {
     const result = await sut.execute({
       id: new UniqueEntityID("0"),
       name: "Prato doce",
