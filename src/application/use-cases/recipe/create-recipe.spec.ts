@@ -6,7 +6,7 @@ import { InMemoryPreparationMethodRepository } from "../../../../test/repositori
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { Category } from "../../../core/entities/category";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { RecipeNullError } from "../../errors/recipe-null-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
@@ -168,7 +168,66 @@ describe("Create Recipe Use Case", () => {
     });
 
     expect(result.isError()).toBe(true);
-    expect(result.value).toBeInstanceOf(AlreadyExistsError);
+    expect(result.value).toBeInstanceOf(NotFoundError);
+    expect(inMemoryRecipeRepository.items).toHaveLength(0);
+  });
+  it("should not be able to register recipe without ingredients", async () => {
+    const category = Category.create({
+      name: "Salgados",
+      description: "Pratos salgados",
+    });
+
+    await inMemoryCategoriesRepository.create(category);
+
+    const result = await sut.execute({
+      title: "Bolo de Laranja",
+      description: "Receita de bolo de laranja",
+      preparationTime: 60,
+      categoryId: category.id.toString(),
+      createdBy: "user-1",
+
+      recipeIngredient: [],
+
+      preparationMethod: [
+        {
+          step: 1,
+          description: "Jogue a farinha no pote",
+        },
+      ],
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(RecipeNullError);
+    expect(inMemoryRecipeRepository.items).toHaveLength(0);
+  });
+  it("should not be able to register recipe without step", async () => {
+    const category = Category.create({
+      name: "Salgados",
+      description: "Pratos salgados",
+    });
+
+    await inMemoryCategoriesRepository.create(category);
+
+    const result = await sut.execute({
+      title: "Bolo de Laranja",
+      description: "Receita de bolo de laranja",
+      preparationTime: 60,
+      categoryId: category.id.toString(),
+      createdBy: "user-1",
+
+      recipeIngredient: [
+        {
+          ingredient: "Farinha",
+          amount: "1",
+          unit: "Kg",
+        },
+      ],
+
+      preparationMethod: [],
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(RecipeNullError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
 });

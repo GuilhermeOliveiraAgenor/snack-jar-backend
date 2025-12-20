@@ -44,9 +44,5 @@
     "ramda": "0.32.0",
     "tsup": "8.5.0",
     "zod": "4.1.12"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "description": ""
+  }
 }
