@@ -2,8 +2,8 @@ import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
 
 export interface RecipeIngredientProps {
   ingredient: string;
-  amount: number;
-  unit: number;
+  amount: string;
+  unit: string;
   recipeId: UniqueEntityID;
   createdAt: Date | null;
   createdBy: UniqueEntityID | null;
@@ -17,16 +17,29 @@ export class RecipeIngredient {
   constructor(
     private readonly _id: UniqueEntityID,
     private props: RecipeIngredientProps,
+  ) {}
+
+  static create(
+    props: {
+      ingredient: string;
+      amount: string;
+      unit: string;
+      recipeId: UniqueEntityID;
+      createdBy: UniqueEntityID;
+    },
+    id?: UniqueEntityID,
   ) {
-    this.props = {
+    const recipeIngredient = new RecipeIngredient(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: props.createdAt ?? new Date(),
-      updatedAt: props.updatedAt ?? null,
-      deletedAt: props.deletedAt ?? null,
-      createdBy: props.createdBy ?? null,
-      updatedBy: props.updatedBy ?? null,
-      deletedBy: props.deletedBy ?? null,
-    };
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      createdBy: props.createdBy,
+      updatedBy: null,
+      deletedBy: null,
+    });
+
+    return recipeIngredient;
   }
 
   get ingredient() {

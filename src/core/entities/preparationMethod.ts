@@ -1,7 +1,7 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
 
 export interface PreparationMethodProps {
-  step: string;
+  step: number;
   description: string;
   recipeId: UniqueEntityID;
   createdAt: Date | null;
@@ -16,16 +16,28 @@ export class PreparationMethod {
   constructor(
     private readonly _id: UniqueEntityID,
     private props: PreparationMethodProps,
+  ) {}
+
+  static create(
+    props: {
+      step: number;
+      description: string;
+      recipeId: UniqueEntityID;
+      createdBy: UniqueEntityID;
+    },
+    id?: UniqueEntityID,
   ) {
-    this.props = {
+    const preparationMethod = new PreparationMethod(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: props.createdAt ?? new Date(),
-      updatedAt: props.updatedAt ?? null,
-      deletedAt: props.deletedAt ?? null,
-      createdBy: props.createdBy ?? null,
-      updatedBy: props.updatedBy ?? null,
-      deletedBy: props.deletedBy ?? null,
-    };
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      createdBy: props.createdBy,
+      updatedBy: null,
+      deletedBy: null,
+    });
+
+    return preparationMethod;
   }
 
   get step() {
