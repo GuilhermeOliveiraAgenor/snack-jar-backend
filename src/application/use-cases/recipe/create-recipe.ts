@@ -9,7 +9,6 @@ import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { PreparationMethod } from "../../../core/entities/preparationMethod";
 import { CategoriesRepository } from "../../repositories/categories-repository";
-import { StatusRepository } from "../../repositories/status-repository";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -18,7 +17,6 @@ interface CreateRecipeUseCaseRequest {
   description: Recipe["description"];
   preparationTime: Recipe["preparationTime"];
   categoryId: string;
-  statusId: string;
   createdBy: string;
 
   // recipe ingredient list
@@ -48,7 +46,6 @@ export class CreateRecipeUseCase {
     private recipeIngredientRepository: RecipeIngredientRepository,
     private preparationMethodRepository: PreparationMethodRepository,
     private categoryRepository: CategoriesRepository,
-    private statusRepository: StatusRepository,
   ) {}
 
   async execute({
@@ -56,7 +53,6 @@ export class CreateRecipeUseCase {
     description,
     preparationTime,
     categoryId,
-    statusId,
     recipeIngredient,
     preparationMethod,
     createdBy,
@@ -68,19 +64,12 @@ export class CreateRecipeUseCase {
       return failure(new NotFoundError("category"));
     }
 
-    // verify if exists status
-
-    const status = await this.statusRepository.findById(statusId);
-    if (!status) {
-      return failure(new NotFoundError("status"));
-    }
     // create recipe
     const recipe = Recipe.create({
       title,
       description,
       preparationTime,
       categoryId: new UniqueEntityID(categoryId),
-      statusId: new UniqueEntityID(statusId),
       createdBy: new UniqueEntityID(createdBy),
     });
 

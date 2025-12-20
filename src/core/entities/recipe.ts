@@ -5,7 +5,6 @@ export interface RecipeProps {
   description: string;
   preparationTime: number;
   categoryId: UniqueEntityID;
-  statusId: UniqueEntityID;
   createdAt: Date | null;
   createdBy: UniqueEntityID | null;
   updatedAt: Date | null;
@@ -26,7 +25,6 @@ export class Recipe {
       description: string;
       preparationTime: number;
       categoryId: UniqueEntityID;
-      statusId: UniqueEntityID;
       createdBy: UniqueEntityID;
     },
     id?: UniqueEntityID,
@@ -64,10 +62,6 @@ export class Recipe {
     return this.props.categoryId;
   }
 
-  get statusId() {
-    return this.props.statusId;
-  }
-
   get createdAt(): Date | null {
     return this.props.createdAt;
   }
@@ -97,11 +91,6 @@ export class Recipe {
 
   set categoryId(categoryId: UniqueEntityID) {
     this.props.categoryId = categoryId;
-    this.touch();
-  }
-
-  set statusId(statusId: UniqueEntityID) {
-    this.props.statusId = statusId;
     this.touch();
   }
 
