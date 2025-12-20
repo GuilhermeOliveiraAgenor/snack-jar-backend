@@ -13,7 +13,6 @@
         "category": "CATEGORY_ALREADY_EXISTS"
     },
     "recipe-null":{
-        "ingredients": "RECIPE_CAN_NOT_BE_NULL",
-        "step": "STEP_CAN_NOT_BE_NULL"
+        "recipe": "RECIPE_CANT_BE_NULL"
     }
 }

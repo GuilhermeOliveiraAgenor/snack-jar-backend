@@ -10,6 +10,7 @@ import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { PreparationMethod } from "../../../core/entities/preparationMethod";
 import { CategoriesRepository } from "../../repositories/categories-repository";
 import { RecipeStatus } from "../../../core/enum/enum-status";
+import { RecipeNullError } from "../../errors/recipe-null-error";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -65,8 +66,9 @@ export class CreateRecipeUseCase {
       return failure(new NotFoundError("category"));
     }
 
-    if (recipeIngredient.length === 0 || preparationMethod === 0) {
-        return failure(new )
+    // verify if lists are null
+    if (recipeIngredient.length === 0 || preparationMethod.length === 0) {
+      return failure(new RecipeNullError("recipe"));
     }
 
     // create recipe

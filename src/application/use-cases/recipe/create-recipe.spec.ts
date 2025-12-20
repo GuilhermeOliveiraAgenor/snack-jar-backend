@@ -6,6 +6,7 @@ import { InMemoryPreparationMethodRepository } from "../../../../test/repositori
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { Category } from "../../../core/entities/category";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
@@ -143,6 +144,7 @@ describe("Create Recipe Use Case", () => {
   });
   it("should not be able register with category not exists", async () => {
     const result = await sut.execute({
+      // create recipe
       title: "Bolo de Laranja",
       description: "Receita de bolo de laranja",
       preparationTime: 60,
@@ -166,7 +168,7 @@ describe("Create Recipe Use Case", () => {
     });
 
     expect(result.isError()).toBe(true);
-    expect(result.value).toBeInstanceOf(NotFoundError);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
 });
