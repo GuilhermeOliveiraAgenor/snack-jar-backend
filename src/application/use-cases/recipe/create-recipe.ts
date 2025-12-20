@@ -9,6 +9,7 @@ import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { PreparationMethod } from "../../../core/entities/preparationMethod";
 import { CategoriesRepository } from "../../repositories/categories-repository";
+import { RecipeStatus } from "../../../core/enum/enum-status";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -64,11 +65,16 @@ export class CreateRecipeUseCase {
       return failure(new NotFoundError("category"));
     }
 
+    if (recipeIngredient.length === 0 || preparationMethod === 0) {
+        return failure(new )
+    }
+
     // create recipe
     const recipe = Recipe.create({
       title,
       description,
       preparationTime,
+      status: RecipeStatus.ACTIVE,
       categoryId: new UniqueEntityID(categoryId),
       createdBy: new UniqueEntityID(createdBy),
     });

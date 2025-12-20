@@ -1,9 +1,11 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { RecipeStatus } from "../enum/enum-status";
 
 export interface RecipeProps {
   title: string;
   description: string;
   preparationTime: number;
+  status: string;
   categoryId: UniqueEntityID;
   createdAt: Date | null;
   createdBy: UniqueEntityID | null;
@@ -24,6 +26,7 @@ export class Recipe {
       title: string;
       description: string;
       preparationTime: number;
+      status: RecipeStatus.ACTIVE;
       categoryId: UniqueEntityID;
       createdBy: UniqueEntityID;
     },

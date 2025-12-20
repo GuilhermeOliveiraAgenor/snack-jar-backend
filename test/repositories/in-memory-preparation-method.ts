@@ -2,9 +2,9 @@ import { PreparationMethodRepository } from "../../src/application/repositories/
 import { PreparationMethod } from "../../src/core/entities/preparationMethod";
 
 export class InMemoryPreparationMethodRepository implements PreparationMethodRepository {
-  public item: PreparationMethod[] = [];
+  public items: PreparationMethod[] = [];
 
   async createMany(preparationMethod: PreparationMethod[]): Promise<void> {
-    this.item.push(...preparationMethod);
+    this.items.push(...preparationMethod);
   }
 }
