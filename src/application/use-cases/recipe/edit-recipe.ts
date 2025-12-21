@@ -1,11 +1,10 @@
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
-import { Either } from "../../../core/either";
+import { Either, failure, success } from "../../../core/either";
 import { Recipe } from "../../../core/entities/recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface EditRecipeUseCaseRequest {
-  recipeId: UniqueEntityID;
+  recipeId: string;
   title: Recipe["title"];
   description: Recipe["description"];
   preparationTime: Recipe["preparationTime"];
@@ -26,8 +25,20 @@ export class EditRecipeUseCase {
     description,
     preparationTime,
   }: EditRecipeUseCaseRequest): Promise<EditRecipeUseCaseResponse> {
+    // verify if exists recipe
+    const recipe = await this.recipeRepository.findById(recipeId);
+    if (!recipe) {
+      return failure(new NotFoundError("recipe"));
+    }
 
-    const
+    recipe.title = title ?? recipe.title;
+    recipe.description = description ?? recipe.description;
+    recipe.preparationTime = preparationTime ?? recipe.preparationTime;
 
+    await this.recipeRepository.create(recipe);
+
+    return success({
+      recipe,
+    });
   }
 }

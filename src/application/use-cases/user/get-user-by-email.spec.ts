@@ -32,7 +32,7 @@ describe("Get User By Email", () => {
       });
     }
   });
-  it("should not create to get user by email", async () => {
+  it("should not get user with email does not exists", async () => {
     const result = await sut.execute({ email: "pedro@gmail.com" });
 
     expect(result.isError()).toBe(true);

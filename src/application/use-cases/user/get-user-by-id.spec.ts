@@ -33,7 +33,7 @@ describe("Get User By Id", () => {
       });
     }
   });
-  it("should not create to get user by id", async () => {
+  it("should not get user with email does not exists", async () => {
     const result = await sut.execute({ id: "0" });
 
     expect(result.isError()).toBe(true);
