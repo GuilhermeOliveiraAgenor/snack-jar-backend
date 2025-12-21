@@ -13,7 +13,7 @@ describe("Fetch categories", () => {
     sut = new FetchCategoriesUseCase(inMemoryCategoriesRepository);
   });
 
-  it("should list categories", async () => {
+  it("should list all categories", async () => {
     // create categories
 
     const category1 = Category.create({

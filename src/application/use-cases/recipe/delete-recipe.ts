@@ -1,17 +1,25 @@
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { Either, failure, success } from "../../../core/either";
+import { Recipe } from "../../../core/entities/recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface DeleteRecipeRequest {
   id: string;
+  deletedBy: string;
 }
 
-type DeleteRecipeResponse = Either<NotFoundError, null>;
+type DeleteRecipeResponse = Either<
+  NotFoundError,
+  {
+    recipe: Recipe;
+  }
+>;
 
 export class DeleteRecipeUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
 
-  async execute({ id }: DeleteRecipeRequest): Promise<DeleteRecipeResponse> {
+  async execute({ id, deletedBy }: DeleteRecipeRequest): Promise<DeleteRecipeResponse> {
     // verify if exists recipe
     const recipe = await this.recipeRepository.findById(id);
     if (!recipe) {
@@ -20,9 +28,11 @@ export class DeleteRecipeUseCase {
 
     // inactive recipe
     recipe.inactivate();
+    recipe.deletedBy = new UniqueEntityID(deletedBy);
 
     await this.recipeRepository.save(recipe);
-
-    return success(null);
+    return success({
+      recipe,
+    });
   }
 }

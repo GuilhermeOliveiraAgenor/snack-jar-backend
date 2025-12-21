@@ -81,6 +81,10 @@ export class Recipe {
     return this.props.updatedAt;
   }
 
+  get deletedBy(): UniqueEntityID | null {
+    return this.props.deletedBy;
+  }
+
   set title(title: string) {
     this.props.title = title;
     this.touch();

@@ -101,7 +101,7 @@ describe("Create Recipe Use Case", () => {
       },
     ]);
   });
-  it("should create recipe with minumum data", async () => {
+  it("should create a recipe with minimum data", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -142,7 +142,7 @@ describe("Create Recipe Use Case", () => {
       });
     }
   });
-  it("should not create with category does not exists", async () => {
+  it("should not create a recipe when category does not exist", async () => {
     const result = await sut.execute({
       // create recipe
       title: "Bolo de Laranja",
@@ -171,7 +171,7 @@ describe("Create Recipe Use Case", () => {
     expect(result.value).toBeInstanceOf(NotFoundError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
-  it("should not create recipe without ingredients", async () => {
+  it("should not to create a recipe without ingredients", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -200,7 +200,7 @@ describe("Create Recipe Use Case", () => {
     expect(result.value).toBeInstanceOf(RecipeNullError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
-  it("should not create recipe without step", async () => {
+  it("should not create a recipe without steps", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",

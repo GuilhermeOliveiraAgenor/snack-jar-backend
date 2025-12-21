@@ -1,26 +1,25 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
-import { EditRecipeUseCase } from "./edit-recipe";
-import { Recipe } from "../../../core/entities/recipe";
+import { DeleteRecipeUseCase } from "./delete-recipe";
 import { Category } from "../../../core/entities/category";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { Recipe } from "../../../core/entities/recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeStatus } from "../../../core/enum/enum-status";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
-let sut: EditRecipeUseCase;
+let sut: DeleteRecipeUseCase;
 
-describe("Edit Recipe Use Case", () => {
+describe("Soft delete Recipe Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
-
-    sut = new EditRecipeUseCase(inMemoryRecipeRepository);
+    sut = new DeleteRecipeUseCase(inMemoryRecipeRepository);
   });
-  it("should edit a recipe", async () => {
-    // create category
+
+  it("should soft delete a recipe", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -28,57 +27,31 @@ describe("Edit Recipe Use Case", () => {
 
     await inMemoryCategoriesRepository.create(category);
 
-    // create recipe
     const recipe = Recipe.create({
-      title: "Bolo de Cenoura",
-      description: "Receita de bolo de cenoura",
-      preparationTime: 60,
+      title: "Bolo de Chocolate",
+      description: "Receita de bolo de chocolate",
+      preparationTime: 50,
       status: RecipeStatus.ACTIVE,
       categoryId: category.id,
       createdBy: new UniqueEntityID("user-1"),
     });
 
-    // pass to repository
     await inMemoryRecipeRepository.create(recipe);
 
-    //pass to use case
-    const result = await sut.execute({
-      recipeId: recipe.id.toString(),
-      title: "Bolo de Chocolate",
-      description: "Receita de bolo de chocolate",
-      preparationTime: 50,
-      updatedBy: "user-1",
-    });
+    const result = await sut.execute({ id: recipe.id.toString(), deletedBy: "user-1" });
 
     expect(result.isSuccess()).toBe(true);
-    expect(inMemoryRecipeRepository.items).toHaveLength(1);
     if (result.isSuccess()) {
       expect(result.value.recipe).toMatchObject({
-        title: "Bolo de Chocolate",
-        description: "Receita de bolo de chocolate",
-        preparationTime: 50,
+        status: RecipeStatus.INACTIVE,
+        deletedBy: new UniqueEntityID("user-1"),
       });
     }
   });
-
-  it("should not edit a recipe when recipeId does not exist", async () => {
-    const category = Category.create({
-      name: "Doces",
-      description: "Pratos doces",
-    });
-
-    await inMemoryCategoriesRepository.create(category);
-
-    const result = await sut.execute({
-      recipeId: "0",
-      title: "Bolo de Cenoura",
-      description: "Receita de bolo de cenoura",
-      preparationTime: 60,
-      updatedBy: "user-1",
-    });
+  it("should not delete a recipe when recipeId does not exist", async () => {
+    const result = await sut.execute({ id: "0", deletedBy: "user-1" });
 
     expect(result.isError()).toBe(true);
-    expect(inMemoryRecipeRepository.items).toHaveLength(0);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
 });

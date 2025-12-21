@@ -40,7 +40,7 @@ describe("Edit Category Use Case", () => {
     }
   });
 
-  it("should not update category does not exists", async () => {
+  it("should not update a category when id does not exist", async () => {
     const result = await sut.execute({
       id: new UniqueEntityID("0"),
       name: "Prato doce",
