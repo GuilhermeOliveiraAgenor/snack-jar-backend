@@ -81,6 +81,13 @@ export class Recipe {
     return this.props.updatedAt;
   }
 
+  get createdBy(): UniqueEntityID | null {
+    return this.props.createdBy;
+  }
+  get updatedBy(): UniqueEntityID | null {
+    return this.props.updatedBy;
+  }
+
   get deletedBy(): UniqueEntityID | null {
     return this.props.deletedBy;
   }
