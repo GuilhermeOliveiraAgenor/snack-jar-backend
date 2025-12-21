@@ -61,6 +61,10 @@ export class Recipe {
     return this.props.preparationTime;
   }
 
+  get status() {
+    return this.props.status;
+  }
+
   get categoryId() {
     return this.props.categoryId;
   }
@@ -89,6 +93,11 @@ export class Recipe {
 
   set preparationTime(preparationTime: number) {
     this.props.preparationTime = preparationTime;
+    this.touch();
+  }
+
+  set status(status: string) {
+    this.props.status = status;
     this.touch();
   }
 
@@ -129,5 +138,10 @@ export class Recipe {
 
   private touch() {
     this.props.updatedAt = new Date();
+  }
+  // soft delete function
+  inactivate() {
+    this.props.status = RecipeStatus.INACTIVE;
+    this.props.deletedAt = new Date();
   }
 }
