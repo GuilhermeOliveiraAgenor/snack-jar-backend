@@ -35,7 +35,8 @@ export class EditRecipeUseCase {
     recipe.description = description ?? recipe.description;
     recipe.preparationTime = preparationTime ?? recipe.preparationTime;
 
-    await this.recipeRepository.create(recipe);
+    // pass to repository
+    await this.recipeRepository.save(recipe);
 
     return success({
       recipe,
