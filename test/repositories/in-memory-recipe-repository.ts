@@ -15,8 +15,8 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     const recipe = this.items.filter((item) => item.id.toString() === id);
     return recipe;
   }
-  async findManyByTitle(title: string): Promise<Recipe[]> {
-    const recipe = this.items.filter((item) => item.title === title);
+  async findManyById(id: string): Promise<Recipe[]> {
+    const recipe = this.items.filter((item) => item.id.toString() === id);
     return recipe;
   }
 }
