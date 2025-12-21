@@ -11,9 +11,11 @@ export class InMemoryRecipeIngredientRepository implements RecipeIngredientRepos
     this.items.push(recipeIngredient);
   }
   async save(recipeIngredient: RecipeIngredient): Promise<void> {
-    const itemIndex = this.items.findIndex((item) => item.id)
+    const itemIndex = this.items.findIndex((item) => item.id === recipeIngredient.id);
+    this.items[itemIndex] = recipeIngredient;
   }
-  async delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(recipeIngredient: RecipeIngredient): Promise<void> {
+    const itemIndex = this.items.filter((item) => item.id === recipeIngredient.id);
+    this.items = itemIndex;
   }
 }
