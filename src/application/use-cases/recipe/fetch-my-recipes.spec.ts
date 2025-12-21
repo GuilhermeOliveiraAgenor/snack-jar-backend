@@ -7,6 +7,8 @@ import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-m
 import { Recipe } from "../../../core/entities/recipe";
 import { RecipeStatus } from "../../../core/enum/enum-status";
 import { User } from "../../../core/entities/user";
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
+import { NotFoundError } from "../../errors/resource-not-found-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -72,5 +74,30 @@ describe("Fetch My Recipes Use Case", () => {
         ),
       ).toBe(true);
     }
+  });
+
+  it("should not fetch recipes when userId does not exist", async () => {
+    const category = Category.create({
+      name: "Doces",
+      description: "Pratos doces",
+    });
+
+    await inMemoryCategoriesRepository.create(category);
+
+    const recipe1 = Recipe.create({
+      title: "Bolo de Cenoura",
+      description: "Receita de bolo de cenoura",
+      preparationTime: 60,
+      status: RecipeStatus.ACTIVE,
+      categoryId: category.id,
+      createdBy: new UniqueEntityID("user-1"),
+    });
+
+    await inMemoryRecipeRepository.create(recipe1);
+
+    const result = await sut.execute({ userId: "0" });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotFoundError);
   });
 });

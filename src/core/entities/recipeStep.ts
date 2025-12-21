@@ -40,6 +40,10 @@ export class RecipeStep {
     return preparationMethod;
   }
 
+  get id() {
+    return this._id;
+  }
+
   get step() {
     return this.props.step;
   }

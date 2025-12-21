@@ -42,6 +42,10 @@ export class RecipeIngredient {
     return recipeIngredient;
   }
 
+  get id() {
+    return this._id;
+  }
+
   get ingredient() {
     return this.props.ingredient;
   }

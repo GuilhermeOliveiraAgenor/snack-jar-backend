@@ -7,4 +7,13 @@ export class InMemoryRecipeIngredientRepository implements RecipeIngredientRepos
   async createMany(recipeIngredient: RecipeIngredient[]): Promise<void> {
     this.items.push(...recipeIngredient);
   }
+  async create(recipeIngredient: RecipeIngredient): Promise<void> {
+    this.items.push(recipeIngredient);
+  }
+  async save(recipeIngredient: RecipeIngredient): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id)
+  }
+  async delete(id: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 }
