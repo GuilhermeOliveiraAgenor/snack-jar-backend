@@ -47,6 +47,7 @@ describe("Edit Recipe Use Case", () => {
       title: "Bolo de Chocolate",
       description: "Receita de bolo de chocolate",
       preparationTime: 50,
+      updatedBy: "user-1",
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -73,6 +74,7 @@ describe("Edit Recipe Use Case", () => {
       title: "Bolo de Cenoura",
       description: "Receita de bolo de cenoura",
       preparationTime: 60,
+      updatedBy: "user-1",
     });
 
     expect(result.isError()).toBe(true);
