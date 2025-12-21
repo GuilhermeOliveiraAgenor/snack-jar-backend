@@ -2,15 +2,15 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { CreateRecipeUseCase } from "./create-recipe";
 import { InMemoryRecipeIngredientRepository } from "../../../../test/repositories/in-memory-recipe-ingredient";
-import { InMemoryPreparationMethodRepository } from "../../../../test/repositories/in-memory-preparation-method";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { Category } from "../../../core/entities/category";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeNullError } from "../../errors/recipe-null-error";
+import { InMemoryRecipeStepRepository } from "../../../../test/repositories/in-memory-recipe-step";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
-let inMemoryPreparationMethodRepository: InMemoryPreparationMethodRepository;
+let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: CreateRecipeUseCase;
 
@@ -18,17 +18,17 @@ describe("Create Recipe Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
-    inMemoryPreparationMethodRepository = new InMemoryPreparationMethodRepository();
+    inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
     inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
     sut = new CreateRecipeUseCase(
       inMemoryRecipeRepository,
       inMemoryRecipeIngredientRepository,
-      inMemoryPreparationMethodRepository,
+      inMemoryRecipeStepRepository,
       inMemoryCategoriesRepository,
     );
   });
 
-  it("should be able to register recipe", async () => {
+  it("should create to register recipe", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -56,7 +56,7 @@ describe("Create Recipe Use Case", () => {
         },
       ],
 
-      preparationMethod: [
+      recipeStep: [
         {
           step: 1,
           description: "Jogue o açucar em um pote",
@@ -70,7 +70,7 @@ describe("Create Recipe Use Case", () => {
 
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryRecipeIngredientRepository.items).toHaveLength(2);
-    expect(inMemoryPreparationMethodRepository.items).toHaveLength(2);
+    expect(inMemoryRecipeStepRepository.items).toHaveLength(2);
     if (result.isSuccess()) {
       expect(result.value.recipe).toMatchObject({
         title: "Bolo de Cenoura",
@@ -90,7 +90,7 @@ describe("Create Recipe Use Case", () => {
         unit: "Kg",
       },
     ]);
-    expect(inMemoryPreparationMethodRepository.items).toMatchObject([
+    expect(inMemoryRecipeStepRepository.items).toMatchObject([
       {
         step: 1,
         description: "Jogue o açucar em um pote",
@@ -101,7 +101,7 @@ describe("Create Recipe Use Case", () => {
       },
     ]);
   });
-  it("should be able to register recipe with minumum data", async () => {
+  it("should create to register recipe with minumum data", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -124,7 +124,7 @@ describe("Create Recipe Use Case", () => {
         },
       ],
 
-      preparationMethod: [
+      recipeStep: [
         {
           step: 1,
           description: "Jogue o açucar em um pote",
@@ -134,7 +134,7 @@ describe("Create Recipe Use Case", () => {
 
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryRecipeIngredientRepository.items).toHaveLength(1);
-    expect(inMemoryPreparationMethodRepository.items).toHaveLength(1);
+    expect(inMemoryRecipeStepRepository.items).toHaveLength(1);
     if (result.isSuccess()) {
       expect(result.value.recipe).toMatchObject({
         title: "Bolo de Laranja",
@@ -142,7 +142,7 @@ describe("Create Recipe Use Case", () => {
       });
     }
   });
-  it("should not be able register with category not exists", async () => {
+  it("should not create register with category not exists", async () => {
     const result = await sut.execute({
       // create recipe
       title: "Bolo de Laranja",
@@ -159,7 +159,7 @@ describe("Create Recipe Use Case", () => {
         },
       ],
 
-      preparationMethod: [
+      recipeStep: [
         {
           step: 1,
           description: "Jogue o açucar em um pote",
@@ -171,7 +171,7 @@ describe("Create Recipe Use Case", () => {
     expect(result.value).toBeInstanceOf(NotFoundError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
-  it("should not be able to register recipe without ingredients", async () => {
+  it("should not create to register recipe without ingredients", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -188,7 +188,7 @@ describe("Create Recipe Use Case", () => {
 
       recipeIngredient: [],
 
-      preparationMethod: [
+      recipeStep: [
         {
           step: 1,
           description: "Jogue a farinha no pote",
@@ -200,7 +200,7 @@ describe("Create Recipe Use Case", () => {
     expect(result.value).toBeInstanceOf(RecipeNullError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
-  it("should not be able to register recipe without step", async () => {
+  it("should not create to register recipe without step", async () => {
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -223,7 +223,7 @@ describe("Create Recipe Use Case", () => {
         },
       ],
 
-      preparationMethod: [],
+      recipeStep: [],
     });
 
     expect(result.isError()).toBe(true);

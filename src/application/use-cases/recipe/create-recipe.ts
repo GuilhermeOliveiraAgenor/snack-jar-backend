@@ -1,16 +1,16 @@
 import { Either, failure, success } from "../../../core/either";
 import { Recipe } from "../../../core/entities/recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { PreparationMethodRepository } from "../../repositories/preparation-method-repository";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 
 import { RecipeRepository } from "../../repositories/recipe-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
-import { PreparationMethod } from "../../../core/entities/preparationMethod";
 import { CategoriesRepository } from "../../repositories/categories-repository";
 import { RecipeStatus } from "../../../core/enum/enum-status";
 import { RecipeNullError } from "../../errors/recipe-null-error";
+import { RecipeStep } from "../../../core/entities/recipeStep";
+import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -28,8 +28,8 @@ interface CreateRecipeUseCaseRequest {
     unit: string;
   }[];
 
-  // preparation method list
-  preparationMethod: {
+  // recipe step list
+  recipeStep: {
     step: number;
     description: string;
   }[];
@@ -46,7 +46,7 @@ export class CreateRecipeUseCase {
   constructor(
     private recipeRepository: RecipeRepository,
     private recipeIngredientRepository: RecipeIngredientRepository,
-    private preparationMethodRepository: PreparationMethodRepository,
+    private recipeStepRepository: RecipeStepRepository,
     private categoryRepository: CategoriesRepository,
   ) {}
 
@@ -56,7 +56,7 @@ export class CreateRecipeUseCase {
     preparationTime,
     categoryId,
     recipeIngredient,
-    preparationMethod,
+    recipeStep,
     createdBy,
   }: CreateRecipeUseCaseRequest): Promise<CreateRecipeUseCaseResponse> {
     // verify if exists category
@@ -67,7 +67,7 @@ export class CreateRecipeUseCase {
     }
 
     // verify if lists are null
-    if (recipeIngredient.length === 0 || preparationMethod.length === 0) {
+    if (recipeIngredient.length === 0 || recipeStep.length === 0) {
       return failure(new RecipeNullError("recipe"));
     }
 
@@ -97,9 +97,9 @@ export class CreateRecipeUseCase {
 
     await this.recipeIngredientRepository.createMany(recipeIngredientToCreate);
 
-    // map preparation method created
-    const preparationMethodToCreate = preparationMethod.map((item) =>
-      PreparationMethod.create({
+    // map recipe step created
+    const recipeStepToCreate = recipeStep.map((item) =>
+      RecipeStep.create({
         step: item.step,
         description: item.description,
         recipeId: recipe.id,
@@ -107,7 +107,7 @@ export class CreateRecipeUseCase {
       }),
     );
 
-    await this.preparationMethodRepository.createMany(preparationMethodToCreate);
+    await this.recipeStepRepository.createMany(recipeStepToCreate);
 
     return success({
       recipe,

@@ -13,7 +13,7 @@ describe("Get User By Id", () => {
     sut = new GetUserByIdUseCase(inMemoryUserRepository);
   });
 
-  it("should be able to get user by id", async () => {
+  it("should create to get user by id", async () => {
     const user = User.create({
       name: "João",
       email: "joao@gmail.com",
@@ -33,7 +33,7 @@ describe("Get User By Id", () => {
       });
     }
   });
-  it("should not be able to get user by id", async () => {
+  it("should not create to get user by id", async () => {
     const result = await sut.execute({ id: "0" });
 
     expect(result.isError()).toBe(true);

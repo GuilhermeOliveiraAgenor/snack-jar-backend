@@ -13,7 +13,7 @@ describe("Get User By Email", () => {
     sut = new GetUserByEmailUseCase(inMemoryUserRepository);
   });
 
-  it("should be able to get user by email", async () => {
+  it("should create to get user by email", async () => {
     const user = User.create({
       name: "João",
       email: "joao@gmail.com",
@@ -32,7 +32,7 @@ describe("Get User By Email", () => {
       });
     }
   });
-  it("should not be able to get user by email", async () => {
+  it("should not create to get user by email", async () => {
     const result = await sut.execute({ email: "pedro@gmail.com" });
 
     expect(result.isError()).toBe(true);
