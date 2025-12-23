@@ -5,4 +5,5 @@ export interface RecipeStepRepository {
   create(recipeStep: RecipeStep): Promise<void>;
   save(recipeStep: RecipeStep): Promise<void>;
   delete(recipeStep: RecipeStep): Promise<void>;
+  findManyByRecipeId(id: string): Promise<RecipeStep[]>;
 }

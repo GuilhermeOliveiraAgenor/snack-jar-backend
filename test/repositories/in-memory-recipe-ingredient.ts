@@ -18,4 +18,7 @@ export class InMemoryRecipeIngredientRepository implements RecipeIngredientRepos
     const itemIndex = this.items.filter((item) => item.id === recipeIngredient.id);
     this.items = itemIndex;
   }
+  async findManyByRecipeId(id: string): Promise<RecipeIngredient[]> {
+    throw new Error("Method not implemented.");
+  }
 }

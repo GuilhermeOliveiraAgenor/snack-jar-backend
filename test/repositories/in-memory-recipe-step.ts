@@ -18,4 +18,7 @@ export class InMemoryRecipeStepRepository implements RecipeStepRepository {
     const itemIndex = this.items.filter((item) => item.id === recipeStep.id);
     this.items = itemIndex;
   }
+  async findManyByRecipeId(id: string): Promise<RecipeStep[]> {
+    throw new Error("Method not implemented.");
+  }
 }
