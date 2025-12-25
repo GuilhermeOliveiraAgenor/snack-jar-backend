@@ -5,7 +5,7 @@ export interface RecipeStepProps {
   description: string;
   recipeId: UniqueEntityID;
   createdAt: Date | null;
-  createdBy: UniqueEntityID | null;
+  createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
   deletedAt: Date | null;

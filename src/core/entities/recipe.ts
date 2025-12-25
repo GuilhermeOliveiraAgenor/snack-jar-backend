@@ -5,10 +5,10 @@ export interface RecipeProps {
   title: string;
   description: string;
   preparationTime: number;
-  status: string;
+  status: RecipeStatus;
   categoryId: UniqueEntityID;
   createdAt: Date | null;
-  createdBy: UniqueEntityID | null;
+  createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
   deletedAt: Date | null;
@@ -26,7 +26,7 @@ export class Recipe {
       title: string;
       description: string;
       preparationTime: number;
-      status: RecipeStatus.ACTIVE;
+      status: RecipeStatus;
       categoryId: UniqueEntityID;
       createdBy: UniqueEntityID;
     },
@@ -107,7 +107,7 @@ export class Recipe {
     this.touch();
   }
 
-  set status(status: string) {
+  set status(status: RecipeStatus) {
     this.props.status = status;
     this.touch();
   }
