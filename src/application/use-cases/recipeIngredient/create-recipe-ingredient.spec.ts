@@ -7,6 +7,7 @@ import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-m
 import { Recipe } from "../../../core/entities/recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeStatus } from "../../../core/enum/enum-status";
+import { NotFoundError } from "../../errors/resource-not-found-error";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -61,5 +62,18 @@ describe("Create Recipe Ingredient Use Case", () => {
         unit: "Kg",
       });
     }
+  });
+  it("should not create a recipe ingredient when recipeId does not exist", async () => {
+    const result = await sut.execute({
+      ingredient: "Açucar",
+      amount: "1",
+      unit: "Kg",
+      recipeId: "0",
+      createdBy: "user-1",
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotFoundError);
+    expect(inMemoryRecipeIngredientRepository.items).toHaveLength(0);
   });
 });
