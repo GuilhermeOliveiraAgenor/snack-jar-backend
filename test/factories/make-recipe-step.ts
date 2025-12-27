@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/.";
+import { faker } from "@faker-js/faker";
 import { RecipeStep, RecipeStepProps } from "../../src/core/entities/recipeStep";
 import { UniqueEntityID } from "../../src/core/domain/value-objects/unique-entity-id";
 

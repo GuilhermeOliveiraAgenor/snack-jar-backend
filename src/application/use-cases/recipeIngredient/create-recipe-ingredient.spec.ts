@@ -2,12 +2,10 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { InMemoryRecipeIngredientRepository } from "../../../../test/repositories/in-memory-recipe-ingredient";
 import { CreateRecipeIngredientUseCase } from "./create-recipe-ingredient";
-import { Category } from "../../../core/entities/category";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { Recipe } from "../../../core/entities/recipe";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
-import { RecipeStatus } from "../../../core/enum/enum-status";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { makeCategory } from "../../../../test/factories/make-category";
+import { makeRecipe } from "../../../../test/factories/make-recipe";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -27,21 +25,11 @@ describe("Create Recipe Ingredient Use Case", () => {
     );
   });
   it("should create a recipe ingredient", async () => {
-    const category = Category.create({
-      name: "Salgados",
-      description: "Pratos salgados",
-    });
+    const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
 
-    const recipe = Recipe.create({
-      title: "Bolo de Laranja",
-      description: "Receita de bolo de laranja",
-      preparationTime: 60,
-      status: RecipeStatus.ACTIVE,
-      categoryId: category.id,
-      createdBy: new UniqueEntityID("user-1"),
-    });
+    const recipe = makeRecipe();
 
     await inMemoryRecipeRepository.create(recipe);
 

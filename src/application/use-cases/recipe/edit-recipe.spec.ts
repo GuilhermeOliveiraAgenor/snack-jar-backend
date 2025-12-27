@@ -1,12 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { EditRecipeUseCase } from "./edit-recipe";
-import { Recipe } from "../../../core/entities/recipe";
-import { Category } from "../../../core/entities/category";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
-import { RecipeStatus } from "../../../core/enum/enum-status";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { makeCategory } from "../../../../test/factories/make-category";
+import { makeRecipe } from "../../../../test/factories/make-recipe";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
@@ -21,22 +19,12 @@ describe("Edit Recipe Use Case", () => {
   });
   it("should edit a recipe", async () => {
     // create category
-    const category = Category.create({
-      name: "Salgados",
-      description: "Pratos salgados",
-    });
+    const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
 
     // create recipe
-    const recipe = Recipe.create({
-      title: "Bolo de Cenoura",
-      description: "Receita de bolo de cenoura",
-      preparationTime: 60,
-      status: RecipeStatus.ACTIVE,
-      categoryId: category.id,
-      createdBy: new UniqueEntityID("user-1"),
-    });
+    const recipe = makeRecipe();
 
     // pass to repository
     await inMemoryRecipeRepository.create(recipe);
@@ -62,13 +50,6 @@ describe("Edit Recipe Use Case", () => {
   });
 
   it("should not edit a recipe when recipeId does not exist", async () => {
-    const category = Category.create({
-      name: "Doces",
-      description: "Pratos doces",
-    });
-
-    await inMemoryCategoriesRepository.create(category);
-
     const result = await sut.execute({
       recipeId: "0",
       title: "Bolo de Cenoura",

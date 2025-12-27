@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
-import { User } from "../../../core/entities/user";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { GetUserByIdUseCase } from "../user/get-user-by-id";
+import { makeUser } from "../../../../test/factories/make-user";
 
 let inMemoryUserRepository: InMemoryUserRepository;
 let sut: GetUserByIdUseCase;
@@ -14,10 +14,9 @@ describe("Get User By Id", () => {
   });
 
   it("should return user by id", async () => {
-    const user = User.create({
+    const user = makeUser({
       name: "João",
       email: "joao@gmail.com",
-      password: "joao123",
     });
 
     await inMemoryUserRepository.create(user);

@@ -1,14 +1,12 @@
 import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
-import { Category } from "../../../core/entities/category";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { FetchMyRecipesUseCase } from "./fetch-my-recipes";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { Recipe } from "../../../core/entities/recipe";
-import { RecipeStatus } from "../../../core/enum/enum-status";
-import { User } from "../../../core/entities/user";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { makeCategory } from "../../../../test/factories/make-category";
+import { makeUser } from "../../../../test/factories/make-user";
+import { makeRecipe } from "../../../../test/factories/make-recipe";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -25,36 +23,19 @@ describe("Fetch My Recipes Use Case", () => {
   });
 
   it("should fetch my recipes", async () => {
-    const category = Category.create({
-      name: "Salgados",
-      description: "Pratos salgados",
-    });
+    const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
 
-    const user = User.create({
-      name: "João",
-      email: "joao@gmail.com",
-      password: "joao123",
-    });
+    const user = makeUser();
 
     await inMemoryUserRepository.create(user);
 
-    const recipe1 = Recipe.create({
-      title: "Bolo de Cenoura",
-      description: "Receita de bolo de cenoura",
-      preparationTime: 60,
-      status: RecipeStatus.ACTIVE,
-      categoryId: category.id,
+    const recipe1 = makeRecipe({
       createdBy: user.id,
     });
 
-    const recipe2 = Recipe.create({
-      title: "Bolo de Chocolate",
-      description: "Receita de bolo de chocolate",
-      preparationTime: 60,
-      status: RecipeStatus.ACTIVE,
-      categoryId: category.id,
+    const recipe2 = makeRecipe({
       createdBy: user.id,
     });
 
@@ -77,21 +58,11 @@ describe("Fetch My Recipes Use Case", () => {
   });
 
   it("should not fetch recipes when userId does not exist", async () => {
-    const category = Category.create({
-      name: "Doces",
-      description: "Pratos doces",
-    });
+    const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
 
-    const recipe1 = Recipe.create({
-      title: "Bolo de Cenoura",
-      description: "Receita de bolo de cenoura",
-      preparationTime: 60,
-      status: RecipeStatus.ACTIVE,
-      categoryId: category.id,
-      createdBy: new UniqueEntityID("user-1"),
-    });
+    const recipe1 = makeRecipe();
 
     await inMemoryRecipeRepository.create(recipe1);
 

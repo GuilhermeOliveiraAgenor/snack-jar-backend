@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { DeleteRecipeUseCase } from "./delete-recipe";
-import { Category } from "../../../core/entities/category";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { Recipe } from "../../../core/entities/recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeStatus } from "../../../core/enum/enum-status";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { makeCategory } from "../../../../test/factories/make-category";
+import { makeRecipe } from "../../../../test/factories/make-recipe";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
@@ -20,21 +20,11 @@ describe("Soft delete Recipe Use Case", () => {
   });
 
   it("should soft delete a recipe", async () => {
-    const category = Category.create({
-      name: "Salgados",
-      description: "Pratos salgados",
-    });
+    const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
 
-    const recipe = Recipe.create({
-      title: "Bolo de Chocolate",
-      description: "Receita de bolo de chocolate",
-      preparationTime: 50,
-      status: RecipeStatus.ACTIVE,
-      categoryId: category.id,
-      createdBy: new UniqueEntityID("user-1"),
-    });
+    const recipe = makeRecipe();
 
     await inMemoryRecipeRepository.create(recipe);
 

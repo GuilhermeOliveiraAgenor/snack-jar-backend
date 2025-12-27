@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { FetchCategoriesUseCase } from "./fetch-categories";
 import { beforeEach } from "vitest";
-import { Category } from "../../../core/entities/category";
+import { makeCategory } from "../../../../test/factories/make-category";
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: FetchCategoriesUseCase;
@@ -16,14 +16,8 @@ describe("Fetch categories", () => {
   it("should list all categories", async () => {
     // create categories
 
-    const category1 = Category.create({
-      name: "Salgado",
-      description: "Pratos salgados",
-    });
-    const category2 = Category.create({
-      name: "Prato doce",
-      description: "Prato",
-    });
+    const category1 = makeCategory();
+    const category2 = makeCategory();
 
     await inMemoryCategoriesRepository.create(category1);
     await inMemoryCategoriesRepository.create(category2);

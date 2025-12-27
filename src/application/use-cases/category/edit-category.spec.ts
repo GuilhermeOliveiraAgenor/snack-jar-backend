@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { Category } from "../../../core/entities/category";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { EditCategoryUseCase } from "../category/edit-category";
+import { makeCategory } from "../../../../test/factories/make-category";
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: EditCategoryUseCase;
@@ -16,10 +16,7 @@ describe("Edit Category Use Case", () => {
 
   it("should update category", async () => {
     // create category
-    const category = Category.create({
-      name: "Doces",
-      description: "Pratos doces",
-    });
+    const category = makeCategory();
 
     // pass to repository
     await inMemoryCategoriesRepository.create(category);

@@ -7,6 +7,7 @@ import { Category } from "../../../core/entities/category";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { InMemoryRecipeStepRepository } from "../../../../test/repositories/in-memory-recipe-step";
+import { makeCategory } from "../../../../test/factories/make-category";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
@@ -29,10 +30,7 @@ describe("Create Recipe Use Case", () => {
   });
 
   it("should create a recipe", async () => {
-    const category = Category.create({
-      name: "Salgados",
-      description: "Pratos salgados",
-    });
+    const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
 

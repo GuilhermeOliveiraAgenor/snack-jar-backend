@@ -1,8 +1,8 @@
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { Category } from "../../../core/entities/category";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { describe, it, expect, beforeEach } from "vitest";
 import { CreateCategoryUseCase } from "./create-category";
+import { makeCategory } from "../../../../test/factories/make-category";
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: CreateCategoryUseCase;
@@ -29,9 +29,8 @@ describe("Category Use Case", () => {
   });
 
   it("should not create a category when name already exists", async () => {
-    const category1 = Category.create({
+    const category1 = makeCategory({
       name: "Salgados",
-      description: "Pratos salgados",
     });
 
     await inMemoryCategoriesRepository.create(category1);

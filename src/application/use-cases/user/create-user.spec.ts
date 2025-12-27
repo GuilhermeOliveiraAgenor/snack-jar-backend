@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { CreateUserUseCase } from "../user/create-user";
 import { FakeHashProvider } from "../../../../test/cryptography/fake-hash-provider";
-import { User } from "../../../core/entities/user";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { makeUser } from "../../../../test/factories/make-user";
 
 let inMemoryUserRepository = new InMemoryUserRepository();
 let hashProvider: FakeHashProvider;
@@ -33,7 +33,7 @@ describe("Create User Use Case", () => {
   });
 
   it("should not create a user when name already exists", async () => {
-    const user = User.create({
+    const user = makeUser({
       name: "João",
       email: "joao@gmail.com",
       password: "joao123",

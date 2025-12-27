@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { GetUserByEmailUseCase } from "./get-user-by-email";
-import { User } from "../../../core/entities/user";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { makeUser } from "../../../../test/factories/make-user";
 
 let inMemoryUserRepository: InMemoryUserRepository;
 let sut: GetUserByEmailUseCase;
@@ -14,10 +14,8 @@ describe("Get User By Email", () => {
   });
 
   it("should return a user by email", async () => {
-    const user = User.create({
-      name: "João",
+    const user = makeUser({
       email: "joao@gmail.com",
-      password: "joao123",
     });
 
     await inMemoryUserRepository.create(user);
