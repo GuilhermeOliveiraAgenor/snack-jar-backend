@@ -76,14 +76,17 @@ export class RecipeIngredient {
 
   set ingredient(ingredient: string) {
     this.props.ingredient = ingredient;
+    this.touch();
   }
 
   set amount(amount: string) {
     this.props.amount = amount;
+    this.touch();
   }
 
   set unit(unit: string) {
     this.props.unit = unit;
+    this.touch();
   }
 
   set createdAt(createdAt: Date) {

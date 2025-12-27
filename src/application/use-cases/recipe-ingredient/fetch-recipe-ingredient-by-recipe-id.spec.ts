@@ -22,7 +22,7 @@ describe("Fetch Recipe Ingredients By Recipe Id", () => {
     );
   });
 
-  it("should fetch recipe ingredients by recipe id", async () => {
+  it("should be able to fetch recipe ingredients by recipe id", async () => {
     const recipe = makeRecipe();
 
     await inMemoryRecipeRepository.create(recipe);
@@ -45,7 +45,7 @@ describe("Fetch Recipe Ingredients By Recipe Id", () => {
       ).toBe(true);
     }
   });
-  it("should not fetch recipe ingredientes when recipe id does not exists", async () => {
+  it("should not be able to fetch recipe ingredientes when recipe id does not exists", async () => {
     const result = await sut.execute({ id: "0" });
 
     expect(result.isError()).toBe(true);

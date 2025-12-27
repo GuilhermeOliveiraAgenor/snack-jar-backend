@@ -1,3 +1,4 @@
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { Either, failure, success } from "../../../core/either";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { NotFoundError } from "../../errors/resource-not-found-error";
@@ -8,6 +9,7 @@ interface EditRecipeIngredientUseCaseRequest {
   ingredient: RecipeIngredient["ingredient"];
   amount: RecipeIngredient["amount"];
   unit: RecipeIngredient["unit"];
+  updatedBy: string;
 }
 
 type EditRecipeIngredientUseCaseResponse = Either<
@@ -25,6 +27,7 @@ export class EditRecipeIngredientUseCase {
     ingredient,
     amount,
     unit,
+    updatedBy,
   }: EditRecipeIngredientUseCaseRequest): Promise<EditRecipeIngredientUseCaseResponse> {
     // verify if recipe exists
 
@@ -37,6 +40,7 @@ export class EditRecipeIngredientUseCase {
     recipeIngredient.ingredient = ingredient ?? recipeIngredient.ingredient;
     recipeIngredient.amount = amount ?? recipeIngredient.amount;
     recipeIngredient.unit = unit ?? recipeIngredient.unit;
+    recipeIngredient.updatedBy = new UniqueEntityID(updatedBy);
 
     await this.recipeIngredientRepository.save(recipeIngredient);
 

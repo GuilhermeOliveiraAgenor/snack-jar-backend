@@ -19,7 +19,7 @@ describe("Soft delete Recipe Use Case", () => {
     sut = new DeleteRecipeUseCase(inMemoryRecipeRepository);
   });
 
-  it("should soft delete a recipe", async () => {
+  it("should be able to soft delete a recipe", async () => {
     const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
@@ -38,7 +38,7 @@ describe("Soft delete Recipe Use Case", () => {
       });
     }
   });
-  it("should not delete a recipe when recipeId does not exist", async () => {
+  it("should not be able to delete a recipe when recipeId does not exist", async () => {
     const result = await sut.execute({ id: "0", deletedBy: "user-1" });
 
     expect(result.isError()).toBe(true);

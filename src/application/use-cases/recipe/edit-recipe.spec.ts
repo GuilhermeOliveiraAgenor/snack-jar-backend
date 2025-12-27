@@ -13,7 +13,7 @@ describe("Edit Recipe Use Case", () => {
 
     sut = new EditRecipeUseCase(inMemoryRecipeRepository);
   });
-  it("should edit a recipe", async () => {
+  it("should be able to edit a recipe", async () => {
     // create recipe
     const recipe = makeRecipe();
 
@@ -40,7 +40,7 @@ describe("Edit Recipe Use Case", () => {
     }
   });
 
-  it("should not edit a recipe when recipeId does not exist", async () => {
+  it("should not be able to edit a recipe when recipeId does not exist", async () => {
     const result = await sut.execute({
       recipeId: "0",
       title: "Bolo de Cenoura",

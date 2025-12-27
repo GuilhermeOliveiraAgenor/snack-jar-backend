@@ -14,7 +14,7 @@ describe("Edit Category Use Case", () => {
     sut = new EditCategoryUseCase(inMemoryCategoriesRepository); // use case receive repository
   });
 
-  it("should update category", async () => {
+  it("should be able to update category", async () => {
     // create category
     const category = makeCategory();
 
@@ -37,7 +37,7 @@ describe("Edit Category Use Case", () => {
     }
   });
 
-  it("should not update a category when id does not exist", async () => {
+  it("should not be able to update a category when id does not exist", async () => {
     const result = await sut.execute({
       id: new UniqueEntityID("0"),
       name: "Prato doce",

@@ -16,7 +16,7 @@ describe("Create User Use Case", () => {
     sut = new CreateUserUseCase(inMemoryUserRepository, hashProvider);
   });
 
-  it("should create a user", async () => {
+  it("should be able to create a user", async () => {
     const result = await sut.execute({
       name: "João",
       email: "joao@gmail.com",
@@ -32,7 +32,7 @@ describe("Create User Use Case", () => {
     }
   });
 
-  it("should not create a user when name already exists", async () => {
+  it("should not be able to create a user when name already exists", async () => {
     const user = makeUser({
       name: "João",
       email: "joao@gmail.com",

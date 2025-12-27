@@ -20,7 +20,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       inMemoryRecipeRepository,
     );
   });
-  it("should create a recipe ingredient", async () => {
+  it("should be able to create a recipe ingredient", async () => {
     const recipe = makeRecipe();
 
     await inMemoryRecipeRepository.create(recipe);
@@ -43,7 +43,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       });
     }
   });
-  it("should not create a recipe ingredient when recipeId does not exist", async () => {
+  it("should not be able to create a recipe ingredient when recipeId does not exist", async () => {
     const result = await sut.execute({
       ingredient: "Açucar",
       amount: "1",

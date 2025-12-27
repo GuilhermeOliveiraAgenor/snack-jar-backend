@@ -91,7 +91,7 @@ export class CreateRecipeUseCase {
         amount: item.amount,
         unit: item.unit,
         recipeId: recipe.id,
-        createdBy: recipe.createdBy,
+        createdBy: new UniqueEntityID(recipe.createdBy?.toString()),
       }),
     );
 

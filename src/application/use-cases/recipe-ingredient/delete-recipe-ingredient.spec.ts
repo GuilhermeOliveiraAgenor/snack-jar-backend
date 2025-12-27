@@ -18,7 +18,7 @@ describe("Delete Recipe Ingredient", () => {
 
     sut = new DeleteRecipeIngredientUseCase(inMemoryRecipeIngredientRepository);
   });
-  it("should delete a recipe ingredient", async () => {
+  it("should be able to delete a recipe ingredient", async () => {
     const user = makeUser();
 
     await inMemoryUserRepository.create(user);
@@ -35,7 +35,7 @@ describe("Delete Recipe Ingredient", () => {
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryRecipeIngredientRepository.items).toHaveLength(0);
   });
-  it("should not edit recipe ingredient when id does not exists", async () => {
+  it("should not be able to edit recipe ingredient when id does not exists", async () => {
     const user = makeUser();
 
     const result = await sut.execute({

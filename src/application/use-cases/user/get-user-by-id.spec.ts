@@ -13,7 +13,7 @@ describe("Get User By Id", () => {
     sut = new GetUserByIdUseCase(inMemoryUserRepository);
   });
 
-  it("should return user by id", async () => {
+  it("should be able to get user by id", async () => {
     const user = makeUser({
       name: "João",
       email: "joao@gmail.com",
@@ -32,7 +32,7 @@ describe("Get User By Id", () => {
       });
     }
   });
-  it("should not return a user when id does not exist", async () => {
+  it("should not be able to get a user when id does not exist", async () => {
     const result = await sut.execute({ id: "0" });
 
     expect(result.isError()).toBe(true);

@@ -68,6 +68,16 @@ export class RecipeStep {
     return this.props.updatedAt;
   }
 
+  set step(step: number) {
+    this.props.step = step;
+    this.touch();
+  }
+
+  set description(description: string) {
+    this.props.description = description;
+    this.touch();
+  }
+
   set createdAt(createdAt: Date) {
     this.props.createdAt = createdAt;
     this.touch();

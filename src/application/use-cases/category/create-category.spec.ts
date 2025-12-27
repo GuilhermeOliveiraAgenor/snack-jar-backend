@@ -12,7 +12,7 @@ describe("Category Use Case", () => {
     inMemoryCategoriesRepository = new InMemoryCategoriesRepository(); // define repository
     sut = new CreateCategoryUseCase(inMemoryCategoriesRepository); // use case receive repository
   });
-  it("should create a category", async () => {
+  it("should be able to create a category", async () => {
     const result = await sut.execute({
       name: "Salgados",
       description: "Pratos salgados",
@@ -28,7 +28,7 @@ describe("Category Use Case", () => {
     }
   });
 
-  it("should not create a category when name already exists", async () => {
+  it("should not be able to create a category when name already exists", async () => {
     const category1 = makeCategory({
       name: "Salgados",
     });

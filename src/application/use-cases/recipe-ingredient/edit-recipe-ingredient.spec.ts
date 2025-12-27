@@ -3,6 +3,7 @@ import { InMemoryRecipeIngredientRepository } from "../../../../test/repositorie
 import { EditRecipeIngredientUseCase } from "./edit-recipe-ingredient";
 import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { makeUser } from "../../../../test/factories/make-user";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let sut: EditRecipeIngredientUseCase;
@@ -12,7 +13,9 @@ describe("Edit Recipe Ingredient", () => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     sut = new EditRecipeIngredientUseCase(inMemoryRecipeIngredientRepository);
   });
-  it("should edit a recipe ingredient", async () => {
+  it("should be able edit a recipe ingredient", async () => {
+    const user = makeUser();
+
     const recipeIngredient = makeRecipeIngredient();
 
     await inMemoryRecipeIngredientRepository.create(recipeIngredient);
@@ -22,6 +25,7 @@ describe("Edit Recipe Ingredient", () => {
       ingredient: "Farinha",
       amount: "1000",
       unit: "G",
+      updatedBy: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -34,12 +38,15 @@ describe("Edit Recipe Ingredient", () => {
       });
     }
   });
-  it("should not edit recipe ingredient when id does not exists", async () => {
+  it("should not be able to edit recipe ingredient when id does not exists", async () => {
+    const user = makeUser();
+
     const result = await sut.execute({
       id: "0",
       ingredient: "Farinha",
       amount: "1000",
       unit: "G",
+      updatedBy: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);

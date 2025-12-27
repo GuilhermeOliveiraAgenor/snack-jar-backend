@@ -22,7 +22,7 @@ describe("Fetch My Recipes Use Case", () => {
     sut = new FetchMyRecipesUseCase(inMemoryRecipeRepository, inMemoryUserRepository);
   });
 
-  it("should fetch my recipes", async () => {
+  it("should be able to fetch my recipes", async () => {
     const user = makeUser();
 
     await inMemoryUserRepository.create(user);
@@ -53,7 +53,7 @@ describe("Fetch My Recipes Use Case", () => {
     }
   });
 
-  it("should not fetch recipes when userId does not exist", async () => {
+  it("should not be able to fetch recipes when userId does not exist", async () => {
     const category = makeCategory();
 
     await inMemoryCategoriesRepository.create(category);
