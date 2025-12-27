@@ -1,8 +1,7 @@
-import { Either } from "../../../core/either";
+import { Either, failure, success } from "../../../core/either";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
-import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface EditRecipeIngredientUseCaseRequest {
   id: string;
@@ -19,9 +18,7 @@ type EditRecipeIngredientUseCaseResponse = Either<
 >;
 
 export class EditRecipeIngredientUseCase {
-  constructor(
-    private recipeIngredientRepository: RecipeIngredientRepository,
-  ) {}
+  constructor(private recipeIngredientRepository: RecipeIngredientRepository) {}
 
   async execute({
     id,
@@ -29,9 +26,22 @@ export class EditRecipeIngredientUseCase {
     amount,
     unit,
   }: EditRecipeIngredientUseCaseRequest): Promise<EditRecipeIngredientUseCaseResponse> {
+    // verify if recipe exists
 
-    const recipe = await this.recipeIngredientRepository.findManyByRecipeId
+    const recipeIngredient = await this.recipeIngredientRepository.findById(id);
 
+    if (!recipeIngredient) {
+      return failure(new NotFoundError("recipe-ingredient"));
+    }
 
+    recipeIngredient.ingredient = ingredient ?? recipeIngredient.ingredient;
+    recipeIngredient.amount = amount ?? recipeIngredient.amount;
+    recipeIngredient.unit = unit ?? recipeIngredient.unit;
+
+    await this.recipeIngredientRepository.save(recipeIngredient);
+
+    return success({
+      recipeIngredient,
+    });
   }
 }

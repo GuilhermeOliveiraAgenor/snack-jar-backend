@@ -15,7 +15,7 @@ export interface RecipeIngredientProps {
 
 export class RecipeIngredient {
   constructor(
-    private readonly _id: UniqueEntityID,
+    private _id: UniqueEntityID,
     private props: RecipeIngredientProps,
   ) {}
 
@@ -72,6 +72,18 @@ export class RecipeIngredient {
 
   get deletedAt(): Date | null {
     return this.props.updatedAt;
+  }
+
+  set ingredient(ingredient: string) {
+    this.props.ingredient = ingredient;
+  }
+
+  set amount(amount: string) {
+    this.props.amount = amount;
+  }
+
+  set unit(unit: string) {
+    this.props.unit = unit;
   }
 
   set createdAt(createdAt: Date) {

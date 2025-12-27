@@ -2,14 +2,11 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { InMemoryRecipeIngredientRepository } from "../../../../test/repositories/in-memory-recipe-ingredient";
 import { CreateRecipeIngredientUseCase } from "./create-recipe-ingredient";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { makeCategory } from "../../../../test/factories/make-category";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 
 let sut: CreateRecipeIngredientUseCase;
 
@@ -17,7 +14,6 @@ describe("Create Recipe Ingredient Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
 
     sut = new CreateRecipeIngredientUseCase(
       inMemoryRecipeIngredientRepository,
@@ -25,10 +21,6 @@ describe("Create Recipe Ingredient Use Case", () => {
     );
   });
   it("should create a recipe ingredient", async () => {
-    const category = makeCategory();
-
-    await inMemoryCategoriesRepository.create(category);
-
     const recipe = makeRecipe();
 
     await inMemoryRecipeRepository.create(recipe);

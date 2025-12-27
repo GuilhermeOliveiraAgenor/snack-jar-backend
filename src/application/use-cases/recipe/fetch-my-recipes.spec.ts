@@ -23,10 +23,6 @@ describe("Fetch My Recipes Use Case", () => {
   });
 
   it("should fetch my recipes", async () => {
-    const category = makeCategory();
-
-    await inMemoryCategoriesRepository.create(category);
-
     const user = makeUser();
 
     await inMemoryUserRepository.create(user);

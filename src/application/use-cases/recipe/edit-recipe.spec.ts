@@ -1,28 +1,19 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { EditRecipeUseCase } from "./edit-recipe";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { makeCategory } from "../../../../test/factories/make-category";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
 let sut: EditRecipeUseCase;
 
 describe("Edit Recipe Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
 
     sut = new EditRecipeUseCase(inMemoryRecipeRepository);
   });
   it("should edit a recipe", async () => {
-    // create category
-    const category = makeCategory();
-
-    await inMemoryCategoriesRepository.create(category);
-
     // create recipe
     const recipe = makeRecipe();
 
