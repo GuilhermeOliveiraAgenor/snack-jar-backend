@@ -15,8 +15,8 @@ export class InMemoryRecipeIngredientRepository implements RecipeIngredientRepos
     this.items[itemIndex] = recipeIngredient;
   }
   async delete(recipeIngredient: RecipeIngredient): Promise<void> {
-    const itemIndex = this.items.filter((item) => item.id === recipeIngredient.id);
-    this.items = itemIndex;
+    const index = this.items.findIndex((f) => f.id.toString() === recipeIngredient.id.toString());
+    if (index >= 0) this.items.splice(index, 1);
   }
   async findManyByRecipeId(id: string): Promise<RecipeIngredient[]> {
     const recipeIngredient = this.items.filter(
