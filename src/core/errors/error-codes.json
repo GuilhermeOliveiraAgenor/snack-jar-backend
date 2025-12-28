@@ -15,5 +15,8 @@
     },
     "recipe-null":{
         "recipe": "RECIPE_CANT_BE_NULL"
+    },
+    "invalidCredentials":{
+            "user":"Email or password are invalid"
     }
 }
