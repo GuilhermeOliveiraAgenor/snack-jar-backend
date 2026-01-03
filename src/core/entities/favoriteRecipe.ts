@@ -11,12 +11,19 @@ export class FavoriteRecipe {
   constructor(
     private readonly _id: UniqueEntityID,
     private props: FavoriteRecipeProps,
-  ) {
-    this.props = {
+  ) {}
+
+  static create(props: { recipeId: UniqueEntityID; userId: UniqueEntityID }, id?: UniqueEntityID) {
+    const favoriteRecipe = new FavoriteRecipe(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: props.createdAt ?? new Date(),
-      deletedAt: props.deletedAt ?? null,
-    };
+      createdAt: new Date(),
+      deletedAt: null,
+    });
+    return favoriteRecipe;
+  }
+
+  get id() {
+    return this._id;
   }
 
   get recipeId() {

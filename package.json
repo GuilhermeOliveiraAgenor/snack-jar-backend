@@ -39,10 +39,12 @@
     "vitest": "4.0.15"
   },
   "dependencies": {
+    "@prisma/client": "6.19.1",
     "bcrypt": "6.0.0",
     "dotenv": "17.2.3",
     "faker": "6.6.6",
     "fastify": "5.6.1",
+    "prisma": "6.19.1",
     "ramda": "0.32.0",
     "tsup": "8.5.0",
     "zod": "4.1.12"

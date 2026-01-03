@@ -1,0 +1,133 @@
+
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
+
+  model Category{
+    id              String  @id @default(uuid())
+    name            String
+    description     String  @unique
+    
+    recipes Recipe[]
+
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
+
+    @@map("categories")
+  }
+
+
+  model User{
+    id            String  @id @default(uuid())
+    name          String
+    email         String  @unique
+    password      String
+
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+
+    favoriteRecipe FavoriteRecipe[]
+
+    @@map("users")
+  }
+
+  model Recipe{
+    id  String @id @default(uuid())
+    title String
+    description String
+    preparationTime Int
+    status String
+
+    categoryId String @map("category_id")
+    category Category @relation(fields: [categoryId], references: [id] )
+
+    createdBy String  @map("created_by")
+    updatedBy String? @map("updated_by")
+    deletedBy String? @map("deleted_by")
+    
+    recipeIngredient RecipeIngredient[]
+    recipeStep RecipeStep[]
+    favoriteRecipe FavoriteRecipe[]
+
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
+
+    @@index([status])
+    @@index([categoryId])
+    @@index([createdBy])
+    @@index([updatedBy])
+    @@index([deletedBy])
+
+    @@map("recipes")
+
+  }
+
+  model RecipeIngredient{
+    id String @id @default(uuid())
+    ingredient String
+    amount String
+    unit String
+
+    recipeId String @map("recipe_id")
+    recipe Recipe @relation(fields:[recipeId], references:[id])
+
+    createdBy String  @map("created_by")
+    updatedBy String? @map("updated_by")
+    deletedBy String? @map("deleted_by")
+
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
+
+    @@index([recipeId])
+
+  }
+
+  model RecipeStep{
+    id String @id @default(uuid())
+    step Int
+    description String
+
+    recipeId String @map("recipe_id")
+    recipe Recipe @relation(fields:[recipeId], references:[id])
+
+    createdBy String  @map("created_by")
+    updatedBy String? @map("updated_by")
+    deletedBy String? @map("deleted_by")
+
+    createdAt DateTime? @default(now()) @map("created_at")
+    updatedAt DateTime? @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
+
+    @@index([recipeId])
+
+  }
+
+model FavoriteRecipe{
+  id String @id @default(uuid())
+
+  recipeId String @map("recipe_id")
+  recipe Recipe @relation(fields:[recipeId], references:[id])
+
+  userId String @map("userId")
+  user User @relation(fields:[userId], references:[id])
+
+  createdAt DateTime?  @default(now()) @map("created_at")
+  updatedAt DateTime?  @updatedAt      @map("updated_at")
+  deletedAt DateTime?                 @map("deleted_at")
+
+  @@index([recipeId])
+  @@index([userId])
+
+}
+
+
+
+
