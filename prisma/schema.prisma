@@ -10,13 +10,14 @@
 
   model Category{
     id              String  @id @default(uuid())
+    name            String
     description     String  @unique
     
     recipes Recipe[]
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt      @map("updated_at")
-    deletedAt DateTime?                @map("deleted_at")
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
 
     @@map("categories")
   }
@@ -28,8 +29,8 @@
     email         String  @unique
     password      String
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt      @map("updated_at")
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
 
     favoriteRecipe FavoriteRecipe[]
 
@@ -54,9 +55,9 @@
     recipeStep RecipeStep[]
     favoriteRecipe FavoriteRecipe[]
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt      @map("updated_at")
-    deletedAt DateTime?                @map("deleted_at")
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
 
     @@index([status])
     @@index([categoryId])
@@ -81,9 +82,9 @@
     updatedBy String @map("updated_by")
     deletedBy String @map("deleted_by")
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt      @map("updated_at")
-    deletedAt DateTime?                @map("deleted_at")
+    createdAt DateTime?  @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
 
     @@index([recipeId])
 
@@ -101,9 +102,9 @@
     updatedBy String @map("updated_by")
     deletedBy String @map("deleted_by")
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt      @map("updated_at")
-    deletedAt DateTime?                @map("deleted_at")
+    createdAt DateTime? @default(now()) @map("created_at")
+    updatedAt DateTime? @updatedAt      @map("updated_at")
+    deletedAt DateTime?                 @map("deleted_at")
 
     @@index([recipeId])
 
@@ -118,9 +119,9 @@ model FavoriteRecipe{
   userId String @map("userId")
   user User @relation(fields:[userId], references:[id])
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt      @map("updated_at")
-  deletedAt DateTime?                @map("deleted_at")
+  createdAt DateTime?  @default(now()) @map("created_at")
+  updatedAt DateTime?  @updatedAt      @map("updated_at")
+  deletedAt DateTime?                 @map("deleted_at")
 
   @@index([recipeId])
   @@index([userId])
