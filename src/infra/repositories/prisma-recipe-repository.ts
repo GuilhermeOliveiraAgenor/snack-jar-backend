@@ -5,6 +5,7 @@ import { PrismaRecipeMapper } from "../mappers/prisma-recipe-mapper";
 
 export class PrismaRecipeRepository implements RecipeRepository {
   constructor(private readonly prisma: PrismaClient) {}
+
   async create(recipe: Recipe): Promise<void> {
     await this.prisma.recipe.create({
       data: PrismaRecipeMapper.toPersistency(recipe),
@@ -28,5 +29,17 @@ export class PrismaRecipeRepository implements RecipeRepository {
     });
     if (!recipe) return null;
     return PrismaRecipeMapper.toDomain(recipe);
+  }
+  async findManyByTitle(title: string, userId: string): Promise<Recipe[]> {
+    const recipes = await this.prisma.recipe.findMany({
+      where: {
+        createdBy: userId,
+        title: {
+          contains: title,
+          mode: "insensitive",
+        },
+      },
+    });
+    return recipes.map(PrismaRecipeMapper.toDomain);
   }
 }
