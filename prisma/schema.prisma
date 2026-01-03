@@ -31,6 +31,7 @@
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt      @map("updated_at")
 
+    favoriteRecipe FavoriteRecipe[]
 
     @@map("users")
   }
@@ -51,6 +52,7 @@
     
     recipeIngredient RecipeIngredient[]
     recipeStep RecipeStep[]
+    favoriteRecipe FavoriteRecipe[]
 
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt      @map("updated_at")
@@ -107,6 +109,23 @@
 
   }
 
+model FavoriteRecipe{
+  id String @id @default(uuid())
+
+  recipeId String @map("recipe_id")
+  recipe Recipe @relation(fields:[recipeId], references:[id])
+
+  userId String @map("userId")
+  user User @relation(fields:[userId], references:[id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+  deletedAt DateTime?                @map("deleted_at")
+
+  @@index([recipeId])
+  @@index([userId])
+
+}
 
 
 
