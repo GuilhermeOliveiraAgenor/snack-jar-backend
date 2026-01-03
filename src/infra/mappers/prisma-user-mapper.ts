@@ -13,7 +13,7 @@ export class PrismaUserMapper {
       new UniqueEntityID(raw.id),
     );
   }
-  static toPrisma(user: User): Prisma.UserUncheckedCreateInput {
+  static toPersistency(user: User): Prisma.UserUncheckedCreateInput {
     return {
       id: user.id.toString(),
       name: user.name,

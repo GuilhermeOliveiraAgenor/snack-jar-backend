@@ -13,7 +13,7 @@ export class PrismaCategoryMapper {
       new UniqueEntityID(raw.id),
     );
   }
-  static toPrisma(category: Category): Prisma.CategoryUncheckedCreateInput {
+  static toPersistency(category: Category): Prisma.CategoryUncheckedCreateInput {
     return {
       id: category.id.toString(),
       name: category.name,

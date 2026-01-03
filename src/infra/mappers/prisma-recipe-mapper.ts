@@ -1,7 +1,7 @@
 import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id";
-import { Recipe } from "../../core/entities/recipe";
-import { Prisma, Recipe as PrismaRecipe, User } from "@prisma/client";
+import { Prisma, Recipe as PrismaRecipe } from "@prisma/client";
 import { RecipeStatus } from "../../core/enum/enum-status";
+import { Recipe } from "../../core/entities/recipe";
 
 export class PrismaRecipeMapper {
   static toDomain(raw: PrismaRecipe): Recipe {
@@ -17,14 +17,16 @@ export class PrismaRecipeMapper {
       new UniqueEntityID(raw.id),
     );
   }
-  static toPrisma(user: User): Prisma.UserUncheckedCreateInput {
+  static toPersistency(raw: Recipe): Prisma.RecipeUncheckedCreateInput {
     return {
-      id: user.id.toString(),
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      title: raw.title,
+      description: raw.description,
+      preparationTime: 0,
+      status: raw.status,
+      categoryId: raw.categoryId.toString(),
+      createdBy: raw.createdBy.toString(),
+      updatedBy: raw.updatedBy ? raw.updatedBy.toString() : null,
+      deletedBy: raw.deletedBy ? raw.deletedBy.toString() : null,
     };
   }
 }
