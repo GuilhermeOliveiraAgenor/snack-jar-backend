@@ -2,7 +2,7 @@ import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id
 import { Prisma, RecipeStep as PrismaRecipeStep } from "@prisma/client";
 import { RecipeStep } from "../../core/entities/recipeStep";
 
-export class PrismaRecipeStepStepMapper {
+export class PrismaRecipeStepMapper {
   static toDomain(raw: PrismaRecipeStep): RecipeStep {
     return RecipeStep.create(
       {
