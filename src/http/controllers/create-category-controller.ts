@@ -18,9 +18,13 @@ export class CreateCategoryController {
       const { name, description } = createCategorySchema.parse(req.body);
 
       // use case
-      const category = await this.createCategoryUseCase.execute({ name, description });
+      const result = await this.createCategoryUseCase.execute({ name, description });
 
-      return res.status(201).json(category);
+      if(result.isError()){
+        throw result.value;
+      }
+
+      return res.status(201).json(result);
     } catch (error) {
       next(error);
     }

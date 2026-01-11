@@ -1,7 +1,7 @@
 import { CreateCategoryUseCase } from "../../application/use-cases/category/create-category";
 import { prisma } from "../../infra/prisma/client";
 import { PrismaCategoryRepository } from "../../infra/repositories/prisma-category-repository";
-import { CreateCategoryController } from "../controllers/create-user-controller";
+import { CreateCategoryController } from "../controllers/create-category-controller";
 
 export function makeCreateCategoryController(){
     // create use case

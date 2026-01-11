@@ -1,5 +1,6 @@
-import { NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { BaseError } from "../../core/errors/base-error";
+import { InternalServerError } from "../../application/errors/internal-server-error";
 
 
 function normalizeError(err: unknown): BaseError{
@@ -8,7 +9,7 @@ function normalizeError(err: unknown): BaseError{
         return err
     }
     // default server error
-    return new InternalServerError(err)
+    return new InternalServerError()
 }
 
 export function errorHandler(
@@ -17,12 +18,12 @@ export function errorHandler(
     res: Response,
     next: NextFunction
 ){
-    if(res.headers){
+    if(res.headersSent){
         next(err)
     }
     
     const error = normalizeError(err)
-    const statusCode = error.errorCode
+    const statusCode = error.statusCode
     const body = error.getBody()
 
     return res.status(statusCode).json(body)
