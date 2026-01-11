@@ -18,5 +18,6 @@
     },
     "invalidCredentials":{
             "user":"Email or password are invalid"
-    }
+    },
+    "internalServer": "INTERNAL_SERVER_ERROR"
 }
