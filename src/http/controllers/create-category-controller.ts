@@ -20,12 +20,13 @@ export class CreateCategoryController {
       // use case
       const result = await this.createCategoryUseCase.execute({ name, description });
 
-      if(result.isError()){
+      if (result.isError()) {
         throw result.value;
       }
 
       return res.status(201).json(result);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
