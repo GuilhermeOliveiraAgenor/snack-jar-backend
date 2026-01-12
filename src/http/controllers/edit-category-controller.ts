@@ -2,10 +2,11 @@ import { NextFunction, Response, Request } from "express";
 import { EditCategoryUseCase } from "../../application/use-cases/category/edit-category";
 import { z } from "zod"
 
+// zod validation id
 const paramsSchema = z.object({
     id: z.string(),
 })
-
+// zod validation body
 const editCategorySchema = z.object({
     name: z.string(),
     description: z.string().optional()
@@ -16,7 +17,7 @@ export class EditCategoryController{
     
     async handle(req: Request, res: Response, next: NextFunction){
         try {
-            
+            // params and fields json
             const { id } = paramsSchema.parse(req.params)
             const { name, description } = editCategorySchema.parse(req.body)
 
@@ -26,7 +27,7 @@ export class EditCategoryController{
                 throw result.value
             }
         
-        return res.status(200).json(result)
+        return res.status(200).json({result})
         } catch (error) {
             next(error)
         }
