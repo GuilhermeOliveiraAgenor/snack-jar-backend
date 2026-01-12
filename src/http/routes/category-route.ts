@@ -10,7 +10,7 @@ categoryRoutes.post("/categories", (req, res, next) => {
   return makeCreateCategoryController().handle(req, res, next);
 });
 
-categoryRoutes.put("/categories", (req,res,next) => {
+categoryRoutes.put("/categories/:id", (req,res,next) => {
   return makeEditCategoryController().handle(req,res,next)
 })
 

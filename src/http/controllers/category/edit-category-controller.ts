@@ -9,7 +9,7 @@ const paramsSchema = z.object({
 // zod validation body
 const editCategorySchema = z.object({
     name: z.string(),
-    description: z.string().optional()
+    description: z.string()
 })
 
 export class EditCategoryController{
@@ -21,7 +21,7 @@ export class EditCategoryController{
             const { id } = paramsSchema.parse(req.params)
             const { name, description } = editCategorySchema.parse(req.body)
 
-            const result = await this.editCategoryUseCase.execute({id, name, description})
+            const result = await this.editCategoryUseCase.execute({name,description, id})
 
             if(result.isError()){
                 throw result.value

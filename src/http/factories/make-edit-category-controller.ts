@@ -4,7 +4,7 @@ import { PrismaCategoryRepository } from "../../infra/repositories/prisma-catego
 import { EditCategoryController } from "../controllers/category/edit-category-controller";
 
 
-export function makeEditCategoryController{
+export function makeEditCategoryController(){
 
     const prisma = getPrismaClient()
 
