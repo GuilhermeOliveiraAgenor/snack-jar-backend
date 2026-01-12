@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { FetchCategoriesUseCase } from "../../application/use-cases/category/fetch-categories";
+import { FetchCategoriesUseCase } from "../../../application/use-cases/category/fetch-categories";
 
 export class FetchCategoryController{
     constructor( private readonly fetchCategoryUseCase: FetchCategoriesUseCase){}
@@ -13,7 +13,7 @@ export class FetchCategoryController{
                 throw result.value
             }
     
-            return res.status(200).json({result})
+            return res.status(200).json({category: result.value.category})
         } catch (error) {
             next(error)
         }

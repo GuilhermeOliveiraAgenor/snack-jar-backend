@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from "express";
-import { EditCategoryUseCase } from "../../application/use-cases/category/edit-category";
+import { EditCategoryUseCase } from "../../../application/use-cases/category/edit-category";
 import { z } from "zod"
 
 // zod validation id
@@ -27,7 +27,7 @@ export class EditCategoryController{
                 throw result.value
             }
         
-        return res.status(200).json({result})
+        return res.status(200).json({category: result.value.category})
         } catch (error) {
             next(error)
         }

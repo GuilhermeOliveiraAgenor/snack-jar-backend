@@ -1,5 +1,5 @@
 import z from "zod";
-import { CreateCategoryUseCase } from "../../application/use-cases/category/create-category";
+import { CreateCategoryUseCase } from "../../../application/use-cases/category/create-category";
 import { NextFunction, Request, Response } from "express";
 
 // fields validate zod
@@ -24,7 +24,7 @@ export class CreateCategoryController {
         throw result.value;
       }
 
-      return res.status(201).json({result});
+      return res.status(201).json({category: result.value.category});
     } catch (error) {
       next(error);
     }
