@@ -26,7 +26,6 @@ export class CreateCategoryController {
 
       return res.status(201).json(result);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
