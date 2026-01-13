@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateUserUseCase } from "../../../application/use-cases/user/create-user";
 import z, { email } from "zod";
-import { a } from "vitest/dist/chunks/suite.d.BJWk38HB";
 
 const createUserSchema = z.object({
     name: z.string(),

@@ -25,12 +25,12 @@ export class AuthenticateUserController{
                 throw result.value
             }
 
-            const { user } = result.value
+            const { userId } = result.value
 
             // sign user in jwt
-            const token = this.jwtService.sign(user.id.toString())
+            const token = this.jwtService.sign(userId)
 
-            return res.status(200).json({user,token})
+            return res.status(200).json({userId,token})
 
         } catch (error) {
             console.log(error)
