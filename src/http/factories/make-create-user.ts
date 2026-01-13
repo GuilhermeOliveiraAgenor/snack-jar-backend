@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from "../../application/use-cases/user/create-user";
-import { BcryptHashProvider } from "../../core/cryptography/BcryptHashProvider";
+import { BcryptHashProvider } from "../../infra/auth/BcryptHashProvider";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
 import { CreateUserController } from "../controllers/user/create-user-controller";

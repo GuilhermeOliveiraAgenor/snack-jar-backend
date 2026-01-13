@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticateUserUseCase } from "../../../application/use-cases/user/authenticate-user";
-import { JwtService } from "../../../core/cryptography/JwtService";
+import { JwtService } from "../../../infra/auth/JwtService";
 import { z } from "zod";
 
 const authenticateSchema = z.object({

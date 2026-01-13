@@ -1,7 +1,7 @@
 import { AuthenticateUserUseCase } from "../../application/use-cases/user/authenticate-user";
 import { CreateUserUseCase } from "../../application/use-cases/user/create-user";
-import { BcryptHashProvider } from "../../core/cryptography/BcryptHashProvider";
-import { JwtService } from "../../core/cryptography/JwtService";
+import { BcryptHashProvider } from "../../infra/auth/BcryptHashProvider";
+import { JwtService } from "../../infra/auth/JwtService";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
 import { AuthenticateUserController } from "../controllers/user/authenticate-user-controller";

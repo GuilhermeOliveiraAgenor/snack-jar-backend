@@ -1,6 +1,6 @@
 import process from "process"
 import jwt from "jsonwebtoken"
-import { IJWTService } from "./IJwtService"
+import { IJWTService } from "../../core/cryptography/IJwtService"
 
 export class JwtService implements IJWTService{
     sign(userId: string){
