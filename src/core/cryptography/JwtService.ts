@@ -1,7 +1,8 @@
 import process from "process"
 import jwt from "jsonwebtoken"
+import { IJWTService } from "./IJwtService"
 
-export class JwtService{
+export class JwtService implements IJWTService{
     sign(userId: string){
         console.log("JWT Function" + userId)
 

@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express"
 import { JwtService } from "../../core/cryptography/JwtService"
 
-export function ensureAuthenticated{
+export function ensureAuthenticated(
     req: Request,
     res: Response,
     next: NextFunction
-} {
+ ) {
     // variable receive header
     const authHeader = req.headers.authorization
 
     if(!authHeader){
-        return res.status(401).json({message: "User Not Authenticated"}) 
+        return res.status(401).json({message: "Unauthorized"}) 
     }
 
     // separate Bearer
@@ -20,7 +20,10 @@ export function ensureAuthenticated{
         const jwtService = new JwtService()
         const { sub } = jwtService.verify(token)
 
-        req.user.id = sub
+        // set user id
+        req.user = {
+            id: sub
+        }
         next()
 
     } catch (error) {
