@@ -6,12 +6,14 @@ export function ensureAuthenticated{
     res: Response,
     next: NextFunction
 } {
+    // variable receive header
     const authHeader = req.headers.authorization
 
     if(!authHeader){
         return res.status(401).json({message: "User Not Authenticated"}) 
     }
 
+    // separate Bearer
     const [, token] = authHeader.split(' ')
 
     try {
