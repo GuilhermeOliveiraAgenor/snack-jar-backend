@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken"
 
 export class JwtService{
     sign(userId: string){
+        console.log("JWT Function" + userId)
+
         return jwt.sign({
             sub: userId,
         },
