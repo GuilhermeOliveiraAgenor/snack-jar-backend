@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { makeCreateUserController } from "../factories/make-create-user";
 import { makeAuthenticateUserController } from "../factories/make-authenticate-controller";
+import { ensureAuthenticated } from "../middleware/ensure-Authenticated";
 
 
 const userRoutes = Router()
+
 
 userRoutes.post("/user", (req,res,next) => {
     return makeCreateUserController().handle(req,res,next)
