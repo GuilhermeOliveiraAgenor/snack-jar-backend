@@ -33,6 +33,7 @@ export class AuthenticateUserController{
             return res.status(200).json({user,token})
 
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
