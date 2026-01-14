@@ -1,6 +1,6 @@
 import { beforeEach, describe, it, expect } from "vitest";
 import { InMemoryFavoriteRecipeRepository } from "../../../../test/repositories/in-memory-favorite-recipe-repository";
-import { FetchMyFavoriteRecipesUseCase } from "./fetch-my-favorites-recipes";
+import { FetchMyFavoriteRecipesUseCase } from "./fetch-my-favorite-recipes";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeFavoriteRecipe } from "../../../../test/factories/make-favorite-recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
@@ -10,7 +10,7 @@ let inMemoryFavoriteRecipeRepository: InMemoryFavoriteRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 let sut: FetchMyFavoriteRecipesUseCase;
 
-describe("Fetch My Recipes", () => {
+describe("Fetch My Favorite Recipes", () => {
   beforeEach(() => {
     inMemoryFavoriteRecipeRepository = new InMemoryFavoriteRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();

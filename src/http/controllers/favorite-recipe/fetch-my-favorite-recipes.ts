@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import { FetchMyRecipesUseCase } from "../../../application/use-cases/recipe/fetch-my-recipes";
+import { FetchMyFavoriteRecipesUseCase } from "../../../application/use-cases/favorite-recipe/fetch-my-favorite-recipes";
 
-export class FetchMyRecipesController{
-    constructor(private readonly fetchMyRecipesUseCase: FetchMyRecipesUseCase){}
+export class FetchMyFavoriteRecipesController{
+    constructor(private readonly fetchMyFavoriteRecipesUseCase: FetchMyFavoriteRecipesUseCase){}
 
     async handle(req: Request,res: Response,next: NextFunction){
         try {
             const userId = req.user.id
 
-            const result = await this.fetchMyRecipesUseCase.execute({userId})
+            const result = await this.fetchMyFavoriteRecipesUseCase.execute({userId})
 
             if(result.isError()){
                 throw result.value
