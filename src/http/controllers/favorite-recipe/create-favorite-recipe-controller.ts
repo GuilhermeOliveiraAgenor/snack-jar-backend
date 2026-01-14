@@ -14,7 +14,7 @@ export class CreateFavoriteRecipeController{
         try {
             const userId = req.user.id
 
-            const {recipeId} = requestParams.parse(req.body)
+            const {recipeId} = requestParams.parse(req.params)
 
             const result = await this.createFavoriteRecipeUseCase.execute({recipeId, userId})
 
@@ -26,7 +26,7 @@ export class CreateFavoriteRecipeController{
 
 
         } catch (error) {
-            
+            next(error)
         }
     }
 
