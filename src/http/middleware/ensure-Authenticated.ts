@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IJWTService } from "../../core/cryptography/IJwtService";
+import { JwtPayload } from "../../core/cryptography/IJwtPayload";
 
 export function ensureAuthenticated(jwtService: IJWTService) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -18,7 +19,7 @@ export function ensureAuthenticated(jwtService: IJWTService) {
     }
 
     try {
-      const { sub } = jwtService.verify(token);
+      const { sub } = jwtService.verify(token) as JwtPayload;
 
       // set user id
       req.user = {
