@@ -14,7 +14,7 @@ favoriteRecipeRoutes.get("/me/favorites", (req,res,next) =>{
     return makeFetchMyFavoriteRecipesController().handle(req,res,next)
 })
 
-favoriteRecipeRoutes.delete("/favorites", (req,res,next) => {
+favoriteRecipeRoutes.delete("/favorites/:id", (req,res,next) => {
     return makeDeleteFavoriteRecipeController().handle(req,res,next)
 })
 
