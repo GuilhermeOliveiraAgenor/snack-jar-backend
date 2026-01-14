@@ -4,7 +4,7 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { UserRepository } from "../../repositories/user-repository";
 
 interface GetMeUseCaseRequest {
-  id: string;
+  userId: string;
 }
 
 type GetMeUseCaseResponse = Either<
@@ -17,8 +17,8 @@ type GetMeUseCaseResponse = Either<
 export class GetMeUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute({ id }: GetMeUseCaseRequest): Promise<GetMeUseCaseResponse> {
-    const user = await this.userRepository.findById(id);
+  async execute({ userId }: GetMeUseCaseRequest): Promise<GetMeUseCaseResponse> {
+    const user = await this.userRepository.findById(userId);
 
     // verify if user exists
 

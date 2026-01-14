@@ -5,7 +5,7 @@ import { FavoriteRecipeRepository } from "../../repositories/favorite-recipe-rep
 import { UserRepository } from "../../repositories/user-repository";
 
 interface FetchMyFavoriteRecipesRequest {
-  id: string;
+  userId: string;
 }
 
 type FetchMyFavoriteRecipesResponse = Either<
@@ -21,9 +21,9 @@ export class FetchMyFavoriteRecipesUseCase {
     private userRepository: UserRepository,
   ) {}
   async execute({
-    id,
+    userId,
   }: FetchMyFavoriteRecipesRequest): Promise<FetchMyFavoriteRecipesResponse> {
-    const user = await this.userRepository.findById(id);
+    const user = await this.userRepository.findById(userId);
     if (!user) {
       return failure(new NotFoundError("user"));
     }

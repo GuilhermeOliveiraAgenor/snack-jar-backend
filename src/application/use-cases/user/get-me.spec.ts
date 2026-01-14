@@ -21,7 +21,7 @@ describe("Get Me Use Case", () => {
 
     await inMemoryUserRepository.create(user);
 
-    const result = await sut.execute({ id: user.id.toString() });
+    const result = await sut.execute({ userId: user.id.toString() });
 
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryUserRepository.items).toHaveLength(1);
@@ -33,7 +33,7 @@ describe("Get Me Use Case", () => {
     }
   });
   it("should not be able to get my user when id does not exist", async () => {
-    const result = await sut.execute({ id: "0" });
+    const result = await sut.execute({ userId: "0" });
 
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);

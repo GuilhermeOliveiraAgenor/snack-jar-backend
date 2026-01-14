@@ -17,19 +17,19 @@ export class CreateRecipeIngredientController{
 
     async handle(req: Request,res: Response,next: NextFunction){
         try {
-            const createdBy = req.user.id
+            const userId = req.user.id
 
             const { recipeId } = requestParams.parse(req.params)
             const { ingredient, amount, unit } = createRecipeIngredientSchema.parse(req.body)
 
-            const result = await this.createRecipeIngredientUseCase.execute({ingredient,amount,unit,recipeId, createdBy})
+            const result = await this.createRecipeIngredientUseCase.execute({ingredient,amount,unit,recipeId, createdBy: userId})
 
             if(result.isError()){
                 throw result.value
             }
 
             return res.status(201).json(result.value.recipeIngredient)
-            
+
         } catch (error) {
             
         }

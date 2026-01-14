@@ -30,7 +30,7 @@ describe("Fetch My Favorite Recipes", () => {
     await inMemoryFavoriteRecipeRepository.create(favoriteRecipe);
 
     const result = await sut.execute({
-      id: favoriteRecipe.userId.toString(),
+      userId: favoriteRecipe.userId.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -39,7 +39,7 @@ describe("Fetch My Favorite Recipes", () => {
     }
   });
   it("should not be able to fetch my favorite recipes when user id not exists", async () => {
-    const result = await sut.execute({ id: "0" });
+    const result = await sut.execute({ userId: "0" });
 
     expect(result.isError()).toBe(true);
     expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);

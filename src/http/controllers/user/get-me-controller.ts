@@ -6,10 +6,10 @@ export class GetMeController {
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.user.id;
+      const userId = req.user.id;
       console.log("Session" + req.user.id);
 
-      const result = await this.getMeUseCase.execute({ id });
+      const result = await this.getMeUseCase.execute({ userId });
 
       if (result.isError()) {
         throw result.value;
