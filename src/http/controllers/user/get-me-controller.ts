@@ -7,9 +7,9 @@ export class GetMeController {
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.user.id;
-      console.log("Controller" + req.user.id);
+      console.log("Session" + req.user.id);
 
-      const result = await this.getMeUseCase.execute({ id: id });
+      const result = await this.getMeUseCase.execute({ id });
 
       if (result.isError()) {
         throw result.value;
