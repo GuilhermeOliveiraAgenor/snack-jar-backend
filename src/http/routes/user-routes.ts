@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { makeCreateUserController } from "../factories/make-create-user";
 import { makeAuthenticateUserController } from "../factories/make-authenticate-controller";
+import { makeGetMeController } from "../factories/make-get-me-middleware";
+import { makeAuthMiddleware } from "../factories/make-auth-middleware";
 
 const userRoutes = Router();
 
@@ -10,6 +12,10 @@ userRoutes.post("/user", (req, res, next) => {
 
 userRoutes.post("/auth", (req, res, next) => {
   return makeAuthenticateUserController().handle(req, res, next);
+});
+
+userRoutes.get("/me", makeAuthMiddleware(), (req, res, next) => {
+  return makeGetMeController().handle(req, res, next);
 });
 
 export { userRoutes };

@@ -25,14 +25,12 @@ export class AuthenticateUserController {
       }
 
       const { userId } = result.value;
-      const 
 
       // sign user in jwt
       const token = this.jwtService.sign(userId);
 
       return res.status(200).json({ userId, token });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

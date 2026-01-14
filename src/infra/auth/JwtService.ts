@@ -4,8 +4,6 @@ import { IJWTService } from "../../core/cryptography/IJwtService";
 
 export class JwtService implements IJWTService {
   sign(userId: string) {
-    console.log("JWT Function" + userId);
-
     return jwt.sign(
       {
         sub: userId,
