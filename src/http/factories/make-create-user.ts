@@ -8,7 +8,7 @@ export function makeCreateUserController() {
   const prisma = getPrismaClient();
   // create use case
   const userRepository = new PrismaUserRepository(prisma);
-  const hashProvider = new BcryptHashProvider()
+  const hashProvider = new BcryptHashProvider();
   const createUserUseCase = new CreateUserUseCase(userRepository, hashProvider);
 
   return new CreateUserController(createUserUseCase);

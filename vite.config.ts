@@ -4,6 +4,6 @@ export default defineConfig({
   test: {
     name: "unit",
     include: ["src/**/*.spec.ts"], // include files spec.ts format
-    exclude: ["src/**/*.e2e.spec.ts"]
+    exclude: ["src/**/*.e2e.spec.ts"],
   },
 });

@@ -1,24 +1,20 @@
 import { Request, Response, NextFunction } from "express";
 import { FetchCategoriesUseCase } from "../../../application/use-cases/category/fetch-categories";
 
-export class FetchCategoryController{
-    constructor( private readonly fetchCategoryUseCase: FetchCategoriesUseCase){}
+export class FetchCategoryController {
+  constructor(private readonly fetchCategoryUseCase: FetchCategoriesUseCase) {}
 
-    async handle(req: Request, res: Response, next: NextFunction){
-       
-        try {
-            const result = await this.fetchCategoryUseCase.execute()
+  async handle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.fetchCategoryUseCase.execute();
 
-            if(result.isError()){
-                throw result.value
-            }
-    
-            return res.status(200).json({category: result.value.category})
-        } catch (error) {
-            next(error)
-        }
+      if (result.isError()) {
+        throw result.value;
+      }
 
+      return res.status(200).json({ category: result.value.category });
+    } catch (error) {
+      next(error);
     }
+  }
 }
-
-

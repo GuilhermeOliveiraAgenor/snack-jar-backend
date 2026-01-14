@@ -8,6 +8,6 @@ export const app = express();
 app.use(express.json());
 
 app.use(categoryRoutes);
-app.use(userRoutes)
+app.use(userRoutes);
 
 app.use(errorHandler);

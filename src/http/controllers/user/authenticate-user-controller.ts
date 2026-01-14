@@ -4,39 +4,36 @@ import { JwtService } from "../../../infra/auth/JwtService";
 import { z } from "zod";
 
 const authenticateSchema = z.object({
-    email: z.string().min(10),
-    password: z.string()
-})
+  email: z.string().min(10),
+  password: z.string(),
+});
 
-export class AuthenticateUserController{
-    constructor(
-         private readonly authenticateUseCase: AuthenticateUserUseCase,
-         private readonly jwtService: JwtService
-        ){}
-    
-    async handle(req: Request ,res: Response, next: NextFunction){
-        try {
-           
-            const { email, password } = authenticateSchema.parse(req.body)
+export class AuthenticateUserController {
+  constructor(
+    private readonly authenticateUseCase: AuthenticateUserUseCase,
+    private readonly jwtService: JwtService,
+  ) {}
 
-            const result = await this.authenticateUseCase.execute({email,password})
+  async handle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = authenticateSchema.parse(req.body);
 
-            if(result.isError()){
-                throw result.value
-            }
+      const result = await this.authenticateUseCase.execute({ email, password });
 
-            const { userId } = result.value
+      if (result.isError()) {
+        throw result.value;
+      }
 
-            // sign user in jwt
-            const token = this.jwtService.sign(userId)
+      const { userId } = result.value;
+      const 
 
-            return res.status(200).json({userId,token})
+      // sign user in jwt
+      const token = this.jwtService.sign(userId);
 
-        } catch (error) {
-            console.log(error)
-            next(error)
-        }
+      return res.status(200).json({ userId, token });
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
-
+  }
 }
-

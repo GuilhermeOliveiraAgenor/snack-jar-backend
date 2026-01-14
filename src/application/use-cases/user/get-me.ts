@@ -3,21 +3,21 @@ import { User } from "../../../core/entities/user";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { UserRepository } from "../../repositories/user-repository";
 
-interface GetUserByIdUseCaseRequest {
+interface GetMeUseCaseRequest {
   id: string;
 }
 
-type GetUserByIdUseCaseResponse = Either<
+type GetMeUseCaseResponse = Either<
   NotFoundError,
   {
     user: User;
   }
 >;
 
-export class GetUserByIdUseCase {
+export class GetMeUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute({ id }: GetUserByIdUseCaseRequest): Promise<GetUserByIdUseCaseResponse> {
+  async execute({ id }: GetMeUseCaseRequest): Promise<GetMeUseCaseResponse> {
     const user = await this.userRepository.findById(id);
 
     // verify if user exists
