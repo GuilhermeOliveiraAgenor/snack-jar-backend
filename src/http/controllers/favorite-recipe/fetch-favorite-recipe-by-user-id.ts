@@ -13,11 +13,11 @@ export class FetchMyRecipesController{
             if(result.isError()){
                 throw result.value
             }
-            
+
             return res.status(200).json(result.value.recipe)
 
         } catch (error) {
-            
+            next(error)
         }
     }
 }
