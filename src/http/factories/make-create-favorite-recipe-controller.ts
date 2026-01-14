@@ -7,7 +7,7 @@ import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repos
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 
 
-export function makeCreateFavoriteRecipe(){
+export function makeCreateFavoriteRecipeController(){
     const prisma = getPrismaClient();
     const favoriteRecipeRepository = new PrismaFavoriteRecipeRepository(prisma)
     const userRepository = new PrismaUserRepository(prisma)
