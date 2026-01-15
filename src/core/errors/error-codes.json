@@ -11,12 +11,14 @@
         "internal": "INTERNAL_SERVER_ERROR"
     },
     "already-exists": {
-        "category": "CATEGORY_ALREADY_EXISTS"
+        "category": "CATEGORY_ALREADY_EXISTS",
+        "user": "USER_ALREADY_EXISTS"
     },
     "recipe-null":{
         "recipe": "RECIPE_CANT_BE_NULL"
     },
     "invalidCredentials":{
             "user":"Email or password are invalid"
-    }
+    },
+    "internalServer": "INTERNAL_SERVER_ERROR"
 }

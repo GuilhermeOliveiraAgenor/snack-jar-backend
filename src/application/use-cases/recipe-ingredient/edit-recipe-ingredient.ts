@@ -6,9 +6,9 @@ import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient
 
 interface EditRecipeIngredientUseCaseRequest {
   id: string;
-  ingredient: RecipeIngredient["ingredient"];
-  amount: RecipeIngredient["amount"];
-  unit: RecipeIngredient["unit"];
+  ingredient?: RecipeIngredient["ingredient"];
+  amount?: RecipeIngredient["amount"];
+  unit?: RecipeIngredient["unit"];
   updatedBy: string;
 }
 

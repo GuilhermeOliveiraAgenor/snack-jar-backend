@@ -4,26 +4,26 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { FavoriteRecipeRepository } from "../../repositories/favorite-recipe-repository";
 import { UserRepository } from "../../repositories/user-repository";
 
-interface FetchFavoriteRecipeByUserIdUseCaseRequest {
-  id: string;
+interface FetchMyFavoriteRecipesRequest {
+  userId: string;
 }
 
-type FetchFavoriteRecipeByUserIdUseCaseResponse = Either<
+type FetchMyFavoriteRecipesResponse = Either<
   NotFoundError,
   {
     favoriteRecipe: FavoriteRecipe[];
   }
 >;
 
-export class FetchFavoriteRecipeByUserIdUseCase {
+export class FetchMyFavoriteRecipesUseCase {
   constructor(
     private favoriteRecipeRepository: FavoriteRecipeRepository,
     private userRepository: UserRepository,
   ) {}
   async execute({
-    id,
-  }: FetchFavoriteRecipeByUserIdUseCaseRequest): Promise<FetchFavoriteRecipeByUserIdUseCaseResponse> {
-    const user = await this.userRepository.findById(id);
+    userId,
+  }: FetchMyFavoriteRecipesRequest): Promise<FetchMyFavoriteRecipesResponse> {
+    const user = await this.userRepository.findById(userId);
     if (!user) {
       return failure(new NotFoundError("user"));
     }

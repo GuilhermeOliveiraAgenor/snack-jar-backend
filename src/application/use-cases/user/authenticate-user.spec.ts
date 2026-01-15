@@ -32,8 +32,7 @@ describe("Authenticate User Use Case", () => {
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryUserRepository.items).toHaveLength(1);
     if (result.isSuccess()) {
-      expect(result.value.user.email).toBe("joao@gmail.com");
-      expect(result.value.user.id).toBeDefined();
+      expect(result.value.userId).toBeDefined();
     }
   });
   it("should not be able to authenticate user with invalid email", async () => {

@@ -1,11 +1,8 @@
 import { app } from "./app";
 import { env } from "./infra/config/env";
 
-app
-  .listen({
-    host: "0.0.0.0",
-    port: env.PORT,
-  })
-  .then(() => {
-    console.log("Port 3000 running");
-  });
+const PORT = env.PORT;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Port 3000 running`);
+});

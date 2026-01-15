@@ -12,7 +12,7 @@ interface AuthenticateUserUseCaseRequest {
 type AuthenticateUserUseCaseResponse = Either<
   InvalidCredentialsError,
   {
-    user: User;
+    userId: string;
   }
 >;
 
@@ -38,6 +38,6 @@ export class AuthenticateUserUseCase {
       return failure(new InvalidCredentialsError("user"));
     }
 
-    return success({ user });
+    return success({ userId: user.id });
   }
 }

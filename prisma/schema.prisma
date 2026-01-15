@@ -11,7 +11,7 @@
   model Category{
     id              String  @id @default(uuid())
     name            String
-    description     String  @unique
+    description     String
     
     recipes Recipe[]
 
@@ -88,6 +88,8 @@
 
     @@index([recipeId])
 
+    @@map("recipe_ingredients")
+
   }
 
   model RecipeStep{
@@ -108,6 +110,8 @@
 
     @@index([recipeId])
 
+    @@map("recipe_steps")
+
   }
 
 model FavoriteRecipe{
@@ -125,6 +129,8 @@ model FavoriteRecipe{
 
   @@index([recipeId])
   @@index([userId])
+
+  @@map("favorite_recipe")
 
 }
 

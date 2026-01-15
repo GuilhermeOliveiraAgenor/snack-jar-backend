@@ -8,7 +8,7 @@ import { CategoriesRepository } from "../../repositories/categories-repository";
 interface EditCategoryUseCaseRequest {
   name: Category["name"];
   description: Category["description"];
-  id: Category["_id"];
+  id: string;
 }
 
 // create response
