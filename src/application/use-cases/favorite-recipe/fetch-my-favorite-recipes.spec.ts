@@ -21,11 +21,11 @@ describe("Fetch My Favorite Recipes", () => {
     );
   });
   it("should be able to fetch my favorite recipes by user id", async () => {
-    const user = makeUser()
+    const user = makeUser();
 
-    await inMemoryUserRepository.create(user)
+    await inMemoryUserRepository.create(user);
 
-    const favoriteRecipe = makeFavoriteRecipe({userId: user.id});
+    const favoriteRecipe = makeFavoriteRecipe({ userId: user.id });
 
     await inMemoryFavoriteRecipeRepository.create(favoriteRecipe);
 

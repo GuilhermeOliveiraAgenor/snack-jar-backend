@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
+import request from "supertest";
 import { app } from "../../../app";
-import { request } from "supertest";
 
 describe("Authenticate User Controller", () => {
   it("should be able to authenticate user", async () => {
@@ -15,5 +15,6 @@ describe("Authenticate User Controller", () => {
       password: "joao123",
     });
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("token");
   });
 });

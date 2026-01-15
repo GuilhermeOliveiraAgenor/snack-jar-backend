@@ -3,30 +3,25 @@ import { DeleteFavoriteRecipeUseCase } from "../../../application/use-cases/favo
 import z from "zod";
 
 const requestParams = z.object({
-    id: z.string()
-})
+  id: z.string(),
+});
 
-export class DeleteFavoriteRecipeController{
-    constructor(private readonly deleteFavoriteRecipeUseCase: DeleteFavoriteRecipeUseCase){}
+export class DeleteFavoriteRecipeController {
+  constructor(private readonly deleteFavoriteRecipeUseCase: DeleteFavoriteRecipeUseCase) {}
 
-    async handle(req: Request,res: Response,next: NextFunction){
-        try {
-            const { id } = requestParams.parse(req.params)
+  async handle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = requestParams.parse(req.params);
 
-            const result = await this.deleteFavoriteRecipeUseCase.execute({id})
+      const result = await this.deleteFavoriteRecipeUseCase.execute({ id });
 
-            if(result.isError()){
-                throw result.value
-            }
+      if (result.isError()) {
+        throw result.value;
+      }
 
-            return res.status(200).json({message:"Recipe deleted successufully"})
-
-
-        } catch (error) {
-            next(error)
-        }
+      return res.status(200).json({ message: "Recipe deleted successufully" });
+    } catch (error) {
+      next(error);
     }
-
+  }
 }
-
-

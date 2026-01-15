@@ -4,15 +4,16 @@ import { PrismaFavoriteRecipeRepository } from "../../infra/repositories/prisma-
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
 import { FetchMyFavoriteRecipesController } from "../controllers/favorite-recipe/fetch-my-favorite-recipes";
 
-export function makeFetchMyFavoriteRecipesController(){
-    const prisma = getPrismaClient()
+export function makeFetchMyFavoriteRecipesController() {
+  const prisma = getPrismaClient();
 
-    const favoriteRecipeRepository = new PrismaFavoriteRecipeRepository(prisma)
-    const userRepository = new PrismaUserRepository(prisma)
+  const favoriteRecipeRepository = new PrismaFavoriteRecipeRepository(prisma);
+  const userRepository = new PrismaUserRepository(prisma);
 
-    const fetchMyFavoriteRecipesUseCase = new FetchMyFavoriteRecipesUseCase(favoriteRecipeRepository, userRepository)
+  const fetchMyFavoriteRecipesUseCase = new FetchMyFavoriteRecipesUseCase(
+    favoriteRecipeRepository,
+    userRepository,
+  );
 
-    return new FetchMyFavoriteRecipesController(fetchMyFavoriteRecipesUseCase)
-
+  return new FetchMyFavoriteRecipesController(fetchMyFavoriteRecipesUseCase);
 }
-

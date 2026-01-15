@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { IJWTService } from "../../core/cryptography/IJwtService";
-import { JwtPayload } from "../../core/cryptography/IJwtPayload";
 
 export function ensureAuthenticated(jwtService: IJWTService) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -19,13 +18,11 @@ export function ensureAuthenticated(jwtService: IJWTService) {
     }
 
     try {
-      const { sub } = jwtService.verify(token) as JwtPayload;
-
+      const sub = jwtService.verify(token);
       // set user id
       req.user = {
         id: sub,
       };
-
       next();
     } catch (error) {
       return res.status(401).json({ message: `Invalide Token ${error}` });
