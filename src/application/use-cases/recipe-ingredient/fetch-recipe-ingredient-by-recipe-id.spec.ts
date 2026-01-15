@@ -1,22 +1,22 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeIngredientRepository } from "../../../../test/repositories/in-memory-recipe-ingredient";
-import { FetchRecipeIngredientsByRecipeId } from "./fetch-recipe-ingredients-by-recipe-id";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { FetchRecipeIngredientsByRecipeIdUseCase } from "./fetch-recipe-ingredients-by-recipe-id";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
-let sut: FetchRecipeIngredientsByRecipeId;
+let sut: FetchRecipeIngredientsByRecipeIdUseCase;
 
 describe("Fetch Recipe Ingredients By Recipe Id", () => {
   beforeEach(() => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
 
-    sut = new FetchRecipeIngredientsByRecipeId(
+    sut = new FetchRecipeIngredientsByRecipeIdUseCase(
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeRepository,
     );

@@ -13,7 +13,7 @@ type FetchRecipeIngredientsByRecipeIdResponse = Either<
   { recipeIngredient: RecipeIngredient[] }
 >;
 
-export class FetchRecipeIngredientsByRecipeId {
+export class FetchRecipeIngredientsByRecipeIdUseCase {
   constructor(
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeRepository: RecipeRepository,
