@@ -5,7 +5,7 @@ import { FetchRecipeStepByRecipeIdUseCase } from "../../application/use-cases/re
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { FetchRecipeStepByRecipeIdController } from "../controllers/recipe-step/fetch-recipe-step-by-recipe-id.controller";
 
-export function makeFetchRecipeStepByRecipeId(){
+export function makeFetchRecipeStepByRecipeIdController(){
 
     const prisma = getPrismaClient()
 

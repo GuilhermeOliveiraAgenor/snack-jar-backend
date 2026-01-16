@@ -59,11 +59,9 @@ describe("Fetch Recipe By Title Use Case", () => {
 
   it("should not be able to fetch recipes when userId does not exist", async () => {
     const category = makeCategory();
-
     await inMemoryCategoriesRepository.create(category);
 
     const recipe1 = makeRecipe();
-
     await inMemoryRecipeRepository.create(recipe1);
 
     const result = await sut.execute({ userId: "0", title: "0" });

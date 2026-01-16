@@ -17,17 +17,15 @@ describe("Create Recipe Step Use Case", () => {
     sut = new CreateRecipeStepUseCase(inMemoryRecipeStepRepository, inMemoryRecipeRepository);
   });
   it("should be able to create a recipe step", async () => {
-    const user = makeUser();
 
     const recipe = makeRecipe();
-
     await inMemoryRecipeRepository.create(recipe);
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
       step: 1,
       description: "Jogue o açucar na bandeja",
-      createdBy: user.id.toString(),
+      createdBy: "user-1",
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -40,13 +38,12 @@ describe("Create Recipe Step Use Case", () => {
     }
   });
   it("should not be able to create recipe step when recipe id does not exists", async () => {
-    const user = makeUser();
 
     const result = await sut.execute({
       recipeId: "0",
       step: 1,
       description: "Jogue a farinha na bandeja",
-      createdBy: user.id.toString(),
+      createdBy: "user-1",
     });
 
     expect(result.isError()).toBe(true);

@@ -14,7 +14,6 @@ describe("Delete Recipe Step", () => {
     sut = new DeleteRecipeStepUseCase(inMemoryRecipeStepRepository);
   });
   it("should be able to delete recipe step", async () => {
-    const user = makeUser();
 
     const recipeStep = makeRecipeStep();
 
@@ -22,18 +21,17 @@ describe("Delete Recipe Step", () => {
 
     const result = await sut.execute({
       id: recipeStep.id.toString(),
-      deletedBy: user.id.toString(),
+      deletedBy: "user-1",
     });
 
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryRecipeStepRepository.items).toHaveLength(0);
   });
   it("should not be able to delete recipe step when id does not exists", async () => {
-    const user = makeUser();
 
     const result = await sut.execute({
       id: "0",
-      deletedBy: user.id.toString(),
+      deletedBy: "user-1",
     });
 
     expect(result.isError()).toBe(true);

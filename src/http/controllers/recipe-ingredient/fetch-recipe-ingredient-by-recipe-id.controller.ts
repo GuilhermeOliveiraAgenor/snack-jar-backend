@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
-import { FetchRecipeIngredientsByRecipeIdUseCase } from "../../../application/use-cases/recipe-ingredient/fetch-recipe-ingredient-by-recipe-id";
+import { FetchRecipeIngredientByRecipeIdUseCase, FetchRecipeIngredientsByRecipeIdUseCase } from "../../../application/use-cases/recipe-ingredient/fetch-recipe-ingredient-by-recipe-id";
 
 const requestParams = z.object({
   id: z.string(),
@@ -8,7 +8,7 @@ const requestParams = z.object({
 
 export class FetchRecipeIngredientByRecipeIdController {
   constructor(
-    private readonly fetchRecipeIngredientByIdUseCase: FetchRecipeIngredientsByRecipeIdUseCase,
+    private readonly fetchRecipeIngredientByIdUseCase: FetchRecipeIngredientByRecipeIdUseCase,
   ) {}
   async handle(req: Request, res: Response, next: NextFunction) {
     try {

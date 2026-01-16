@@ -4,11 +4,11 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
-interface FetchRecipeIngredientsByRecipeIdRequest {
+interface FetchRecipeIngredientByRecipeIdRequest {
   id: string;
 }
 
-type FetchRecipeIngredientsByRecipeIdResponse = Either<
+type FetchRecipeIngredientByRecipeIdResponse = Either<
   NotFoundError,
   { recipeIngredient: RecipeIngredient[] }
 >;
@@ -20,16 +20,14 @@ export class FetchRecipeIngredientByRecipeIdUseCase {
   ) {}
   async execute({
     id,
-  }: FetchRecipeIngredientsByRecipeIdRequest): Promise<FetchRecipeIngredientsByRecipeIdResponse> {
+  }: FetchRecipeIngredientByRecipeIdRequest): Promise<FetchRecipeIngredientByRecipeIdResponse> {
     // verify if exists recipe id
     const recipe = await this.recipeRepository.findById(id);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
     }
 
-    const recipeIngredient = await this.recipeIngredientRepository.findManyByRecipeId(
-      recipe.id.toString(),
-    );
+    const recipeIngredient = await this.recipeIngredientRepository.findManyByRecipeId(id);
 
     return success({
       recipeIngredient,

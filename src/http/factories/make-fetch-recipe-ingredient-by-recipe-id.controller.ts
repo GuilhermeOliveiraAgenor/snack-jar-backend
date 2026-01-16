@@ -4,7 +4,7 @@ import { PrismaRecipeIngredientRepository } from "../../infra/repositories/prism
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { FetchRecipeIngredientByRecipeIdController } from "../controllers/recipe-ingredient/fetch-recipe-ingredient-by-recipe-id.controller";
 
-export function makeFetchRecipeIngredientByRecipeId(){
+export function makeFetchRecipeIngredientByRecipeIdController(){
 
     const prisma = getPrismaClient()
 

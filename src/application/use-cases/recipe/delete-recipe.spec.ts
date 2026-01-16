@@ -21,11 +21,9 @@ describe("Soft delete Recipe Use Case", () => {
 
   it("should be able to soft delete a recipe", async () => {
     const category = makeCategory();
-
     await inMemoryCategoriesRepository.create(category);
 
     const recipe = makeRecipe();
-
     await inMemoryRecipeRepository.create(recipe);
 
     const result = await sut.execute({ id: recipe.id.toString(), deletedBy: "user-1" });
