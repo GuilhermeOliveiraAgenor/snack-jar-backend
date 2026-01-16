@@ -7,7 +7,7 @@ const requestParams = z.object({
 });
 
 const createRecipeStepSchema = z.object({
-  step: z.number(),
+  step: z.number().min(1),
   description: z.string().trim().min(1),
 });
 

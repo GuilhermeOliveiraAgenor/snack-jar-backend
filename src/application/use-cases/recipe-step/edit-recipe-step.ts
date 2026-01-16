@@ -6,8 +6,8 @@ import { RecipeStepRepository } from "../../repositories/recipe-step-repository"
 
 interface EditRecipeStepUseCaseRequest {
   id: string;
-  step: RecipeStep["step"];
-  description: RecipeStep["description"];
+  step?: RecipeStep["step"];
+  description?: RecipeStep["description"];
   updatedBy: string;
 }
 
