@@ -25,7 +25,7 @@ export function ensureAuthenticated(jwtService: IJWTService) {
       };
       next();
     } catch (error) {
-      return res.status(401).json({ message: `Invalide Token ${error}` });
+      return res.status(401).json({ message: `Token is not in the correct format ${error}` });
     }
   };
 }

@@ -66,6 +66,16 @@ export class RecipeIngredient {
     return this.props.createdAt;
   }
 
+  get createdBy(): UniqueEntityID {
+    return this.props.createdBy;
+  }
+  get updatedBy(): UniqueEntityID | null {
+    return this.props.updatedBy;
+  }
+  get deletedBy(): UniqueEntityID | null {
+    return this.props.deletedBy;
+  }
+
   get updatedAt(): Date | null {
     return this.props.updatedAt;
   }

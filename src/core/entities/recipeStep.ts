@@ -27,7 +27,7 @@ export class RecipeStep {
     },
     id?: UniqueEntityID,
   ) {
-    const preparationMethod = new RecipeStep(id ?? new UniqueEntityID(), {
+    const recipeStep = new RecipeStep(id ?? new UniqueEntityID(), {
       ...props,
       createdAt: new Date(),
       updatedAt: null,
@@ -37,7 +37,7 @@ export class RecipeStep {
       deletedBy: null,
     });
 
-    return preparationMethod;
+    return recipeStep;
   }
 
   get id() {
@@ -54,6 +54,16 @@ export class RecipeStep {
 
   get recipeId() {
     return this.props.recipeId;
+  }
+
+  get createdBy(): UniqueEntityID {
+    return this.props.createdBy;
+  }
+  get updatedBy(): UniqueEntityID | null {
+    return this.props.updatedBy;
+  }
+  get deletedBy(): UniqueEntityID | null {
+    return this.props.deletedBy;
   }
 
   get createdAt(): Date | null {

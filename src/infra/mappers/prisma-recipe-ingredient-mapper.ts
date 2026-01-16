@@ -17,6 +17,7 @@ export class PrismaRecipeIngredientMapper {
   }
   static toPersistency(raw: RecipeIngredient): Prisma.RecipeIngredientUncheckedCreateInput {
     return {
+      id: raw.id.toString(),
       ingredient: raw.ingredient,
       amount: raw.amount,
       unit: raw.unit,
