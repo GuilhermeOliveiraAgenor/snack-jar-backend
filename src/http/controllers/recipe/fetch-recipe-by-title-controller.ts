@@ -7,7 +7,7 @@ const fetchRecipeTitle = z.object({
     title: z.string()
 })
 
-export class FetchMyRecipesController{
+export class FetchRecipeByTitleController{
     constructor(private readonly fetchRecipeByTitleUseCase: FetchRecipeByTitleUseCase){}
 
     async handle(req: Request,res: Response,next: NextFunction){

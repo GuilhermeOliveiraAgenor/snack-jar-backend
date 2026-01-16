@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { makeCreateRecipeController } from "../factories/make-recipe-controller";
+import { makeCreateRecipeController } from "../factories/make-create-recipe-controller";
 import { makeAuthMiddleware } from "../factories/make-auth-middleware";
 
 const recipeRoutes = Router();
