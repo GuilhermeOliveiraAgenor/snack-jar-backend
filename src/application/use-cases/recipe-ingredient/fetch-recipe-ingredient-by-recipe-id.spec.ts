@@ -4,7 +4,7 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { FetchRecipeIngredientsByRecipeIdUseCase } from "./fetch-recipe-ingredients-by-recipe-id";
+import { FetchRecipeIngredientsByRecipeIdUseCase } from "./fetch-recipe-ingredient-by-recipe-id";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
