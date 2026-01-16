@@ -22,7 +22,7 @@ describe("Edit Recipe Use Case", () => {
 
     //pass to use case
     const result = await sut.execute({
-      recipeId: recipe.id.toString(),
+      id: recipe.id.toString(),
       title: "Bolo de Chocolate",
       description: "Receita de bolo de chocolate",
       preparationTime: 50,
@@ -40,9 +40,9 @@ describe("Edit Recipe Use Case", () => {
     }
   });
 
-  it("should not be able to edit a recipe when recipeId does not exist", async () => {
+  it("should not be able to edit a recipe when id does not exist", async () => {
     const result = await sut.execute({
-      recipeId: "0",
+      id: "0",
       title: "Bolo de Cenoura",
       description: "Receita de bolo de cenoura",
       preparationTime: 60,

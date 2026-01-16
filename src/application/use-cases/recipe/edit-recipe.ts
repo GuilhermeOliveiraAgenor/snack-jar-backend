@@ -5,10 +5,10 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface EditRecipeUseCaseRequest {
-  recipeId: string;
-  title: Recipe["title"];
-  description: Recipe["description"];
-  preparationTime: Recipe["preparationTime"];
+  id: string;
+  title?: Recipe["title"];
+  description?: Recipe["description"];
+  preparationTime?: Recipe["preparationTime"];
   updatedBy: string;
 }
 
@@ -22,14 +22,14 @@ type EditRecipeUseCaseResponse = Either<
 export class EditRecipeUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
   async execute({
-    recipeId,
+    id,
     title,
     description,
     preparationTime,
     updatedBy,
   }: EditRecipeUseCaseRequest): Promise<EditRecipeUseCaseResponse> {
     // verify if exists recipe
-    const recipe = await this.recipeRepository.findById(recipeId);
+    const recipe = await this.recipeRepository.findById(id);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
     }
