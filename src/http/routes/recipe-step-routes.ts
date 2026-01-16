@@ -22,3 +22,4 @@ recipeStepRoutes.get("/recipe/step/:id", (req,res,next) => {
     return makeFetchRecipeStepByRecipeIdController().handle(req,res,next)
 })
 
+export { recipeStepRoutes }

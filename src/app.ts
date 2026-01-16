@@ -5,6 +5,7 @@ import { userRoutes } from "./http/routes/user-route";
 import { favoriteRecipeRoutes } from "./http/routes/favorite-recipe-route";
 import { recipeIngredientRoutes } from "./http/routes/recipe-ingredient-route";
 import { recipeRoutes } from "./http/routes/recipe-route";
+import { recipeStepRoutes } from "./http/routes/recipe-step-routes";
 
 export const app = express();
 
@@ -15,5 +16,6 @@ app.use(userRoutes);
 app.use(favoriteRecipeRoutes);
 app.use(recipeIngredientRoutes);
 app.use(recipeRoutes);
+app.use(recipeStepRoutes);
 
 app.use(errorHandler);
