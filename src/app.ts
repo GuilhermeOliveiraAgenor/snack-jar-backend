@@ -1,9 +1,9 @@
 import express from "express";
 import { categoryRoutes } from "./http/routes/category-route";
 import { errorHandler } from "./http/middleware/error-handler";
-import { userRoutes } from "./http/routes/user-routes";
-import { favoriteRecipeRoutes } from "./http/routes/favorite-recipe-routes";
-import { recipeIngredientRoutes } from "./http/routes/recipe-ingredient-routes";
+import { userRoutes } from "./http/routes/user-route";
+import { favoriteRecipeRoutes } from "./http/routes/favorite-recipe-route";
+import { recipeIngredientRoutes } from "./http/routes/recipe-ingredient-route";
 import { recipeRoutes } from "./http/routes/recipe-route";
 
 export const app = express();
