@@ -4,17 +4,16 @@ import { PrismaRecipeIngredientRepository } from "../../infra/repositories/prism
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { CreateRecipeIngredientController } from "../controllers/recipe-ingredient/create-recipe-ingredient-controller";
 
-export function makeCreateRecipeIngredientController(){
-    const prisma = getPrismaClient()
+export function makeCreateRecipeIngredientController() {
+  const prisma = getPrismaClient();
 
-    const recipeIngredientRepository = new PrismaRecipeIngredientRepository(prisma);
-    const recipeRepository = new PrismaRecipeRepository(prisma);
-    
-    const createRecipeIngredientUseCase = new CreateRecipeIngredientUseCase(recipeIngredientRepository, recipeRepository)
+  const recipeIngredientRepository = new PrismaRecipeIngredientRepository(prisma);
+  const recipeRepository = new PrismaRecipeRepository(prisma);
 
-    return new CreateRecipeIngredientController(createRecipeIngredientUseCase)
+  const createRecipeIngredientUseCase = new CreateRecipeIngredientUseCase(
+    recipeIngredientRepository,
+    recipeRepository,
+  );
 
+  return new CreateRecipeIngredientController(createRecipeIngredientUseCase);
 }
-
-
-

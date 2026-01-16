@@ -6,7 +6,7 @@ import { makeAuthMiddleware } from "../factories/make-auth-middleware";
 
 const favoriteRecipeRoutes = Router();
 
-favoriteRecipeRoutes.use(makeAuthMiddleware())
+favoriteRecipeRoutes.use(makeAuthMiddleware());
 
 favoriteRecipeRoutes.post("/favorites", (req, res, next) => {
   return makeCreateFavoriteRecipeController().handle(req, res, next);
@@ -20,4 +20,4 @@ favoriteRecipeRoutes.delete("/favorites/:id", (req, res, next) => {
   return makeDeleteFavoriteRecipeController().handle(req, res, next);
 });
 
-export { favoriteRecipeRoutes }
+export { favoriteRecipeRoutes };
