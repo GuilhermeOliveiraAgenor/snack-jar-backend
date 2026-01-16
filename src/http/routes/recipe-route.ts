@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { makeCreateRecipeController } from "../factories/make-create-recipe-controller";
 import { makeAuthMiddleware } from "../factories/make-auth-middleware";
 import { makeEditRecipeController } from "../factories/make-edit-recipe-controller";
 import { makeDeleteRecipeController } from "../factories/make-delete-recipe-controller";
-import { FetchMyRecipesController } from "../controllers/recipe/fetch-my-recipes-controller";
+import { FetchMyRecipesController } from "../controllers/recipe/fetch-my-recipes.controller";
 import { makeFetchMyRecipesController } from "../factories/make-fetch-my-recipe-controller";
 import { makeFetchRecipeByTitleController } from "../factories/make-fetch-recipe-by-title-controller";
+import { makeCreateRecipeController } from "../factories/make-create-recipe.controller";
 
 const recipeRoutes = Router();
 

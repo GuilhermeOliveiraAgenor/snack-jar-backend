@@ -2,7 +2,7 @@ import { EditRecipeIngredientUseCase } from "../../application/use-cases/recipe-
 import { EditRecipeUseCase } from "../../application/use-cases/recipe/edit-recipe";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
-import { EditRecipeController } from "../controllers/recipe/edit-recipe-controller";
+import { EditRecipeController } from "../controllers/recipe/edit-recipe.controller";
 
 export function makeEditRecipeController(){
     const prisma = getPrismaClient()

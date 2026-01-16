@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { makeCreateCategoryController } from "../factories/make-create-category-controller";
-import { makeEditCategoryController } from "../factories/make-edit-category-controller";
-import { makeFetchCategoryController } from "../factories/make-fetch-category-controller";
+import { makeCreateCategoryController } from "../factories/make-create-category.controller";
+import { makeEditCategoryController } from "../factories/make-edit-category.controller";
+import { makeFetchCategoryController } from "../factories/make-fetch-category.controller";
 
 // instance router
 const categoryRoutes = Router();

@@ -2,7 +2,7 @@ import { FetchMyRecipesUseCase } from "../../application/use-cases/recipe/fetch-
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
-import { FetchMyRecipesController } from "../controllers/recipe/fetch-my-recipes-controller";
+import { FetchMyRecipesController } from "../controllers/recipe/fetch-my-recipes.controller";
 
 export function makeFetchMyRecipesController(){
     const prisma = getPrismaClient()

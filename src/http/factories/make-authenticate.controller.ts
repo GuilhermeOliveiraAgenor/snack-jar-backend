@@ -3,7 +3,7 @@ import { BcryptHashProvider } from "../../infra/auth/BcryptHashProvider";
 import { JwtService } from "../../infra/auth/JwtService";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
-import { AuthenticateUserController } from "../controllers/user/authenticate-user-controller";
+import { AuthenticateUserController } from "../controllers/user/authenticate-user.controller";
 
 export function makeAuthenticateUserController() {
   const prisma = getPrismaClient();

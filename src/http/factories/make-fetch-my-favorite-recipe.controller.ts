@@ -2,7 +2,7 @@ import { FetchMyFavoriteRecipesUseCase } from "../../application/use-cases/favor
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaFavoriteRecipeRepository } from "../../infra/repositories/prisma-favorite-recipe-repository";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
-import { FetchMyFavoriteRecipesController } from "../controllers/favorite-recipe/fetch-my-favorite-recipes";
+import { FetchMyFavoriteRecipesController } from "../controllers/favorite-recipe/fetch-my-favorite-recipes.controller";
 
 export function makeFetchMyFavoriteRecipesController() {
   const prisma = getPrismaClient();

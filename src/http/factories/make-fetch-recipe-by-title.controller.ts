@@ -2,7 +2,7 @@ import { FetchRecipeByTitleUseCase } from "../../application/use-cases/recipe/fe
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
-import { FetchRecipeByTitleController } from "../controllers/recipe/fetch-recipe-by-title-controller";
+import { FetchRecipeByTitleController } from "../controllers/recipe/fetch-recipe-by-title.controller";
 
 export function makeFetchRecipeByTitleController(){
     const prisma = getPrismaClient()

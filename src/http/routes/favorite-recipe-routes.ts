@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { makeCreateFavoriteRecipeController } from "../factories/make-create-favorite-recipe-controller";
-import { makeFetchMyFavoriteRecipesController } from "../factories/make-fetch-my-favorite-recipe";
-import { makeDeleteFavoriteRecipeController } from "../factories/make-delete-favorite-recipe-controller";
 import { makeAuthMiddleware } from "../factories/make-auth-middleware";
+import { makeCreateFavoriteRecipeController } from "../factories/make-create-favorite-recipe.controller";
+import { makeFetchMyFavoriteRecipesController } from "../factories/make-fetch-my-favorite-recipe.controller";
+import { makeDeleteFavoriteRecipeController } from "../factories/make-delete-favorite-recipe.controller";
 
 const favoriteRecipeRoutes = Router();
 

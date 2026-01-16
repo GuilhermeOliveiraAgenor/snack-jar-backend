@@ -1,7 +1,7 @@
 import { CreateFavoriteRecipeUseCase } from "../../application/use-cases/favorite-recipe/create-favorite-recipe";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaFavoriteRecipeRepository } from "../../infra/repositories/prisma-favorite-recipe-repository";
-import { CreateFavoriteRecipeController } from "../controllers/favorite-recipe/create-favorite-recipe-controller";
+import { CreateFavoriteRecipeController } from "../controllers/favorite-recipe/create-favorite-recipe.controller";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 
