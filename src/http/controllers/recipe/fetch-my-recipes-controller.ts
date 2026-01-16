@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { FetchCategoriesUseCase } from "../../../application/use-cases/category/fetch-categories";
 import { FetchMyRecipesUseCase } from "../../../application/use-cases/recipe/fetch-my-recipes";
 
 export class FetchMyRecipesController{
