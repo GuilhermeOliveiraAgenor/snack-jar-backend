@@ -12,7 +12,7 @@ interface FetchRecipeByTitleUseCaseRequest {
 type FetchRecipeByTitleUseCaseResponse = Either<
   NotFoundError,
   {
-    recipe: Recipe[];
+    recipes: Recipe[];
   }
 >;
 
@@ -32,10 +32,10 @@ export class FetchRecipeByTitleUseCase {
       return failure(new NotFoundError("user"));
     }
 
-    const recipe = await this.recipeRepository.findManyByTitle(userId, title);
+    const recipes = await this.recipeRepository.findManyByTitle(userId, title);
 
     return success({
-      recipe,
+      recipes,
     });
   }
 }

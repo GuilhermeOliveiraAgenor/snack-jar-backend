@@ -11,7 +11,7 @@ interface FetchMyFavoriteRecipesRequest {
 type FetchMyFavoriteRecipesResponse = Either<
   NotFoundError,
   {
-    favoriteRecipe: FavoriteRecipe[];
+    favoriteRecipes: FavoriteRecipe[];
   }
 >;
 
@@ -28,10 +28,12 @@ export class FetchMyFavoriteRecipesUseCase {
       return failure(new NotFoundError("user"));
     }
 
-    const favoriteRecipe = await this.favoriteRecipeRepository.findManyByUserId(user.id.toString());
+    const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(
+      user.id.toString(),
+    );
 
     return success({
-      favoriteRecipe,
+      favoriteRecipes,
     });
   }
 }

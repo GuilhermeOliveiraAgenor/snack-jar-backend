@@ -28,7 +28,7 @@ describe("Category Use Case", () => {
     }
   });
 
-  it("should not be able to create a category when name already exists", async () => {
+  it("should not be able to create a category name already exists", async () => {
     const category1 = makeCategory({
       name: "Salgados",
     });

@@ -8,6 +8,7 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { makeCategory } from "../../../../test/factories/make-category";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -100,5 +101,36 @@ describe("Edit Recipe Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+  it("should not be able to edit a recipe title already exists", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const category = makeCategory();
+    await inMemoryCategoriesRepository.create(category);
+
+    const recipe1 = makeRecipe({
+      title: "Bolo de Chocolate",
+      createdBy: user.id,
+      categoryId: category.id,
+    });
+    await inMemoryRecipeRepository.create(recipe1);
+
+    const recipe2 = makeRecipe({
+      createdBy: user.id,
+      categoryId: category.id,
+    });
+    await inMemoryRecipeRepository.create(recipe2);
+
+    const result = await sut.execute({
+      id: recipe2.id.toString(),
+      title: "Bolo de Chocolate",
+      description: "Receita de bolo de chocolate",
+      preparationTime: 60,
+      updatedBy: user.id.toString(),
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
 });

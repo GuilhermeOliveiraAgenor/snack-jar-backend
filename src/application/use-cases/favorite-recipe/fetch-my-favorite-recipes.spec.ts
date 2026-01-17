@@ -38,7 +38,7 @@ describe("Fetch My Favorite Recipes", () => {
 
     expect(result.isSuccess()).toBe(true);
     if (result.isSuccess()) {
-      expect(result.value.favoriteRecipe).toHaveLength(1);
+      expect(result.value.favoriteRecipes).toHaveLength(1);
     }
   });
   it("should not be able to fetch my favorite recipes when user id not exists", async () => {
