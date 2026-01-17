@@ -5,6 +5,7 @@ import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-
 import { makeFavoriteRecipe } from "../../../../test/factories/make-favorite-recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeUser } from "../../../../test/factories/make-user";
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 
 let inMemoryFavoriteRecipeRepository: InMemoryFavoriteRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -25,12 +26,14 @@ describe("Fetch My Favorite Recipes", () => {
 
     await inMemoryUserRepository.create(user);
 
-    const favoriteRecipe = makeFavoriteRecipe({ userId: user.id });
+    const favoriteRecipe = makeFavoriteRecipe({
+      createdBy: new UniqueEntityID(user.id.toString()),
+    });
 
     await inMemoryFavoriteRecipeRepository.create(favoriteRecipe);
 
     const result = await sut.execute({
-      userId: favoriteRecipe.userId.toString(),
+      createdBy: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -39,7 +42,7 @@ describe("Fetch My Favorite Recipes", () => {
     }
   });
   it("should not be able to fetch my favorite recipes when user id not exists", async () => {
-    const result = await sut.execute({ userId: "0" });
+    const result = await sut.execute({ createdBy: "0" });
 
     expect(result.isError()).toBe(true);
     expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);

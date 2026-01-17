@@ -9,11 +9,11 @@ import { UserRepository } from "../../repositories/user-repository";
 
 interface CreateFavoriteRecipeUseCaseRequest {
   recipeId: string;
-  userId: string;
+  createdBy: string;
 }
 
 type CreateFavoriteRecipeUseCaseResponse = Either<
-  AlreadyExistsError,
+  AlreadyExistsError | NotFoundError,
   {
     favoriteRecipe: FavoriteRecipe;
   }
@@ -27,7 +27,7 @@ export class CreateFavoriteRecipeUseCase {
   ) {}
   async execute({
     recipeId,
-    userId,
+    createdBy,
   }: CreateFavoriteRecipeUseCaseRequest): Promise<CreateFavoriteRecipeUseCaseResponse> {
     // verify if recipe id exists
     const recipe = await this.recipeRepository.findById(recipeId);
@@ -36,19 +36,16 @@ export class CreateFavoriteRecipeUseCase {
     }
 
     // verify if user id exists
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findById(createdBy);
     if (!user) {
       return failure(new NotFoundError("user"));
     }
 
-    if (user.id.toString() != userId) {
-      return failure(new )
-    }
-
-    const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(userId);
+    // verify if favorite recipe already exists
+    const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(createdBy);
     const alreadyExists = favoriteRecipes.some(
       (favorite) =>
-        favorite.recipeId.toString() === recipeId && favorite.userId.toString() === userId,
+        favorite.recipeId.toString() === recipeId && favorite.createdBy.toString() === createdBy,
     );
     if (alreadyExists) {
       return failure(new AlreadyExistsError("favorite-recipe"));
@@ -56,7 +53,7 @@ export class CreateFavoriteRecipeUseCase {
 
     const favoriteRecipe = FavoriteRecipe.create({
       recipeId: new UniqueEntityID(recipeId),
-      userId: new UniqueEntityID(userId),
+      createdBy: new UniqueEntityID(createdBy),
     });
 
     await this.favoriteRecipeRepository.create(favoriteRecipe);

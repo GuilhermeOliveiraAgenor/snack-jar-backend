@@ -11,11 +11,11 @@ export class CreateFavoriteRecipeController {
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.user.id;
+      const createdBy = req.user.id;
 
       const { recipeId } = requestParams.parse(req.params);
 
-      const result = await this.createFavoriteRecipeUseCase.execute({ recipeId, userId });
+      const result = await this.createFavoriteRecipeUseCase.execute({ recipeId, createdBy });
 
       if (result.isError()) {
         throw result.value;

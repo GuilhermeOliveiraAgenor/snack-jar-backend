@@ -21,5 +21,8 @@
     "invalidCredentials":{
             "user":"Email or password are invalid"
     },
-    "internalServer": "INTERNAL_SERVER_ERROR"
+    "internalServer": "INTERNAL_SERVER_ERROR",
+    "not-allowed":{
+        "user": "User not allowed"
+    }
 }

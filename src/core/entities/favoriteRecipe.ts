@@ -2,9 +2,10 @@ import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
 
 export interface FavoriteRecipeProps {
   recipeId: UniqueEntityID;
-  userId: UniqueEntityID;
   createdAt: Date | null;
   deletedAt: Date | null;
+  createdBy: UniqueEntityID;
+  deletedBy: UniqueEntityID | null;
 }
 
 export class FavoriteRecipe {
@@ -13,11 +14,16 @@ export class FavoriteRecipe {
     private props: FavoriteRecipeProps,
   ) {}
 
-  static create(props: { recipeId: UniqueEntityID; userId: UniqueEntityID }, id?: UniqueEntityID) {
+  static create(
+    props: { recipeId: UniqueEntityID; createdBy: UniqueEntityID },
+    id?: UniqueEntityID,
+  ) {
     const favoriteRecipe = new FavoriteRecipe(id ?? new UniqueEntityID(), {
       ...props,
       createdAt: new Date(),
       deletedAt: null,
+      createdBy: props.createdBy,
+      deletedBy: null,
     });
     return favoriteRecipe;
   }
@@ -30,8 +36,12 @@ export class FavoriteRecipe {
     return this.props.recipeId;
   }
 
-  get userId() {
-    return this.props.userId;
+  get createdBy(): UniqueEntityID {
+    return this.props.createdBy;
+  }
+
+  get deletedBy(): UniqueEntityID | null {
+    return this.props.deletedBy;
   }
 
   get createdAt(): Date | null {
@@ -46,8 +56,12 @@ export class FavoriteRecipe {
     this.props.recipeId = recipeId;
   }
 
-  set userId(userId: UniqueEntityID) {
-    this.props.userId = userId;
+  set createdBy(createdBy: UniqueEntityID) {
+    this.props.createdBy = createdBy;
+  }
+
+  set deletedBy(deletedBy: UniqueEntityID) {
+    this.props.deletedBy = deletedBy;
   }
 
   set createdAt(createdAt: Date) {
