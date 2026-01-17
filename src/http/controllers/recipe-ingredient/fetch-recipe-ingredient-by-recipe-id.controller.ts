@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
-import { FetchRecipeIngredientByRecipeIdUseCase, FetchRecipeIngredientsByRecipeIdUseCase } from "../../../application/use-cases/recipe-ingredient/fetch-recipe-ingredient-by-recipe-id";
+import { FetchRecipeIngredientByRecipeIdUseCase } from "../../../application/use-cases/recipe-ingredient/fetch-recipe-ingredient-by-recipe-id";
 
 const requestParams = z.object({
   id: z.string(),

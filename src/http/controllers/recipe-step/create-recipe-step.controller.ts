@@ -19,7 +19,7 @@ export class CreateRecipeStepController {
       const userId = req.user.id;
 
       const { recipeId } = requestParams.parse(req.params);
-      const { step,description } = createRecipeStepSchema.parse(req.body);
+      const { step, description } = createRecipeStepSchema.parse(req.body);
 
       const result = await this.createRecipeStepUseCase.execute({
         step,

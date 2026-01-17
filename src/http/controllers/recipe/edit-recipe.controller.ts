@@ -3,45 +3,43 @@ import { EditRecipeUseCase } from "../../../application/use-cases/recipe/edit-re
 import { Request, Response, NextFunction } from "express";
 
 const requestParams = z.object({
-    id: z.string()
-})
+  id: z.string(),
+});
 
 const editRecipeSchema = z.object({
   title: z.string().min(1).optional(),
   description: z.string().min(1).optional(),
   preparationTime: z.number().optional(),
-})
+});
 
-export class EditRecipeController{
-    constructor(private readonly editRecipeUseCase: EditRecipeUseCase){}
-    async handle(req: Request,res: Response,next: NextFunction){
-        try {
-            const userId = req.user.id
-            const { id } = requestParams.parse(req.params)
-            const { title,description,preparationTime} = editRecipeSchema.parse(req.body)
+export class EditRecipeController {
+  constructor(private readonly editRecipeUseCase: EditRecipeUseCase) {}
+  async handle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user.id;
+      const { id } = requestParams.parse(req.params);
+      const { title, description, preparationTime } = editRecipeSchema.parse(req.body);
 
-            const data: {
-                id: string;
-                updatedBy: string;
-                title?: string;
-                description?: string;
-                preparationTime?: number;
-              } = {
-                id,
-                updatedBy: userId,
-              };
+      const data: {
+        id: string;
+        updatedBy: string;
+        title?: string;
+        description?: string;
+        preparationTime?: number;
+      } = {
+        id,
+        updatedBy: userId,
+      };
 
-            const result = await this.editRecipeUseCase.execute(data)
+      const result = await this.editRecipeUseCase.execute(data);
 
-            if(result.isError()){
-                throw result.value
-            }
+      if (result.isError()) {
+        throw result.value;
+      }
 
-            return res.status(204).json(result.value.recipe)
-
-        } catch (error) {
-            next(error)
-        }
+      return res.status(204).json(result.value.recipe);
+    } catch (error) {
+      next(error);
     }
+  }
 }
-

@@ -7,7 +7,7 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 let inMemoryFavoriteRecipeRepository: InMemoryFavoriteRecipeRepository;
 let sut: DeleteFavoriteRecipeUseCase;
 
-describe(() => {
+describe("Delete Favorite Recipe Use Case", () => {
   beforeEach(() => {
     inMemoryFavoriteRecipeRepository = new InMemoryFavoriteRecipeRepository();
     sut = new DeleteFavoriteRecipeUseCase(inMemoryFavoriteRecipeRepository);

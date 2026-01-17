@@ -1,6 +1,5 @@
 import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeStepRepository } from "../../../../test/repositories/in-memory-recipe-step";
-import { DeleteRecipeStepUseCase } from "./delete-recipe-step";
 import { makeRecipeStep } from "../../../../test/factories/make-recipe-step";
 import { makeUser } from "../../../../test/factories/make-user";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
@@ -13,21 +12,24 @@ let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
-let sut: FetchRecipeStepByRecipeIdUseCase
+let sut: FetchRecipeStepByRecipeIdUseCase;
 
 describe("Fetch Recipe Step By Recipe Id", () => {
   beforeEach(() => {
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
-    sut = new FetchRecipeStepByRecipeIdUseCase(inMemoryRecipeStepRepository, inMemoryRecipeRepository);
+    sut = new FetchRecipeStepByRecipeIdUseCase(
+      inMemoryRecipeStepRepository,
+      inMemoryRecipeRepository,
+    );
   });
   it("should be able to fetch recipe step by recipe id", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
-    const recipe = makeRecipe()
-    await inMemoryRecipeRepository.create(recipe)
+    const recipe = makeRecipe();
+    await inMemoryRecipeRepository.create(recipe);
 
     const recipeStep = makeRecipeStep();
     await inMemoryRecipeStepRepository.create(recipeStep);
@@ -40,8 +42,6 @@ describe("Fetch Recipe Step By Recipe Id", () => {
     expect(inMemoryRecipeStepRepository.items).toHaveLength(1);
   });
   it("should not be able to fetch recipe step when id does not exists", async () => {
-    const user = makeUser();
-
     const result = await sut.execute({
       id: "0",
     });

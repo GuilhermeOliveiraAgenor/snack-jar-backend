@@ -7,8 +7,8 @@ const requestParams = z.object({
 });
 
 const editRecipeStepSchema = z.object({
-    step: z.number().min(1).optional(),
-    description: z.string().trim().min(1).optional(),
+  step: z.number().min(1).optional(),
+  description: z.string().trim().min(1).optional(),
 });
 
 export class EditRecipeStepController {
@@ -17,16 +17,12 @@ export class EditRecipeStepController {
     try {
       const userId = req.user.id;
       const { id } = requestParams.parse(req.params);
-      const { step, description } = editRecipeStepSchema.parse(req.body);
+      const body = editRecipeStepSchema.parse(req.body);
 
-      const data: {
-        id: string;
-        updatedBy: string;
-        step?: number;
-        description?: string;
-      } = {
+      const data = {
         id,
         updatedBy: userId,
+        ...body,
       };
 
       const result = await this.editRecipeStepUseCase.execute(data);

@@ -12,7 +12,8 @@
     },
     "already-exists": {
         "category": "CATEGORY_ALREADY_EXISTS",
-        "user": "USER_ALREADY_EXISTS"
+        "user": "USER_ALREADY_EXISTS",
+        "favorite-recipe": "FAVORITE_RECIPE_ALREADY_EXISTS"
     },
     "recipe-null":{
         "recipe": "RECIPE_CANT_BE_NULL"

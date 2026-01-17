@@ -7,9 +7,7 @@ const requestParams = z.object({
 });
 
 export class FetchRecipeStepByRecipeIdController {
-  constructor(
-    private readonly fetchRecipeStepByIdUseCase: FetchRecipeStepByRecipeIdUseCase,
-  ) {}
+  constructor(private readonly fetchRecipeStepByIdUseCase: FetchRecipeStepByRecipeIdUseCase) {}
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = requestParams.parse(req.params);

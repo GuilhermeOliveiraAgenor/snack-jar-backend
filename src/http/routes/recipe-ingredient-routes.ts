@@ -21,8 +21,8 @@ recipeIngredientRoutes.delete("/recipe/ingredient/:id", (req, res, next) => {
   return makeDeleteRecipeIngredientController().handle(req, res, next);
 });
 
-recipeIngredientRoutes.get("/recipe/ingredient/:id", (req,res,next) =>{
-    return makeFetchRecipeIngredientByRecipeIdController().handle(req,res,next)
-})
+recipeIngredientRoutes.get("/recipe/ingredient/:id", (req, res, next) => {
+  return makeFetchRecipeIngredientByRecipeIdController().handle(req, res, next);
+});
 
 export { recipeIngredientRoutes };

@@ -4,14 +4,13 @@ import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-r
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
 import { FetchMyRecipesController } from "../controllers/recipe/fetch-my-recipes.controller";
 
-export function makeFetchMyRecipesController(){
-    const prisma = getPrismaClient()
+export function makeFetchMyRecipesController() {
+  const prisma = getPrismaClient();
 
-    const recipeRepository = new PrismaRecipeRepository(prisma)
-    const userRepository = new PrismaUserRepository(prisma)
+  const recipeRepository = new PrismaRecipeRepository(prisma);
+  const userRepository = new PrismaUserRepository(prisma);
 
-    const fetchMyRecipesUseCase = new FetchMyRecipesUseCase(recipeRepository,userRepository)
+  const fetchMyRecipesUseCase = new FetchMyRecipesUseCase(recipeRepository, userRepository);
 
-    return new FetchMyRecipesController(fetchMyRecipesUseCase)
-
+  return new FetchMyRecipesController(fetchMyRecipesUseCase);
 }

@@ -41,6 +41,19 @@ export class CreateFavoriteRecipeUseCase {
       return failure(new NotFoundError("user"));
     }
 
+    if (user.id.toString() != userId) {
+      return failure(new )
+    }
+
+    const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(userId);
+    const alreadyExists = favoriteRecipes.some(
+      (favorite) =>
+        favorite.recipeId.toString() === recipeId && favorite.userId.toString() === userId,
+    );
+    if (alreadyExists) {
+      return failure(new AlreadyExistsError("favorite-recipe"));
+    }
+
     const favoriteRecipe = FavoriteRecipe.create({
       recipeId: new UniqueEntityID(recipeId),
       userId: new UniqueEntityID(userId),
