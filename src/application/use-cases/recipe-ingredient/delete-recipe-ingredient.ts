@@ -1,5 +1,6 @@
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { Either, failure, success } from "../../../core/either";
+import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 
@@ -8,7 +9,7 @@ interface DeleteRecipeIngredientUseCaseRequest {
   deletedBy: string;
 }
 
-type DeleteRecipeIngredientUseCaseResponse = Either<NotFoundError, null>;
+type DeleteRecipeIngredientUseCaseResponse = Either<NotFoundError | NotAllowedError, null>;
 
 export class DeleteRecipeIngredientUseCase {
   constructor(private recipeIngredient: RecipeIngredientRepository) {}
@@ -20,6 +21,10 @@ export class DeleteRecipeIngredientUseCase {
     const recipeIngredient = await this.recipeIngredient.findById(id);
     if (!recipeIngredient) {
       return failure(new NotFoundError("recipe-ingredient"));
+    }
+
+    if (recipeIngredient.createdBy.toString() != deletedBy) {
+      return failure(new NotAllowedError("user"));
     }
 
     recipeIngredient.deletedBy = new UniqueEntityID(deletedBy);

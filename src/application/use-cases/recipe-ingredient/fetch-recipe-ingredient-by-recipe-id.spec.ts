@@ -24,18 +24,16 @@ describe("Fetch Recipe Ingredient By Recipe Id", () => {
 
   it("should be able to fetch recipe ingredient by recipe id", async () => {
     const recipe = makeRecipe();
-
     await inMemoryRecipeRepository.create(recipe);
 
     const recipeIngredient = makeRecipeIngredient({ recipeId: recipe.id, ingredient: "Açucar" });
-
     await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
     const result = await sut.execute({ id: recipe.id.toString() });
 
     expect(result.isSuccess()).toBe(true);
     if (result.isSuccess()) {
-      expect(result.value.recipeIngredient[0]).toMatchObject({
+      expect(result.value.recipeIngredients[0]).toMatchObject({
         ingredient: "Açucar",
       });
       expect(

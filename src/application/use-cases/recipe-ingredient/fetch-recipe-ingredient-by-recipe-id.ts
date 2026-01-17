@@ -10,7 +10,7 @@ interface FetchRecipeIngredientByRecipeIdRequest {
 
 type FetchRecipeIngredientByRecipeIdResponse = Either<
   NotFoundError,
-  { recipeIngredient: RecipeIngredient[] }
+  { recipeIngredients: RecipeIngredient[] }
 >;
 
 export class FetchRecipeIngredientByRecipeIdUseCase {
@@ -27,10 +27,10 @@ export class FetchRecipeIngredientByRecipeIdUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
-    const recipeIngredient = await this.recipeIngredientRepository.findManyByRecipeId(id);
+    const recipeIngredients = await this.recipeIngredientRepository.findManyByRecipeId(id);
 
     return success({
-      recipeIngredient,
+      recipeIngredients,
     });
   }
 }

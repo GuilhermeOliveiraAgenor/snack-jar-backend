@@ -20,7 +20,7 @@ export class FetchRecipeIngredientByRecipeIdController {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.recipeIngredient);
+      return res.status(200).json(result.value.recipeIngredients);
     } catch (error) {
       next(error);
     }
