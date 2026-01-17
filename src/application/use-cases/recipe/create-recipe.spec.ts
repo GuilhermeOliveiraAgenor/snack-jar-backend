@@ -8,11 +8,18 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { InMemoryRecipeStepRepository } from "../../../../test/repositories/in-memory-recipe-step";
 import { makeCategory } from "../../../../test/factories/make-category";
+import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
+import { makeUser } from "../../../../test/factories/make-user";
+import { makeRecipe } from "../../../../test/factories/make-recipe";
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryUserRepository: InMemoryUserRepository;
+
 let sut: CreateRecipeUseCase;
 
 describe("Create Recipe Use Case", () => {
@@ -21,17 +28,21 @@ describe("Create Recipe Use Case", () => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
     inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
+    inMemoryUserRepository = new InMemoryUserRepository();
     sut = new CreateRecipeUseCase(
       inMemoryRecipeRepository,
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeStepRepository,
       inMemoryCategoriesRepository,
+      inMemoryUserRepository,
     );
   });
 
   it("should be able to create a recipe", async () => {
-    const category = makeCategory();
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
 
+    const category = makeCategory();
     await inMemoryCategoriesRepository.create(category);
 
     const result = await sut.execute({
@@ -39,7 +50,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de cenoura",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: "user-1",
+      createdBy: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -100,6 +111,9 @@ describe("Create Recipe Use Case", () => {
     ]);
   });
   it("should be able to create a recipe with minimum data", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
     const category = Category.create({
       name: "Salgados",
       description: "Pratos salgados",
@@ -112,7 +126,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: "user-1",
+      createdBy: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -140,7 +154,151 @@ describe("Create Recipe Use Case", () => {
       });
     }
   });
+  it("should not be able to create a recipe when title already exists", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const category = Category.create({
+      name: "Salgados",
+      description: "Pratos salgados",
+    });
+
+    await inMemoryCategoriesRepository.create(category);
+
+    const recipe = makeRecipe({
+      title: "Bolo de Laranja",
+      createdBy: new UniqueEntityID(user.id.toString()),
+      categoryId: category.id,
+    });
+
+    await inMemoryRecipeRepository.create(recipe);
+
+    const result = await sut.execute({
+      // create recipe
+      title: "Bolo de Laranja",
+      description: "Receita de bolo de laranja",
+      preparationTime: 60,
+      categoryId: category.id.toString(),
+      createdBy: user.id.toString(),
+
+      recipeIngredient: [
+        {
+          ingredient: "Açucar",
+          amount: "1",
+          unit: "Kg",
+        },
+      ],
+
+      recipeStep: [
+        {
+          step: 1,
+          description: "Jogue o açucar em um pote",
+        },
+      ],
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
+    expect(inMemoryRecipeRepository.items).toHaveLength(1);
+  });
   it("should not be able to create a recipe when category does not exist", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const result = await sut.execute({
+      // create recipe
+      title: "Bolo de Laranja",
+      description: "Receita de bolo de laranja",
+      preparationTime: 60,
+      categoryId: "0",
+      createdBy: user.id.toString(),
+
+      recipeIngredient: [
+        {
+          ingredient: "Açucar",
+          amount: "1",
+          unit: "Kg",
+        },
+      ],
+
+      recipeStep: [
+        {
+          step: 1,
+          description: "Jogue o açucar em um pote",
+        },
+      ],
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotFoundError);
+    expect(inMemoryRecipeRepository.items).toHaveLength(0);
+  });
+  it("should not be able to create a recipe without ingredients", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const category = Category.create({
+      name: "Salgados",
+      description: "Pratos salgados",
+    });
+
+    await inMemoryCategoriesRepository.create(category);
+
+    const result = await sut.execute({
+      title: "Bolo de Laranja",
+      description: "Receita de bolo de laranja",
+      preparationTime: 60,
+      categoryId: category.id.toString(),
+      createdBy: user.id.toString(),
+
+      recipeIngredient: [],
+
+      recipeStep: [
+        {
+          step: 1,
+          description: "Jogue a farinha no pote",
+        },
+      ],
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(RecipeNullError);
+    expect(inMemoryRecipeRepository.items).toHaveLength(0);
+  });
+  it("should not be able to create a recipe without steps", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const category = Category.create({
+      name: "Salgados",
+      description: "Pratos salgados",
+    });
+
+    await inMemoryCategoriesRepository.create(category);
+
+    const result = await sut.execute({
+      title: "Bolo de Laranja",
+      description: "Receita de bolo de laranja",
+      preparationTime: 60,
+      categoryId: category.id.toString(),
+      createdBy: user.id.toString(),
+
+      recipeIngredient: [
+        {
+          ingredient: "Farinha",
+          amount: "1",
+          unit: "Kg",
+        },
+      ],
+
+      recipeStep: [],
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(RecipeNullError);
+    expect(inMemoryRecipeRepository.items).toHaveLength(0);
+  });
+  it("should not be able to create a recipe when user id does not exist", async () => {
     const result = await sut.execute({
       // create recipe
       title: "Bolo de Laranja",
@@ -167,65 +325,6 @@ describe("Create Recipe Use Case", () => {
 
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
-    expect(inMemoryRecipeRepository.items).toHaveLength(0);
-  });
-  it("should not be able to create a recipe without ingredients", async () => {
-    const category = Category.create({
-      name: "Salgados",
-      description: "Pratos salgados",
-    });
-
-    await inMemoryCategoriesRepository.create(category);
-
-    const result = await sut.execute({
-      title: "Bolo de Laranja",
-      description: "Receita de bolo de laranja",
-      preparationTime: 60,
-      categoryId: category.id.toString(),
-      createdBy: "user-1",
-
-      recipeIngredient: [],
-
-      recipeStep: [
-        {
-          step: 1,
-          description: "Jogue a farinha no pote",
-        },
-      ],
-    });
-
-    expect(result.isError()).toBe(true);
-    expect(result.value).toBeInstanceOf(RecipeNullError);
-    expect(inMemoryRecipeRepository.items).toHaveLength(0);
-  });
-  it("should not be able to create a recipe without steps", async () => {
-    const category = Category.create({
-      name: "Salgados",
-      description: "Pratos salgados",
-    });
-
-    await inMemoryCategoriesRepository.create(category);
-
-    const result = await sut.execute({
-      title: "Bolo de Laranja",
-      description: "Receita de bolo de laranja",
-      preparationTime: 60,
-      categoryId: category.id.toString(),
-      createdBy: "user-1",
-
-      recipeIngredient: [
-        {
-          ingredient: "Farinha",
-          amount: "1",
-          unit: "Kg",
-        },
-      ],
-
-      recipeStep: [],
-    });
-
-    expect(result.isError()).toBe(true);
-    expect(result.value).toBeInstanceOf(RecipeNullError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
 });

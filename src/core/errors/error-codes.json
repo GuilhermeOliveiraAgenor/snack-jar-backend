@@ -19,7 +19,8 @@
         "recipe": "RECIPE_CANT_BE_NULL"
     },
     "invalidCredentials":{
-            "user":"Email or password are invalid"
+            "user":"Email or password are invalid",
+            "recipe": "Preparation time can't be 0"
     },
     "internalServer": "INTERNAL_SERVER_ERROR",
     "not-allowed":{

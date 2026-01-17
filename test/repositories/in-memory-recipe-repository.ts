@@ -23,9 +23,9 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     }
     return recipe;
   }
-  async findManyByTitle(userId: string, title: string): Promise<Recipe[]> {
+  async findManyByTitle(title: string, createdBy: string): Promise<Recipe[]> {
     const recipe = this.items.filter(
-      (item) => item.title === title && item.createdBy == new UniqueEntityID(userId),
+      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
     );
     return recipe;
   }

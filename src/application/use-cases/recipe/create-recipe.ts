@@ -2,7 +2,6 @@ import { Either, failure, success } from "../../../core/either";
 import { Recipe } from "../../../core/entities/recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
-
 import { RecipeRepository } from "../../repositories/recipe-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
@@ -11,6 +10,9 @@ import { RecipeStatus } from "../../../core/enum/enum-status";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
+import { UserRepository } from "../../repositories/user-repository";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -36,7 +38,7 @@ interface CreateRecipeUseCaseRequest {
 }
 
 type CreateRecipeUseCaseResponse = Either<
-  NotFoundError,
+  NotFoundError | RecipeNullError | AlreadyExistsError | InvalidCredentialsError,
   {
     recipe: Recipe;
   }
@@ -48,6 +50,7 @@ export class CreateRecipeUseCase {
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeStepRepository: RecipeStepRepository,
     private categoryRepository: CategoriesRepository,
+    private userRepository: UserRepository,
   ) {}
 
   async execute({
@@ -69,6 +72,20 @@ export class CreateRecipeUseCase {
     // verify if lists are null
     if (recipeIngredient.length === 0 || recipeStep.length === 0) {
       return failure(new RecipeNullError("recipe"));
+    }
+
+    const user = await this.userRepository.findById(createdBy);
+    if (!user) {
+      return failure(new NotFoundError("user"));
+    }
+
+    const alreadyExists = await this.recipeRepository.findManyByTitle(title, createdBy);
+    if (alreadyExists.length > 0) {
+      return failure(new AlreadyExistsError("recipe"));
+    }
+
+    if (preparationTime <= 0) {
+      return failure(new InvalidCredentialsError("recipe"));
     }
 
     // create recipe

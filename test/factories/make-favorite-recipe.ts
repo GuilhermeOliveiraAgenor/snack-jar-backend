@@ -4,7 +4,7 @@ import { UniqueEntityID } from "../../src/core/domain/value-objects/unique-entit
 export function makeFavoriteRecipe(override?: Partial<FavoriteRecipeProps>) {
   return FavoriteRecipe.create({
     recipeId: new UniqueEntityID(),
-    userId: new UniqueEntityID(),
+    createdBy: new UniqueEntityID(),
     ...override,
   });
 }

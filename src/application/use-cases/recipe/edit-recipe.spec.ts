@@ -3,21 +3,38 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { EditRecipeUseCase } from "./edit-recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
+import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
+import { makeUser } from "../../../../test/factories/make-user";
+import { makeCategory } from "../../../../test/factories/make-category";
+import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { NotAllowedError } from "../../errors/not-allowed-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
+let inMemoryUserRepository: InMemoryUserRepository;
+let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+
 let sut: EditRecipeUseCase;
 
 describe("Edit Recipe Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
+    inMemoryUserRepository = new InMemoryUserRepository();
+    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
 
-    sut = new EditRecipeUseCase(inMemoryRecipeRepository);
+    sut = new EditRecipeUseCase(inMemoryRecipeRepository, inMemoryUserRepository);
   });
   it("should be able to edit a recipe", async () => {
-    // create recipe
-    const recipe = makeRecipe();
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
 
-    // pass to repository
+    const category = makeCategory();
+    await inMemoryCategoriesRepository.create(category);
+
+    // create recipe
+    const recipe = makeRecipe({
+      createdBy: user.id,
+      categoryId: category.id,
+    });
     await inMemoryRecipeRepository.create(recipe);
 
     //pass to use case
@@ -26,7 +43,7 @@ describe("Edit Recipe Use Case", () => {
       title: "Bolo de Chocolate",
       description: "Receita de bolo de chocolate",
       preparationTime: 50,
-      updatedBy: "user-1",
+      updatedBy: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -39,18 +56,49 @@ describe("Edit Recipe Use Case", () => {
       });
     }
   });
-
   it("should not be able to edit a recipe when id does not exist", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const category = makeCategory();
+    await inMemoryCategoriesRepository.create(category);
+
     const result = await sut.execute({
       id: "0",
       title: "Bolo de Cenoura",
       description: "Receita de bolo de cenoura",
       preparationTime: 60,
-      updatedBy: "user-1",
+      updatedBy: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
-    expect(inMemoryRecipeRepository.items).toHaveLength(0);
     expect(result.value).toBeInstanceOf(NotFoundError);
+  });
+  it("should not be able to edit a recipe when user is not creator", async () => {
+    const user1 = makeUser();
+    await inMemoryUserRepository.create(user1);
+    const user2 = makeUser();
+    await inMemoryUserRepository.create(user2);
+
+    const category = makeCategory();
+    await inMemoryCategoriesRepository.create(category);
+
+    const recipe = makeRecipe({
+      createdBy: user1.id,
+      categoryId: category.id,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+
+    const result = await sut.execute({
+      id: recipe.id.toString(),
+      title: "Bolo de Cenoura",
+      description: "Receita de bolo de cenoura",
+      preparationTime: 60,
+      updatedBy: user2.id.toString(),
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(inMemoryRecipeRepository.items).toHaveLength(1);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });
