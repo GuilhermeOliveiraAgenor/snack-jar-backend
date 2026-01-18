@@ -22,7 +22,7 @@ describe("Edit Recipe Use Case", () => {
     inMemoryUserRepository = new InMemoryUserRepository();
     inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
 
-    sut = new EditRecipeUseCase(inMemoryRecipeRepository, inMemoryUserRepository);
+    sut = new EditRecipeUseCase(inMemoryRecipeRepository);
   });
   it("should be able to edit a recipe", async () => {
     const user = makeUser();

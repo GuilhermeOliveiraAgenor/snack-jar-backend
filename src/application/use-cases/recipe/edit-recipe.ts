@@ -6,7 +6,6 @@ import { InvalidCredentialsError } from "../../errors/invalid-credentials-error"
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
-import { UserRepository } from "../../repositories/user-repository";
 
 interface EditRecipeUseCaseRequest {
   id: string;
@@ -24,10 +23,7 @@ type EditRecipeUseCaseResponse = Either<
 >;
 
 export class EditRecipeUseCase {
-  constructor(
-    private recipeRepository: RecipeRepository,
-    private userRepository: UserRepository,
-  ) {}
+  constructor(private recipeRepository: RecipeRepository) {}
   async execute({
     id,
     title,
@@ -39,11 +35,6 @@ export class EditRecipeUseCase {
     const recipe = await this.recipeRepository.findById(id);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
-    }
-
-    const user = await this.userRepository.findById(updatedBy);
-    if (!user) {
-      return failure(new NotFoundError("user"));
     }
 
     if (recipe.createdBy.toString() != updatedBy) {

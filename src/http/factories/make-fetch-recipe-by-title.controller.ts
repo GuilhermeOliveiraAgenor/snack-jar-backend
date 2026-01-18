@@ -1,4 +1,4 @@
-import { FetchRecipeByTitleUseCase } from "../../application/use-cases/recipe/fetch-recipe-by-title";
+import { FetchRecipeByTitleUseCase } from "../../application/use-cases/recipe/get-recipe-by-title";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
