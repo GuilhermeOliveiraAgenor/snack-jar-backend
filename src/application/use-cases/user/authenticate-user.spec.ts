@@ -67,4 +67,13 @@ describe("Authenticate User Use Case", () => {
     expect(inMemoryUserRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(InvalidCredentialsError);
   });
+  it("should store hashed password and not plain text", async () => {
+    await sutCreate.execute({
+      name: "João",
+      email: "joao@gmail.com",
+      password: "123456",
+    });
+
+    expect(inMemoryUserRepository.items[0]?.password).not.toBe("123456");
+  });
 });

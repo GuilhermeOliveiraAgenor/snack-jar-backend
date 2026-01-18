@@ -41,10 +41,8 @@ export class EditRecipeStepUseCase {
     const steps = await this.recipeStepRepository.findManyByRecipeId(
       recipeStep.recipeId.toString(),
     );
-    console.log(steps);
 
-    const stepDuplicated = steps.some((s) => s.step === step);
-    console.log(stepDuplicated);
+    const stepDuplicated = steps.some((s) => s.step === step && s.id.toString() !== id);
 
     if (stepDuplicated) {
       return failure(new AlreadyExistsError("recipe-step"));

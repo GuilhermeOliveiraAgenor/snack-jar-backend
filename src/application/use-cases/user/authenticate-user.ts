@@ -38,6 +38,6 @@ export class AuthenticateUserUseCase {
       return failure(new InvalidCredentialsError("user"));
     }
 
-    return success({ userId: user.id });
+    return success({ userId: user.id.toString() });
   }
 }
