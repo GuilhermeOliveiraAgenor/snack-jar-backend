@@ -16,7 +16,7 @@ interface CreateRecipeStepUseCaseRequest {
 }
 
 type CreateRecipeStepUseCaseResponse = Either<
-  NotFoundError | NotAllowedError,
+  NotFoundError | NotAllowedError | AlreadyExistsError | InvalidCredentialsError,
   {
     recipeStep: RecipeStep;
   }
