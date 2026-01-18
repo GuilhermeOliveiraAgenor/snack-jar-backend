@@ -92,9 +92,6 @@ export class CreateRecipeUseCase {
       createdBy: new UniqueEntityID(createdBy),
     });
 
-    // pass to repository
-    await this.recipeRepository.create(recipe);
-
     // map recipe ingredient created
     const recipeIngredientToCreate = recipeIngredient.map((item) =>
       RecipeIngredient.create({
@@ -105,8 +102,6 @@ export class CreateRecipeUseCase {
         createdBy: new UniqueEntityID(recipe.createdBy?.toString()),
       }),
     );
-
-    await this.recipeIngredientRepository.createMany(recipeIngredientToCreate);
 
     // map recipe step created
     const recipeStepToCreate = recipeStep.map((item) =>
@@ -130,6 +125,8 @@ export class CreateRecipeUseCase {
       return failure(new InvalidFieldsError("recipeStep"));
     }
 
+    await this.recipeRepository.create(recipe);
+    await this.recipeIngredientRepository.createMany(recipeIngredientToCreate);
     await this.recipeStepRepository.createMany(recipeStepToCreate);
 
     return success({
