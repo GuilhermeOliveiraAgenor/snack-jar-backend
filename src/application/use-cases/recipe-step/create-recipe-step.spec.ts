@@ -8,6 +8,8 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
+import { makeRecipeStep } from "../../../../test/factories/make-recipe-step";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
 
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -82,5 +84,32 @@ describe("Create Recipe Step Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+  it("should not be able to create a recipe step already exists", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipe = makeRecipe({
+      createdBy: user.id,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+
+    const recipeStep = makeRecipeStep({
+      step: 1,
+      createdBy: user.id,
+      recipeId: recipe.id,
+    });
+
+    await inMemoryRecipeStepRepository.create(recipeStep);
+
+    const result = await sut.execute({
+      recipeId: recipe.id.toString(),
+      step: 1,
+      description: "Jogue na bandeja",
+      createdBy: user.id.toString(),
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
 });
