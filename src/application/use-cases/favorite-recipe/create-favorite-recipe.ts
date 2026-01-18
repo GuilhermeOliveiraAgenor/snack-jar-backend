@@ -35,12 +35,6 @@ export class CreateFavoriteRecipeUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
-    // verify if user id exists
-    const user = await this.userRepository.findById(createdBy);
-    if (!user) {
-      return failure(new NotFoundError("user"));
-    }
-
     // verify if favorite recipe already exists
     const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(createdBy);
     const alreadyExists = favoriteRecipes.some(

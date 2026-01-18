@@ -30,10 +30,10 @@ export class PrismaRecipeRepository implements RecipeRepository {
     if (!recipe) return null;
     return PrismaRecipeMapper.toDomain(recipe);
   }
-  async findManyByTitle(userId: string, title: string): Promise<Recipe[]> {
+  async findManyByTitle(createdBy: string, title: string): Promise<Recipe[]> {
     const recipes = await this.prisma.recipe.findMany({
       where: {
-        createdBy: userId,
+        createdBy: createdBy,
         title: {
           contains: title,
           mode: "insensitive",

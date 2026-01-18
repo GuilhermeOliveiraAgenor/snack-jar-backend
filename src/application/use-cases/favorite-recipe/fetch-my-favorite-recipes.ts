@@ -1,4 +1,4 @@
-import { Either, failure, success } from "../../../core/either";
+import { Either, success } from "../../../core/either";
 import { FavoriteRecipe } from "../../../core/entities/favoriteRecipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { FavoriteRecipeRepository } from "../../repositories/favorite-recipe-repository";
@@ -23,14 +23,7 @@ export class FetchMyFavoriteRecipesUseCase {
   async execute({
     createdBy,
   }: FetchMyFavoriteRecipesRequest): Promise<FetchMyFavoriteRecipesResponse> {
-    const user = await this.userRepository.findById(createdBy);
-    if (!user) {
-      return failure(new NotFoundError("user"));
-    }
-
-    const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(
-      user.id.toString(),
-    );
+    const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(createdBy);
 
     return success({
       favoriteRecipes,

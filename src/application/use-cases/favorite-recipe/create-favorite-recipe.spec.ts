@@ -55,20 +55,6 @@ describe("Create Favorite Recipe Use Case", () => {
     expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to create favorite recipe when user id does not exists", async () => {
-    const recipe = makeRecipe();
-
-    await inMemoryRecipeRepository.create(recipe);
-
-    const result = await sut.execute({
-      recipeId: recipe.id.toString(),
-      createdBy: "0",
-    });
-
-    expect(result.isError()).toBe(true);
-    expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);
-    expect(result.value).toBeInstanceOf(NotFoundError);
-  });
   it("should not be able to create favorite recipe already exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);

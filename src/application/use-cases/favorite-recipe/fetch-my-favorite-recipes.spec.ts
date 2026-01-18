@@ -3,7 +3,6 @@ import { InMemoryFavoriteRecipeRepository } from "../../../../test/repositories/
 import { FetchMyFavoriteRecipesUseCase } from "./fetch-my-favorite-recipes";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeFavoriteRecipe } from "../../../../test/factories/make-favorite-recipe";
-import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeUser } from "../../../../test/factories/make-user";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 
@@ -40,12 +39,5 @@ describe("Fetch My Favorite Recipes", () => {
     if (result.isSuccess()) {
       expect(result.value.favoriteRecipes).toHaveLength(1);
     }
-  });
-  it("should not be able to fetch my favorite recipes when user id not exists", async () => {
-    const result = await sut.execute({ createdBy: "0" });
-
-    expect(result.isError()).toBe(true);
-    expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);
-    expect(result.value).toBeInstanceOf(NotFoundError);
   });
 });
