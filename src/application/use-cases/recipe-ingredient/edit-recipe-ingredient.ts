@@ -33,7 +33,6 @@ export class EditRecipeIngredientUseCase {
     // verify if recipe exists
 
     const recipeIngredient = await this.recipeIngredientRepository.findById(id);
-
     if (!recipeIngredient) {
       return failure(new NotFoundError("recipe-ingredient"));
     }

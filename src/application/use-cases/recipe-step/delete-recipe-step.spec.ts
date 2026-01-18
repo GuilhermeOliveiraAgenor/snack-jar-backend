@@ -38,9 +38,12 @@ describe("Delete Recipe Step Use Case", () => {
     expect(inMemoryRecipeStepRepository.items).toHaveLength(0);
   });
   it("should not be able to delete recipe step when id does not exists", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
     const result = await sut.execute({
       id: "0",
-      deletedBy: "user-1",
+      deletedBy: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
