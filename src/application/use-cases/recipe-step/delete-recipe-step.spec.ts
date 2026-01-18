@@ -7,7 +7,7 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let sut: DeleteRecipeStepUseCase;
 
-describe("Delete Recipe Step", () => {
+describe("Delete Recipe Step Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
     sut = new DeleteRecipeStepUseCase(inMemoryRecipeStepRepository);

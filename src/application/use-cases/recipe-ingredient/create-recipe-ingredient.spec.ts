@@ -24,7 +24,6 @@ describe("Create Recipe Ingredient Use Case", () => {
     sut = new CreateRecipeIngredientUseCase(
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeRepository,
-      inMemoryUserRepository,
     );
   });
   it("should be able to create a recipe ingredient", async () => {
