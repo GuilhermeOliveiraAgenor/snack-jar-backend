@@ -42,7 +42,7 @@ export class EditRecipeUseCase {
     }
 
     if (title) {
-      const alreadyExists = await this.recipeRepository.findManyByTitle(title, updatedBy);
+      const alreadyExists = await this.recipeRepository.findManyByTitle(updatedBy, title);
 
       if (alreadyExists.length > 0) {
         return failure(new AlreadyExistsError("recipe"));

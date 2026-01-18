@@ -1,4 +1,4 @@
-import { Either, success } from "../../../core/either";
+import { Either, failure, success } from "../../../core/either";
 import { Recipe } from "../../../core/entities/recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
@@ -23,6 +23,9 @@ export class GetRecipeByTitleUseCase {
     title,
   }: GetRecipeByTitleUseCaseRequest): Promise<GetRecipeByTitleUseCaseResponse> {
     const recipes = await this.recipeRepository.findManyByTitle(userId, title);
+    if (recipes.length <= 0) {
+      return failure(new NotFoundError("recipe"));
+    }
 
     return success({
       recipes,

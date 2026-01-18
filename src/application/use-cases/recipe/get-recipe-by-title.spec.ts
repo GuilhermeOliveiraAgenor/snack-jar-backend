@@ -4,6 +4,7 @@ import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { GetRecipeByTitleUseCase } from "./get-recipe-by-title";
+import { NotFoundError } from "../../errors/resource-not-found-error";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -50,5 +51,23 @@ describe("Get Recipe By Title Use Case", () => {
         title: "Bolo de chocolate",
       });
     }
+  });
+  it("should not be able to get recipes by title when title does not exists", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipe = makeRecipe({
+      title: "Bolo de Chocolate",
+      createdBy: user.id,
+    });
+
+    await inMemoryRecipeRepository.create(recipe);
+
+    const result = await sut.execute({ userId: user.id.toString(), title: "Bolo de Laranja" });
+    console.log(result);
+
+    expect(result.isError()).toBe(true);
+    expect(inMemoryRecipeRepository.items).toHaveLength(1);
+    expect(result.value).toBeInstanceOf(NotFoundError);
   });
 });

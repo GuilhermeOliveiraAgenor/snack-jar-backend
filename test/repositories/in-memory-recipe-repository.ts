@@ -23,7 +23,7 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     }
     return recipe;
   }
-  async findManyByTitle(title: string, createdBy: string): Promise<Recipe[]> {
+  async findManyByTitle(createdBy: string, title: string): Promise<Recipe[]> {
     const recipe = this.items.filter(
       (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
     );

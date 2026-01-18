@@ -4,6 +4,7 @@ import { PrismaCategoryRepository } from "../../infra/repositories/prisma-catego
 import { PrismaRecipeIngredientRepository } from "../../infra/repositories/prisma-recipe-ingredient-repository";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { PrismaRecipeStepRepository } from "../../infra/repositories/prisma-recipe-step-repository";
+import { PrismaUserRepository } from "../../infra/repositories/prisma-user-repository";
 import { CreateRecipeController } from "../controllers/recipe/create-recipe-controller";
 
 export function makeCreateRecipeController() {
@@ -13,12 +14,14 @@ export function makeCreateRecipeController() {
   const recipeIngredientRepository = new PrismaRecipeIngredientRepository(prisma);
   const recipeStepRepository = new PrismaRecipeStepRepository(prisma);
   const categoryRepository = new PrismaCategoryRepository(prisma);
+  const userRepository = new PrismaUserRepository(prisma);
 
   const createRecipeUseCase = new CreateRecipeUseCase(
     recipeRepository,
     recipeIngredientRepository,
     recipeStepRepository,
     categoryRepository,
+    userRepository,
   );
 
   return new CreateRecipeController(createRecipeUseCase);

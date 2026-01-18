@@ -79,7 +79,7 @@ export class CreateRecipeUseCase {
       return failure(new NotFoundError("user"));
     }
 
-    const alreadyExists = await this.recipeRepository.findManyByTitle(title, createdBy);
+    const alreadyExists = await this.recipeRepository.findManyByTitle(createdBy, title);
     if (alreadyExists.length > 0) {
       return failure(new AlreadyExistsError("recipe"));
     }
