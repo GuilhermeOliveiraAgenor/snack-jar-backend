@@ -81,7 +81,6 @@ describe("Edit Recipe Ingredient", () => {
       updatedBy: user2.id.toString(),
     });
 
-    console.log(result);
     expect(result.isError()).toBe(true);
     expect(inMemoryRecipeIngredientRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);

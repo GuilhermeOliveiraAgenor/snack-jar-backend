@@ -3,17 +3,34 @@ import { InMemoryRecipeStepRepository } from "../../../../test/repositories/in-m
 import { EditRecipeStepUseCase } from "./edit-recipe-step";
 import { makeRecipeStep } from "../../../../test/factories/make-recipe-step";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { makeUser } from "../../../../test/factories/make-user";
+import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
+import { NotAllowedError } from "../../errors/not-allowed-error";
+import { makeRecipe } from "../../../../test/factories/make-recipe";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
+let inMemoryUserRepository: InMemoryUserRepository;
+let inMemoryRecipeRepository: InMemoryRecipeRepository;
+
 let sut: EditRecipeStepUseCase;
 
 describe("Edit Recipe Step Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
+    inMemoryUserRepository = new InMemoryUserRepository();
+    inMemoryRecipeRepository = new InMemoryRecipeRepository();
+
     sut = new EditRecipeStepUseCase(inMemoryRecipeStepRepository);
   });
   it("should be able to edit a recipe step", async () => {
-    const recipeStep = makeRecipeStep();
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipeStep = makeRecipeStep({
+      createdBy: user.id,
+    });
 
     await inMemoryRecipeStepRepository.create(recipeStep);
 
@@ -21,7 +38,7 @@ describe("Edit Recipe Step Use Case", () => {
       id: recipeStep.id.toString(),
       step: 1,
       description: "Jogue a açucar na bandeja",
-      updatedBy: "user-1",
+      updatedBy: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -34,14 +51,74 @@ describe("Edit Recipe Step Use Case", () => {
     }
   });
   it("should not be edit recipe step when id does not exists", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
     const result = await sut.execute({
       id: "0",
       step: 1,
       description: "Jogue a farinha na bandeja",
-      updatedBy: "user-1",
+      updatedBy: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
+  });
+  it("should not be edit recipe step when user is not a creator", async () => {
+    const user1 = makeUser();
+    const user2 = makeUser();
+
+    await inMemoryUserRepository.create(user1);
+    await inMemoryUserRepository.create(user2);
+
+    const recipeStep = makeRecipeStep({
+      createdBy: user1.id,
+    });
+
+    await inMemoryRecipeStepRepository.create(recipeStep);
+
+    const result = await sut.execute({
+      id: recipeStep.id.toString(),
+      step: 1,
+      description: "Jogue a farinha na bandeja",
+      updatedBy: user2.id.toString(),
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+  it("should not be able to edit recipe step when step already exists", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipe = makeRecipe({
+      createdBy: user.id,
+    });
+
+    await inMemoryRecipeRepository.create(recipe);
+
+    const recipeStep1 = makeRecipeStep({
+      step: 1,
+      recipeId: recipe.id,
+      createdBy: user.id,
+    });
+    const recipeStep2 = makeRecipeStep({
+      step: 2,
+      recipeId: recipe.id,
+      createdBy: user.id,
+    });
+
+    await inMemoryRecipeStepRepository.create(recipeStep1);
+    await inMemoryRecipeStepRepository.create(recipeStep2);
+
+    const result = await sut.execute({
+      id: recipeStep2.id.toString(),
+      step: 1,
+      description: "Jogue açucar na farinha",
+      updatedBy: user.id.toString(),
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
 });
