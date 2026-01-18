@@ -2,6 +2,7 @@ import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity
 import { Either, failure, success } from "../../../core/either";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
@@ -48,6 +49,10 @@ export class CreateRecipeStepUseCase {
 
     if (stepDuplicated) {
       return failure(new AlreadyExistsError("recipe-step"));
+    }
+
+    if (step <= 0) {
+      return failure(new InvalidCredentialsError("recipe-step"));
     }
 
     const recipeStep = RecipeStep.create({
