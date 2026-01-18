@@ -1,11 +1,11 @@
 import express from "express";
-import { categoryRoutes } from "./http/routes/category-route";
-import { errorHandler } from "./http/middleware/error-handler";
-import { userRoutes } from "./http/routes/user-route";
-import { favoriteRecipeRoutes } from "./http/routes/favorite-recipe-route";
-import { recipeIngredientRoutes } from "./http/routes/recipe-ingredient-route";
-import { recipeRoutes } from "./http/routes/recipe-route";
 import { recipeStepRoutes } from "./http/routes/recipe-step-routes";
+import { errorHandler } from "./http/middleware/error-handler";
+import { categoryRoutes } from "./http/routes/category-routes";
+import { favoriteRecipeRoutes } from "./http/routes/favorite-recipe-routes";
+import { recipeIngredientRoutes } from "./http/routes/recipe-ingredient-routes";
+import { recipeRoutes } from "./http/routes/recipe-routes";
+import { userRoutes } from "./http/routes/user-routes";
 
 export const app = express();
 
