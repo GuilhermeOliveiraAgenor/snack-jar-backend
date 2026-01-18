@@ -1,6 +1,7 @@
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { Either, failure, success } from "../../../core/either";
 import { RecipeStep } from "../../../core/entities/recipeStep";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
@@ -40,6 +41,13 @@ export class CreateRecipeStepUseCase {
 
     if (recipe.createdBy.toString() !== createdBy) {
       return failure(new NotAllowedError("user"));
+    }
+
+    const steps = await this.recipeStepRepository.findManyByRecipeId(recipe.id.toString());
+    const stepDuplicated = steps.some((s) => s.step === step);
+
+    if (stepDuplicated) {
+      return failure(new AlreadyExistsError("recipe-step"));
     }
 
     const recipeStep = RecipeStep.create({
