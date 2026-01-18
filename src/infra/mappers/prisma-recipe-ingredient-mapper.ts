@@ -1,6 +1,7 @@
 import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id";
 import { Prisma, RecipeIngredient as PrismaRecipeIngredient } from "@prisma/client";
 import { RecipeIngredient } from "../../core/entities/recipeIngredient";
+import { MeasurementUnit } from "../../core/enum/enum-unit";
 
 export class PrismaRecipeIngredientMapper {
   static toDomain(raw: PrismaRecipeIngredient): RecipeIngredient {
@@ -8,7 +9,7 @@ export class PrismaRecipeIngredientMapper {
       {
         ingredient: raw.ingredient,
         amount: raw.amount,
-        unit: raw.unit,
+        unit: raw.id as MeasurementUnit,
         recipeId: new UniqueEntityID(raw.recipeId),
         createdBy: new UniqueEntityID(raw.createdBy),
       },

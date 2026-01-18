@@ -6,7 +6,7 @@ export enum MeasurementUnit {
   L = "l",
   UN = "un",
   COLHER = "colher",
-  COLHER_CHA = "colher_chá",
+  COLHER_CHA = "colher_cha",
   COLHER_SOPA = "colher_sopa",
   XICARA = "xicara",
   PITADA = "pitada",

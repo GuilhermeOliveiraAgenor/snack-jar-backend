@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateRecipeIngredientUseCase } from "../../../application/use-cases/recipe-ingredient/create-recipe-ingredient";
 import z from "zod";
+import { MeasurementUnit } from "../../../core/enum/enum-unit";
 
 const requestParams = z.object({
   recipeId: z.string(),
@@ -9,7 +10,7 @@ const requestParams = z.object({
 const createRecipeIngredientSchema = z.object({
   ingredient: z.string().min(1),
   amount: z.string().trim().min(1),
-  unit: z.string().trim().min(1).max(5),
+  unit: z.nativeEnum(MeasurementUnit),
 });
 
 export class CreateRecipeIngredientController {

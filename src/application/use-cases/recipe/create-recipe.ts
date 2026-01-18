@@ -12,6 +12,7 @@ import { RecipeStep } from "../../../core/entities/recipeStep";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InvalidFieldsError } from "../../errors/invalid-fields-error";
+import { MeasurementUnit } from "../../../core/enum/enum-unit";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -26,7 +27,7 @@ interface CreateRecipeUseCaseRequest {
   recipeIngredient: {
     ingredient: string;
     amount: string;
-    unit: string;
+    unit: MeasurementUnit;
   }[];
 
   // recipe step list
