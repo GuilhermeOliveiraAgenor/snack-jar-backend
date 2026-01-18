@@ -14,14 +14,12 @@ export function makeCreateRecipeController() {
   const recipeIngredientRepository = new PrismaRecipeIngredientRepository(prisma);
   const recipeStepRepository = new PrismaRecipeStepRepository(prisma);
   const categoryRepository = new PrismaCategoryRepository(prisma);
-  const userRepository = new PrismaUserRepository(prisma);
 
   const createRecipeUseCase = new CreateRecipeUseCase(
     recipeRepository,
     recipeIngredientRepository,
     recipeStepRepository,
     categoryRepository,
-    userRepository,
   );
 
   return new CreateRecipeController(createRecipeUseCase);

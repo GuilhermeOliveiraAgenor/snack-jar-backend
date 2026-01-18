@@ -69,11 +69,25 @@
 
   }
 
+  enum EnumUnit {
+    g
+    kg
+    mg
+    ml
+    l
+    un
+    colher
+    colher_cha
+    colher_sopa
+    xicara
+    pitada
+  }
+
   model RecipeIngredient{
     id String @id @default(uuid())
     ingredient String
     amount String
-    unit String
+    unit EnumUnit
 
     recipeId String @map("recipe_id")
     recipe Recipe @relation(fields:[recipeId], references:[id])

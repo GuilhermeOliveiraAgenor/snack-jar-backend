@@ -13,17 +13,18 @@
         "favoriteRecipe": "FAVORITE_RECIPE_ALREADY_EXISTS",
         "recipeStep": "RECIPE_STEP_ALREADY_EXISTS",
         "recipe": "RECIPE_ALREADY_EXISTS"
-    },    
+    },
+    "unauthorized": {
+        "invalidCredentials": "EMAIL_OR_PASSWORD_INVALID"
+    },
     "validationFields":{
-        "user":"EMAIL_OR_PASSWORD_INVALID",
         "recipe": "PREPARATION_TIME_CANT_BE_0",
         "recipeStep": "STEP_CANT_BE_0",
         "ingredientOrStepNull": "INGREDIENT_OR_STEP_CANT_BE_NULL"
     },
-    "internalServer":{
-        "internal": "INTERNAL_SERVER_ERROR"
-    },
-    "notAllowed":{
+    "forbidden": {
         "user": "USER_NOT_ALLOWED"
-    }
+    },
+    "internal": "INTERNAL_SERVER_ERROR"
+
 }

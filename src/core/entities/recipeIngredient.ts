@@ -1,9 +1,10 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { MeasurementUnit } from "../enum/enum-unit";
 
 export interface RecipeIngredientProps {
   ingredient: string;
   amount: string;
-  unit: string;
+  unit: MeasurementUnit;
   recipeId: UniqueEntityID;
   createdAt: Date | null;
   createdBy: UniqueEntityID;
@@ -23,7 +24,7 @@ export class RecipeIngredient {
     props: {
       ingredient: string;
       amount: string;
-      unit: string;
+      unit: MeasurementUnit;
       recipeId: UniqueEntityID;
       createdBy: UniqueEntityID;
     },
@@ -94,7 +95,7 @@ export class RecipeIngredient {
     this.touch();
   }
 
-  set unit(unit: string) {
+  set unit(unit: MeasurementUnit) {
     this.props.unit = unit;
     this.touch();
   }

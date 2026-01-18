@@ -10,7 +10,6 @@ import { RecipeStatus } from "../../../core/enum/enum-status";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
-import { UserRepository } from "../../repositories/user-repository";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 
@@ -50,7 +49,6 @@ export class CreateRecipeUseCase {
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeStepRepository: RecipeStepRepository,
     private categoryRepository: CategoriesRepository,
-    private userRepository: UserRepository,
   ) {}
 
   async execute({

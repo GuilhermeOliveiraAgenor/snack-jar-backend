@@ -12,7 +12,7 @@ const createRecipeSchema = z.object({
     z.object({
       ingredient: z.string().min(1),
       amount: z.string().min(1),
-      unit: z.string().min(1),
+      unit: z.string().min(1).max(5),
     }),
   ),
 
