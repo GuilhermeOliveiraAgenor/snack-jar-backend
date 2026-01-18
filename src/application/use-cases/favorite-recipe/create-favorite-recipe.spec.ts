@@ -23,7 +23,6 @@ describe("Create Favorite Recipe Use Case", () => {
     sut = new CreateFavoriteRecipeUseCase(
       inMemoryFavoriteRecipeRepository,
       inMemoryRecipeRepository,
-      inMemoryUserRepository,
     );
   });
   it("should be able to create favorite", async () => {

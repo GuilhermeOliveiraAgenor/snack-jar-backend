@@ -5,7 +5,6 @@ import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { FavoriteRecipeRepository } from "../../repositories/favorite-recipe-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";
-import { UserRepository } from "../../repositories/user-repository";
 
 interface CreateFavoriteRecipeUseCaseRequest {
   recipeId: string;
@@ -23,7 +22,6 @@ export class CreateFavoriteRecipeUseCase {
   constructor(
     private favoriteRecipeRepository: FavoriteRecipeRepository,
     private recipeRepository: RecipeRepository,
-    private userRepository: UserRepository,
   ) {}
   async execute({
     recipeId,
@@ -42,7 +40,7 @@ export class CreateFavoriteRecipeUseCase {
         favorite.recipeId.toString() === recipeId && favorite.createdBy.toString() === createdBy,
     );
     if (alreadyExists) {
-      return failure(new AlreadyExistsError("favorite-recipe"));
+      return failure(new AlreadyExistsError("favoriteRecipe"));
     }
 
     const favoriteRecipe = FavoriteRecipe.create({

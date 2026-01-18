@@ -15,10 +15,7 @@ describe("Fetch My Favorite Recipes", () => {
     inMemoryFavoriteRecipeRepository = new InMemoryFavoriteRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
 
-    sut = new FetchMyFavoriteRecipesUseCase(
-      inMemoryFavoriteRecipeRepository,
-      inMemoryUserRepository,
-    );
+    sut = new FetchMyFavoriteRecipesUseCase(inMemoryFavoriteRecipeRepository);
   });
   it("should be able to fetch my favorite recipes by user id", async () => {
     const user = makeUser();

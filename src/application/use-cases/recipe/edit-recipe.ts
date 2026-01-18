@@ -2,7 +2,7 @@ import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity
 import { Either, failure, success } from "../../../core/either";
 import { Recipe } from "../../../core/entities/recipe";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
+import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
@@ -16,7 +16,7 @@ interface EditRecipeUseCaseRequest {
 }
 
 type EditRecipeUseCaseResponse = Either<
-  NotFoundError | NotAllowedError | AlreadyExistsError | InvalidCredentialsError,
+  NotFoundError | NotAllowedError | AlreadyExistsError | InvalidFieldsError,
   {
     recipe: Recipe;
   }
@@ -50,7 +50,7 @@ export class EditRecipeUseCase {
     }
 
     if (preparationTime !== undefined && preparationTime <= 0) {
-      return failure(new InvalidCredentialsError("recipe"));
+      return failure(new InvalidFieldsError("recipe"));
     }
 
     recipe.title = title ?? recipe.title;

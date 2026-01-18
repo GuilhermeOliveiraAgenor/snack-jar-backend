@@ -2,7 +2,7 @@ import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity
 import { Either, failure, success } from "../../../core/either";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
+import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
@@ -15,7 +15,7 @@ interface EditRecipeStepUseCaseRequest {
 }
 
 type EditRecipeStepUseCaseResponse = Either<
-  NotFoundError | NotAllowedError | AlreadyExistsError | InvalidCredentialsError,
+  NotFoundError | NotAllowedError | AlreadyExistsError | InvalidFieldsError,
   {
     recipeStep: RecipeStep;
   }
@@ -31,7 +31,7 @@ export class EditRecipeStepUseCase {
   }: EditRecipeStepUseCaseRequest): Promise<EditRecipeStepUseCaseResponse> {
     const recipeStep = await this.recipeStepRepository.findById(id);
     if (!recipeStep) {
-      return failure(new NotFoundError("recipe-step"));
+      return failure(new NotFoundError("recipeStep"));
     }
 
     if (recipeStep.createdBy.toString() != updatedBy) {
@@ -45,11 +45,11 @@ export class EditRecipeStepUseCase {
     const stepDuplicated = steps.some((s) => s.step === step && s.id.toString() !== id);
 
     if (stepDuplicated) {
-      return failure(new AlreadyExistsError("recipe-step"));
+      return failure(new AlreadyExistsError("recipeStep"));
     }
 
     if (step !== undefined && step <= 0) {
-      return failure(new InvalidCredentialsError("recipe-step"));
+      return failure(new InvalidFieldsError("recipeStep"));
     }
 
     recipeStep.step = step ?? recipeStep.step;

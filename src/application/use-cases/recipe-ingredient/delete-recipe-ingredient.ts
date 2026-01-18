@@ -20,7 +20,7 @@ export class DeleteRecipeIngredientUseCase {
     // verify if recipe ingredient id exists
     const recipeIngredient = await this.recipeIngredient.findById(id);
     if (!recipeIngredient) {
-      return failure(new NotFoundError("recipe-ingredient"));
+      return failure(new NotFoundError("recipeIngredient"));
     }
 
     if (recipeIngredient.createdBy.toString() != deletedBy) {

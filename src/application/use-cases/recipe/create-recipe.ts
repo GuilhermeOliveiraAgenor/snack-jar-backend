@@ -12,7 +12,7 @@ import { RecipeStep } from "../../../core/entities/recipeStep";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 import { UserRepository } from "../../repositories/user-repository";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
+import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -38,7 +38,7 @@ interface CreateRecipeUseCaseRequest {
 }
 
 type CreateRecipeUseCaseResponse = Either<
-  NotFoundError | RecipeNullError | AlreadyExistsError | InvalidCredentialsError,
+  NotFoundError | RecipeNullError | AlreadyExistsError | InvalidFieldsError,
   {
     recipe: Recipe;
   }
@@ -71,12 +71,7 @@ export class CreateRecipeUseCase {
 
     // verify if lists are null
     if (recipeIngredient.length === 0 || recipeStep.length === 0) {
-      return failure(new RecipeNullError("recipe"));
-    }
-
-    const user = await this.userRepository.findById(createdBy);
-    if (!user) {
-      return failure(new NotFoundError("user"));
+      return failure(new RecipeNullError("ingredientOrStepNull"));
     }
 
     const alreadyExists = await this.recipeRepository.findManyByTitle(createdBy, title);
@@ -85,7 +80,7 @@ export class CreateRecipeUseCase {
     }
 
     if (preparationTime <= 0) {
-      return failure(new InvalidCredentialsError("recipe"));
+      return failure(new InvalidFieldsError("recipe"));
     }
 
     // create recipe

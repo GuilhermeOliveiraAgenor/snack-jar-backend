@@ -34,7 +34,7 @@ export class EditRecipeIngredientUseCase {
 
     const recipeIngredient = await this.recipeIngredientRepository.findById(id);
     if (!recipeIngredient) {
-      return failure(new NotFoundError("recipe-ingredient"));
+      return failure(new NotFoundError("recipeIngredient"));
     }
 
     if (recipeIngredient.createdBy.toString() != updatedBy) {

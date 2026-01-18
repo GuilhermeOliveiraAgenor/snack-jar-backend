@@ -19,7 +19,7 @@ export class DeleteRecipeStepUseCase {
   }: DeleteRecipeStepUseCaseRequest): Promise<DeleteRecipeStepUseCaseResponse> {
     const recipeStep = await this.recipeStepRepository.findById(id);
     if (!recipeStep) {
-      return failure(new NotFoundError("recipe-step"));
+      return failure(new NotFoundError("recipeStep"));
     }
 
     if (recipeStep.createdBy.toString() != deletedBy) {

@@ -2,7 +2,7 @@ import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity
 import { Either, failure, success } from "../../../core/either";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
+import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
@@ -16,7 +16,7 @@ interface CreateRecipeStepUseCaseRequest {
 }
 
 type CreateRecipeStepUseCaseResponse = Either<
-  NotFoundError | NotAllowedError | AlreadyExistsError | InvalidCredentialsError,
+  NotFoundError | NotAllowedError | AlreadyExistsError | InvalidFieldsError,
   {
     recipeStep: RecipeStep;
   }
@@ -48,11 +48,11 @@ export class CreateRecipeStepUseCase {
     const stepDuplicated = steps.some((s) => s.step === step);
 
     if (stepDuplicated) {
-      return failure(new AlreadyExistsError("recipe-step"));
+      return failure(new AlreadyExistsError("recipeStep"));
     }
 
     if (step <= 0) {
-      return failure(new InvalidCredentialsError("recipe-step"));
+      return failure(new InvalidFieldsError("recipeStep"));
     }
 
     const recipeStep = RecipeStep.create({

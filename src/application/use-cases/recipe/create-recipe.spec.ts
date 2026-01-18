@@ -298,33 +298,4 @@ describe("Create Recipe Use Case", () => {
     expect(result.value).toBeInstanceOf(RecipeNullError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
   });
-  it("should not be able to create a recipe when user id does not exist", async () => {
-    const result = await sut.execute({
-      // create recipe
-      title: "Bolo de Laranja",
-      description: "Receita de bolo de laranja",
-      preparationTime: 60,
-      categoryId: "0",
-      createdBy: "user-1",
-
-      recipeIngredient: [
-        {
-          ingredient: "Açucar",
-          amount: "1",
-          unit: "Kg",
-        },
-      ],
-
-      recipeStep: [
-        {
-          step: 1,
-          description: "Jogue o açucar em um pote",
-        },
-      ],
-    });
-
-    expect(result.isError()).toBe(true);
-    expect(result.value).toBeInstanceOf(NotFoundError);
-    expect(inMemoryRecipeRepository.items).toHaveLength(0);
-  });
 });
