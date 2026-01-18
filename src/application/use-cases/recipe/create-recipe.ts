@@ -118,6 +118,18 @@ export class CreateRecipeUseCase {
       }),
     );
 
+    const steps = recipeStepToCreate.map((s) => s.step);
+
+    const hasDuplicatedSteps = steps.some((value, index) => steps.indexOf(value) !== index);
+    if (hasDuplicatedSteps) {
+      return failure(new AlreadyExistsError("recipeStep"));
+    }
+
+    const hasInvalidSteps = steps.some((step) => step <= 0);
+    if (hasInvalidSteps) {
+      return failure(new InvalidFieldsError("recipeStep"));
+    }
+
     await this.recipeStepRepository.createMany(recipeStepToCreate);
 
     return success({

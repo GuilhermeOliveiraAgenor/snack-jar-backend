@@ -10,7 +10,10 @@ const requestParams = z.object({
 const createRecipeIngredientSchema = z.object({
   ingredient: z.string().min(1),
   amount: z.string().trim().min(1),
-  unit: z.nativeEnum(MeasurementUnit),
+  unit: z
+    .string()
+    .transform((val) => val.toLocaleLowerCase())
+    .pipe(z.nativeEnum(MeasurementUnit)),
 });
 
 export class CreateRecipeIngredientController {

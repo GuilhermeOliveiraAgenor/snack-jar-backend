@@ -13,6 +13,7 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { MeasurementUnit } from "../../../core/enum/enum-unit";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
@@ -34,7 +35,6 @@ describe("Create Recipe Use Case", () => {
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeStepRepository,
       inMemoryCategoriesRepository,
-      inMemoryUserRepository,
     );
   });
 
@@ -56,12 +56,12 @@ describe("Create Recipe Use Case", () => {
         {
           ingredient: "Açucar",
           amount: "1",
-          unit: "Kg",
+          unit: MeasurementUnit.KG,
         },
         {
           ingredient: "Farinha",
           amount: "1",
-          unit: "Kg",
+          unit: MeasurementUnit.KG,
         },
       ],
 
@@ -91,12 +91,12 @@ describe("Create Recipe Use Case", () => {
       {
         ingredient: "Açucar",
         amount: "1",
-        unit: "Kg",
+        unit: "kg",
       },
       {
         ingredient: "Farinha",
         amount: "1",
-        unit: "Kg",
+        unit: "kg",
       },
     ]);
     expect(inMemoryRecipeStepRepository.items).toMatchObject([
@@ -132,7 +132,7 @@ describe("Create Recipe Use Case", () => {
         {
           ingredient: "Açucar",
           amount: "1",
-          unit: "Kg",
+          unit: MeasurementUnit.KG,
         },
       ],
 
@@ -185,7 +185,7 @@ describe("Create Recipe Use Case", () => {
         {
           ingredient: "Açucar",
           amount: "1",
-          unit: "Kg",
+          unit: MeasurementUnit.KG,
         },
       ],
 
@@ -217,7 +217,7 @@ describe("Create Recipe Use Case", () => {
         {
           ingredient: "Açucar",
           amount: "1",
-          unit: "Kg",
+          unit: MeasurementUnit.KG,
         },
       ],
 
@@ -287,7 +287,7 @@ describe("Create Recipe Use Case", () => {
         {
           ingredient: "Farinha",
           amount: "1",
-          unit: "Kg",
+          unit: MeasurementUnit.KG,
         },
       ],
 
@@ -297,5 +297,43 @@ describe("Create Recipe Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(RecipeNullError);
     expect(inMemoryRecipeRepository.items).toHaveLength(0);
+  });
+  it("should not be able to create a recipe with duplicated steps", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const category = makeCategory();
+    await inMemoryCategoriesRepository.create(category);
+
+    const result = await sut.execute({
+      title: "Bolo de Cenoura",
+      description: "Receita de bolo de cenoura",
+      preparationTime: 60,
+      categoryId: category.id.toString(),
+      createdBy: user.id.toString(),
+
+      recipeIngredient: [
+        {
+          ingredient: "Açucar",
+          amount: "1",
+          unit: MeasurementUnit.KG,
+        },
+      ],
+
+      recipeStep: [
+        {
+          step: 1,
+          description: "Jogue o açucar em um pote",
+        },
+        {
+          step: 1,
+          description: "Jogue a farinha em um pote",
+        },
+      ],
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(inMemoryRecipeStepRepository.items).toHaveLength(0);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
 });
