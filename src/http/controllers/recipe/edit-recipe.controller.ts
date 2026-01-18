@@ -18,17 +18,12 @@ export class EditRecipeController {
     try {
       const userId = req.user.id;
       const { id } = requestParams.parse(req.params);
-      const { title, description, preparationTime } = editRecipeSchema.parse(req.body);
+      const body = editRecipeSchema.parse(req.body);
 
-      const data: {
-        id: string;
-        updatedBy: string;
-        title?: string;
-        description?: string;
-        preparationTime?: number;
-      } = {
+      const data = {
         id,
         updatedBy: userId,
+        ...body,
       };
 
       const result = await this.editRecipeUseCase.execute(data);
@@ -37,8 +32,9 @@ export class EditRecipeController {
         throw result.value;
       }
 
-      return res.status(204).json(result.value.recipe);
+      return res.status(201).json(result.value.recipe);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

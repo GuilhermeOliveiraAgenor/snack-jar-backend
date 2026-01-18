@@ -73,8 +73,8 @@ export class CreateRecipeUseCase {
       return failure(new RecipeNullError("ingredientOrStepNull"));
     }
 
-    const alreadyExists = await this.recipeRepository.findManyByTitle(createdBy, title);
-    if (alreadyExists.length > 0) {
+    const alreadyExists = await this.recipeRepository.findByTitle(createdBy, title);
+    if (alreadyExists) {
       return failure(new AlreadyExistsError("recipe"));
     }
 

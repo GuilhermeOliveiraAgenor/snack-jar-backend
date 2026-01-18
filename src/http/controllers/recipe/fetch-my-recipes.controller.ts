@@ -14,7 +14,7 @@ export class FetchMyRecipesController {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.recipe);
+      return res.status(200).json(result.value.recipes);
     } catch (error) {
       next(error);
     }

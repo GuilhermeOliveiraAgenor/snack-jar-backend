@@ -9,9 +9,9 @@ import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface EditRecipeUseCaseRequest {
   id: string;
-  title?: Recipe["title"];
-  description?: Recipe["description"];
-  preparationTime?: Recipe["preparationTime"];
+  title?: Recipe["title"] | undefined;
+  description?: Recipe["description"] | undefined;
+  preparationTime?: Recipe["preparationTime"] | undefined;
   updatedBy: string;
 }
 
@@ -42,9 +42,9 @@ export class EditRecipeUseCase {
     }
 
     if (title) {
-      const alreadyExists = await this.recipeRepository.findManyByTitle(updatedBy, title);
+      const alreadyExists = await this.recipeRepository.findByTitle(updatedBy, title);
 
-      if (alreadyExists.length > 0) {
+      if (alreadyExists && alreadyExists.id.toString() != id) {
         return failure(new AlreadyExistsError("recipe"));
       }
     }

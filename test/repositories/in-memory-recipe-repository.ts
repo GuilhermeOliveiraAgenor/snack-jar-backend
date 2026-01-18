@@ -29,4 +29,13 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     );
     return recipe;
   }
+  async findByTitle(createdBy: string, title: string): Promise<Recipe | null> {
+    const recipe = this.items.find(
+      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
+    );
+    if (!recipe) {
+      return null;
+    }
+    return recipe;
+  }
 }

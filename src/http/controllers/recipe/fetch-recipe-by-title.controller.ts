@@ -1,26 +1,26 @@
 import { Request, Response, NextFunction } from "express";
-import { FetchRecipeByTitleUseCase } from "../../../application/use-cases/recipe/get-recipe-by-title";
 import z from "zod";
+import { GetRecipeByTitleUseCase } from "../../../application/use-cases/recipe/get-recipe-by-title";
 
-const fetchRecipeTitle = z.object({
+const getRecipeTitle = z.object({
   title: z.string(),
 });
 
-export class FetchRecipeByTitleController {
-  constructor(private readonly fetchRecipeByTitleUseCase: FetchRecipeByTitleUseCase) {}
+export class GetRecipeByTitleController {
+  constructor(private readonly getRecipeByTitleUseCase: GetRecipeByTitleUseCase) {}
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user.id;
-      const { title } = fetchRecipeTitle.parse(req.body);
+      const { title } = getRecipeTitle.parse(req.body);
 
-      const result = await this.fetchRecipeByTitleUseCase.execute({ userId, title });
+      const result = await this.getRecipeByTitleUseCase.execute({ userId, title });
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.recipe);
+      return res.status(200).json(result.value.recipes);
     } catch (error) {
       next(error);
     }
