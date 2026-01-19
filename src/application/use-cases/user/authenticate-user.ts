@@ -1,7 +1,7 @@
 import { IHashProvider } from "../../../core/cryptography/IHashProvider";
 import { Either, failure, success } from "../../../core/either";
 import { User } from "../../../core/entities/user";
-import { InvalidFieldsError } from "../../errors/invalid-fields-error";
+import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
 import { UserRepository } from "../../repositories/user-repository";
 
 interface AuthenticateUserUseCaseRequest {
@@ -10,7 +10,7 @@ interface AuthenticateUserUseCaseRequest {
 }
 
 type AuthenticateUserUseCaseResponse = Either<
-  InvalidFieldsError,
+  InvalidCredentialsError,
   {
     userId: string;
   }
@@ -29,13 +29,13 @@ export class AuthenticateUserUseCase {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      return failure(new InvalidFieldsError("user"));
+      return failure(new InvalidCredentialsError("user"));
     }
     // verify password
     const isValid = await this.hashProvider.compare(password, user.password);
 
     if (!isValid) {
-      return failure(new InvalidFieldsError("user"));
+      return failure(new InvalidCredentialsError("user"));
     }
 
     return success({ userId: user.id.toString() });
