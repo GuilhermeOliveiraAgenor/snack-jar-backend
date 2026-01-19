@@ -5,15 +5,15 @@ import { CategoryRepository } from "../../repositories/category-repository";
 type FetchCategoriesUseCaseResponse = Either<
   null,
   {
-    category: Category[];
+    categories: Category[];
   }
 >;
 
 export class FetchCategoriesUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
   async execute(): Promise<FetchCategoriesUseCaseResponse> {
-    const category = await this.categoryRepository.findMany();
+    const categories = await this.categoryRepository.findMany();
 
-    return success({ category });
+    return success({ categories });
   }
 }

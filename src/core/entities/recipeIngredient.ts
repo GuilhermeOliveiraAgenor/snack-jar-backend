@@ -1,5 +1,5 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
-import { MeasurementUnit } from "../enum/recipe-status";
+import { MeasurementUnit } from "../enum/measurement-unit";
 
 export interface RecipeIngredientProps {
   ingredient: string;
@@ -71,10 +71,6 @@ export class RecipeIngredient {
   }
 
   get updatedAt(): Date | null {
-    return this.props.updatedAt;
-  }
-
-  get deletedAt(): Date | null {
     return this.props.updatedAt;
   }
 

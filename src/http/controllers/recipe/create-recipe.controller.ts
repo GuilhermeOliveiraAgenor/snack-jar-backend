@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateRecipeUseCase } from "../../../application/use-cases/recipe/create-recipe";
 import z from "zod";
-import { MeasurementUnit } from "../../../core/enum/recipe-status";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
 
 const createRecipeSchema = z.object({
   title: z.string().min(1),

@@ -22,10 +22,8 @@ export class PrismaRecipeStepMapper {
       recipeId: raw.recipeId.toString(),
       createdBy: raw.createdBy.toString(),
       updatedBy: raw.updatedBy ? raw.updatedBy.toString() : null,
-      deletedBy: raw.deletedBy ? raw.deletedBy.toString() : null,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
-      deletedAt: raw.deletedAt,
     };
   }
 }

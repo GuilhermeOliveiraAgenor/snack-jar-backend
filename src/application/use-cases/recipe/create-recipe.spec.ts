@@ -13,7 +13,7 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { MeasurementUnit } from "../../../core/enum/recipe-status";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
@@ -91,12 +91,12 @@ describe("Create Recipe Use Case", () => {
       {
         ingredient: "Açucar",
         amount: "1",
-        unit: "kg",
+        unit: "KG",
       },
       {
         ingredient: "Farinha",
         amount: "1",
-        unit: "kg",
+        unit: "KG",
       },
     ]);
     expect(inMemoryRecipeStepRepository.items).toMatchObject([

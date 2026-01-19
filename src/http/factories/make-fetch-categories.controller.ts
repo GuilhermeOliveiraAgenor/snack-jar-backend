@@ -1,7 +1,7 @@
 import { FetchCategoriesUseCase } from "../../application/use-cases/category/fetch-categories";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaCategoryRepository } from "../../infra/repositories/prisma-category-repository";
-import { FetchCategoryController } from "../controllers/category/fetch-category.controller";
+import { FetchCategoriesController } from "../controllers/category/fetch-categories.controller";
 
 export function makeFetchCategoriesController() {
   const prisma = getPrismaClient();
@@ -9,5 +9,5 @@ export function makeFetchCategoriesController() {
   const categoryRepository = new PrismaCategoryRepository(prisma);
   const fetchCategoryUseCase = new FetchCategoriesUseCase(categoryRepository);
 
-  return new FetchCategoryController(fetchCategoryUseCase);
+  return new FetchCategoriesController(fetchCategoryUseCase);
 }

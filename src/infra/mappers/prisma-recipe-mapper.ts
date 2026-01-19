@@ -1,7 +1,7 @@
 import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id";
 import { Prisma, Recipe as PrismaRecipe } from "@prisma/client";
-import { RecipeStatus } from "../../core/enum/measurement-unit";
 import { Recipe } from "../../core/entities/recipe";
+import { RecipeStatus } from "../../core/enum/recipe-status";
 
 export class PrismaRecipeMapper {
   static toDomain(raw: PrismaRecipe): Recipe {
@@ -28,6 +28,9 @@ export class PrismaRecipeMapper {
       createdBy: raw.createdBy.toString(),
       updatedBy: raw.updatedBy ? raw.updatedBy.toString() : null,
       deletedBy: raw.deletedBy ? raw.deletedBy.toString() : null,
+      createdAt: raw.createdAt,
+      updatedAt: raw.updatedAt,
+      deletedAt: raw.deletedAt
     };
   }
 }

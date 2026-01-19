@@ -3,13 +3,13 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { DeleteRecipeUseCase } from "./delete-recipe";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
-import { RecipeStatus } from "../../../core/enum/measurement-unit";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeCategory } from "../../../../test/factories/make-category";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { makeUser } from "../../../../test/factories/make-user";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;

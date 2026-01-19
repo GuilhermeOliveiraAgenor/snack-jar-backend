@@ -67,10 +67,6 @@ export class RecipeStep {
     return this.props.updatedAt;
   }
 
-  get deletedAt(): Date | null {
-    return this.props.updatedAt;
-  }
-
   set step(step: number) {
     this.props.step = step;
     this.touch();

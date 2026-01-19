@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { EditRecipeIngredientUseCase } from "../../../application/use-cases/recipe-ingredient/edit-recipe-ingredient";
 import z from "zod";
-import { MeasurementUnit } from "../../../core/enum/recipe-status";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
 
 const requestParams = z.object({
   id: z.string(),

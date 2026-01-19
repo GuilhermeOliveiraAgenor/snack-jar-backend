@@ -8,7 +8,7 @@ import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-
 import { makeUser } from "../../../../test/factories/make-user";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotAllowedError } from "../../errors/not-allowed-error";
-import { MeasurementUnit } from "../../../core/enum/recipe-status";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -50,7 +50,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       expect(result.value.recipeIngredient).toMatchObject({
         ingredient: "Açucar",
         amount: "1",
-        unit: "kg",
+        unit: "KG",
       });
     }
   });

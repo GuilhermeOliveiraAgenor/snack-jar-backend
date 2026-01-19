@@ -6,6 +6,7 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeUser } from "../../../../test/factories/make-user";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -32,7 +33,7 @@ describe("Edit Recipe Ingredient", () => {
       id: recipeIngredient.id.toString(),
       ingredient: "Farinha",
       amount: "1000",
-      unit: "G",
+      unit: MeasurementUnit.G,
       updatedBy: user.id.toString(),
     });
 
@@ -54,7 +55,7 @@ describe("Edit Recipe Ingredient", () => {
       id: "0",
       ingredient: "Farinha",
       amount: "1000",
-      unit: "G",
+      unit: MeasurementUnit.KG,
       updatedBy: user.id.toString(),
     });
 
@@ -77,7 +78,7 @@ describe("Edit Recipe Ingredient", () => {
       id: recipeIngredient.id.toString(),
       ingredient: "Farinha",
       amount: "1000",
-      unit: "G",
+      unit: MeasurementUnit.KG,
       updatedBy: user2.id.toString(),
     });
 
