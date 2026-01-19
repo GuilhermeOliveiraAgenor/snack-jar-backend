@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateRecipeUseCase } from "../../../application/use-cases/recipe/create-recipe";
 import z from "zod";
-import { MeasurementUnit } from "../../../core/enum/enum-unit";
+import { MeasurementUnit } from "../../../core/enum/recipe-status";
 
 const createRecipeSchema = z.object({
   title: z.string().min(1),
@@ -15,7 +15,7 @@ const createRecipeSchema = z.object({
       amount: z.string().min(1),
       unit: z
         .string()
-        .transform((val) => val.toLocaleLowerCase())
+        .transform((val) => val.toLocaleUpperCase())
         .pipe(z.nativeEnum(MeasurementUnit)),
     }),
   ),

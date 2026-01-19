@@ -20,7 +20,6 @@ export class PrismaCategoryMapper {
       description: category.description,
       createdAt: category.createdAt,
       updatedAt: category.updatedAt,
-      deletedAt: category.deletedAt,
     };
   }
 }

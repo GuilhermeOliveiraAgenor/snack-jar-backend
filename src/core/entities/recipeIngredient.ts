@@ -1,5 +1,5 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
-import { MeasurementUnit } from "../enum/enum-unit";
+import { MeasurementUnit } from "../enum/recipe-status";
 
 export interface RecipeIngredientProps {
   ingredient: string;

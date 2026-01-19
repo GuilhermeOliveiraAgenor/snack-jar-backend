@@ -1,6 +1,6 @@
 import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id";
 import { Prisma, Recipe as PrismaRecipe } from "@prisma/client";
-import { RecipeStatus } from "../../core/enum/enum-status";
+import { RecipeStatus } from "../../core/enum/measurement-unit";
 import { Recipe } from "../../core/entities/recipe";
 
 export class PrismaRecipeMapper {

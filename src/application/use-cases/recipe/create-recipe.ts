@@ -6,13 +6,13 @@ import { RecipeRepository } from "../../repositories/recipe-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { CategoryRepository } from "../../repositories/category-repository";
-import { RecipeStatus } from "../../../core/enum/enum-status";
+import { RecipeStatus } from "../../../core/enum/measurement-unit";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InvalidFieldsError } from "../../errors/invalid-fields-error";
-import { MeasurementUnit } from "../../../core/enum/enum-unit";
+import { MeasurementUnit } from "../../../core/enum/recipe-status";
 
 // create request
 interface CreateRecipeUseCaseRequest {
