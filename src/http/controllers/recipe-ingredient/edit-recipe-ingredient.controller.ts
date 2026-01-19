@@ -22,15 +22,15 @@ export class EditRecipeIngredientController {
     try {
       const userId = req.user.id;
       const { id } = requestParams.parse(req.params);
-      const { ingredient, amount, unit } = editRecipeIngredientSchema.parse(req.body);
+      const body = editRecipeIngredientSchema.parse(req.body);
 
-      const result = await this.editRecipeIngredientUseCase.execute({
+      const data = {
         id,
-        ingredient,
-        amount,
-        unit,
         updatedBy: userId,
-      });
+        ...body
+      }
+
+      const result = await this.editRecipeIngredientUseCase.execute(data);
 
       if (result.isError()) {
         throw result.value;

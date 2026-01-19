@@ -19,9 +19,14 @@ export class EditCategoryController {
     try {
       // params and fields json
       const { id } = paramsSchema.parse(req.params);
-      const { name, description } = editCategorySchema.parse(req.body);
+      const body = editCategorySchema.parse(req.body);
 
-      const result = await this.editCategoryUseCase.execute({ name, description, id });
+      const data = {
+        id,
+        ...body
+      }
+
+      const result = await this.editCategoryUseCase.execute(data);
 
       if (result.isError()) {
         throw result.value;
