@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { makeCreateUserController } from "../factories/make-create-user";
-import { makeAuthenticateUserController } from "../factories/make-authenticate-controller";
-import { makeGetMeController } from "../factories/make-get-me-controller";
 import { makeAuthMiddleware } from "../factories/make-auth-middleware";
+import { makeAuthenticateUserController } from "../factories/make-authenticate.controller";
+import { makeCreateUserController } from "../factories/make-create-user.controller";
+import { makeGetMeController } from "../factories/make-get-me.controller";
 
 const userRoutes = Router();
 

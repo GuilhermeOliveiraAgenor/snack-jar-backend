@@ -1,19 +1,20 @@
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { Either, failure, success } from "../../../core/either";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
+import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 
 interface EditRecipeIngredientUseCaseRequest {
   id: string;
-  ingredient?: RecipeIngredient["ingredient"];
-  amount?: RecipeIngredient["amount"];
-  unit?: RecipeIngredient["unit"];
+  ingredient?: RecipeIngredient["ingredient"] | undefined;
+  amount?: RecipeIngredient["amount"] | undefined;
+  unit?: RecipeIngredient["unit"] | undefined;
   updatedBy: string;
 }
 
 type EditRecipeIngredientUseCaseResponse = Either<
-  NotFoundError,
+  NotFoundError | NotAllowedError,
   {
     recipeIngredient: RecipeIngredient;
   }
@@ -32,9 +33,12 @@ export class EditRecipeIngredientUseCase {
     // verify if recipe exists
 
     const recipeIngredient = await this.recipeIngredientRepository.findById(id);
-
     if (!recipeIngredient) {
-      return failure(new NotFoundError("recipe-ingredient"));
+      return failure(new NotFoundError("recipeIngredient"));
+    }
+
+    if (recipeIngredient.createdBy.toString() != updatedBy) {
+      return failure(new NotAllowedError("user"));
     }
 
     recipeIngredient.ingredient = ingredient ?? recipeIngredient.ingredient;

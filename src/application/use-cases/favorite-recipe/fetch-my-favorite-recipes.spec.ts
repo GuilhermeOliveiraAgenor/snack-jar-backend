@@ -3,8 +3,8 @@ import { InMemoryFavoriteRecipeRepository } from "../../../../test/repositories/
 import { FetchMyFavoriteRecipesUseCase } from "./fetch-my-favorite-recipes";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeFavoriteRecipe } from "../../../../test/factories/make-favorite-recipe";
-import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeUser } from "../../../../test/factories/make-user";
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 
 let inMemoryFavoriteRecipeRepository: InMemoryFavoriteRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -15,34 +15,26 @@ describe("Fetch My Favorite Recipes", () => {
     inMemoryFavoriteRecipeRepository = new InMemoryFavoriteRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
 
-    sut = new FetchMyFavoriteRecipesUseCase(
-      inMemoryFavoriteRecipeRepository,
-      inMemoryUserRepository,
-    );
+    sut = new FetchMyFavoriteRecipesUseCase(inMemoryFavoriteRecipeRepository);
   });
   it("should be able to fetch my favorite recipes by user id", async () => {
     const user = makeUser();
 
     await inMemoryUserRepository.create(user);
 
-    const favoriteRecipe = makeFavoriteRecipe({ userId: user.id });
+    const favoriteRecipe = makeFavoriteRecipe({
+      createdBy: new UniqueEntityID(user.id.toString()),
+    });
 
     await inMemoryFavoriteRecipeRepository.create(favoriteRecipe);
 
     const result = await sut.execute({
-      userId: favoriteRecipe.userId.toString(),
+      createdBy: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
     if (result.isSuccess()) {
-      expect(result.value.favoriteRecipe).toHaveLength(1);
+      expect(result.value.favoriteRecipes).toHaveLength(1);
     }
-  });
-  it("should not be able to fetch my favorite recipes when user id not exists", async () => {
-    const result = await sut.execute({ userId: "0" });
-
-    expect(result.isError()).toBe(true);
-    expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);
-    expect(result.value).toBeInstanceOf(NotFoundError);
   });
 });

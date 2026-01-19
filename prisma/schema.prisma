@@ -69,11 +69,25 @@
 
   }
 
+  enum EnumUnit {
+    g
+    kg
+    mg
+    ml
+    l
+    un
+    colher
+    colher_cha
+    colher_sopa
+    xicara
+    pitada
+  }
+
   model RecipeIngredient{
     id String @id @default(uuid())
     ingredient String
     amount String
-    unit String
+    unit EnumUnit
 
     recipeId String @map("recipe_id")
     recipe Recipe @relation(fields:[recipeId], references:[id])
@@ -120,15 +134,15 @@ model FavoriteRecipe{
   recipeId String @map("recipe_id")
   recipe Recipe @relation(fields:[recipeId], references:[id])
 
-  userId String @map("userId")
-  user User @relation(fields:[userId], references:[id])
+  createdBy String @map("created_by")
+  user User @relation(fields:[createdBy], references:[id])
 
   createdAt DateTime?  @default(now()) @map("created_at")
   updatedAt DateTime?  @updatedAt      @map("updated_at")
-  deletedAt DateTime?                 @map("deleted_at")
+  deletedAt DateTime?                  @map("deleted_at")
 
   @@index([recipeId])
-  @@index([userId])
+  @@index([createdBy])
 
   @@map("favorite_recipe")
 

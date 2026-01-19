@@ -2,7 +2,6 @@ import { Either, failure, success } from "../../../core/either";
 import { Recipe } from "../../../core/entities/recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
-
 import { RecipeRepository } from "../../repositories/recipe-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
@@ -11,6 +10,9 @@ import { RecipeStatus } from "../../../core/enum/enum-status";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
+import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { InvalidFieldsError } from "../../errors/invalid-fields-error";
+import { MeasurementUnit } from "../../../core/enum/enum-unit";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -25,7 +27,7 @@ interface CreateRecipeUseCaseRequest {
   recipeIngredient: {
     ingredient: string;
     amount: string;
-    unit: string;
+    unit: MeasurementUnit;
   }[];
 
   // recipe step list
@@ -36,7 +38,7 @@ interface CreateRecipeUseCaseRequest {
 }
 
 type CreateRecipeUseCaseResponse = Either<
-  NotFoundError,
+  NotFoundError | RecipeNullError | AlreadyExistsError | InvalidFieldsError,
   {
     recipe: Recipe;
   }
@@ -68,7 +70,16 @@ export class CreateRecipeUseCase {
 
     // verify if lists are null
     if (recipeIngredient.length === 0 || recipeStep.length === 0) {
-      return failure(new RecipeNullError("recipe"));
+      return failure(new RecipeNullError("ingredientOrStepNull"));
+    }
+
+    const alreadyExists = await this.recipeRepository.findByTitle(createdBy, title);
+    if (alreadyExists) {
+      return failure(new AlreadyExistsError("recipe"));
+    }
+
+    if (preparationTime <= 0) {
+      return failure(new InvalidFieldsError("recipe"));
     }
 
     // create recipe
@@ -81,9 +92,6 @@ export class CreateRecipeUseCase {
       createdBy: new UniqueEntityID(createdBy),
     });
 
-    // pass to repository
-    await this.recipeRepository.create(recipe);
-
     // map recipe ingredient created
     const recipeIngredientToCreate = recipeIngredient.map((item) =>
       RecipeIngredient.create({
@@ -95,8 +103,6 @@ export class CreateRecipeUseCase {
       }),
     );
 
-    await this.recipeIngredientRepository.createMany(recipeIngredientToCreate);
-
     // map recipe step created
     const recipeStepToCreate = recipeStep.map((item) =>
       RecipeStep.create({
@@ -107,6 +113,20 @@ export class CreateRecipeUseCase {
       }),
     );
 
+    const steps = recipeStepToCreate.map((s) => s.step);
+
+    const hasDuplicatedSteps = steps.some((value, index) => steps.indexOf(value) !== index);
+    if (hasDuplicatedSteps) {
+      return failure(new AlreadyExistsError("recipeStep"));
+    }
+
+    const hasInvalidSteps = steps.some((step) => step <= 0);
+    if (hasInvalidSteps) {
+      return failure(new InvalidFieldsError("recipeStep"));
+    }
+
+    await this.recipeRepository.create(recipe);
+    await this.recipeIngredientRepository.createMany(recipeIngredientToCreate);
     await this.recipeStepRepository.createMany(recipeStepToCreate);
 
     return success({

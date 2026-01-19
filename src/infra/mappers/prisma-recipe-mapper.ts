@@ -19,6 +19,7 @@ export class PrismaRecipeMapper {
   }
   static toPersistency(raw: Recipe): Prisma.RecipeUncheckedCreateInput {
     return {
+      id: raw.id.toString(),
       title: raw.title,
       description: raw.description,
       preparationTime: 0,

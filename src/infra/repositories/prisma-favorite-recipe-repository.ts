@@ -20,7 +20,7 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
   async findManyByUserId(id: string): Promise<FavoriteRecipe[]> {
     const favoriteRecipe = await this.prisma.favoriteRecipe.findMany({
       where: {
-        userId: id,
+        createdBy: id,
       },
     });
     return favoriteRecipe.map(PrismaFavoriteRecipeMapper.toDomain);

@@ -1,6 +1,7 @@
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { Either, failure, success } from "../../../core/either";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
+import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";
@@ -14,7 +15,7 @@ interface CreateRecipeIngredientUseCaseRequest {
 }
 
 type CreateRecipeIngredientUseCaseResponse = Either<
-  NotFoundError,
+  NotFoundError | NotAllowedError,
   { recipeIngredient: RecipeIngredient }
 >;
 
@@ -37,6 +38,9 @@ export class CreateRecipeIngredientUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
+    if (recipe.createdBy.toString() !== createdBy) {
+      return failure(new NotAllowedError("user"));
+    }
     const recipeIngredient = RecipeIngredient.create({
       ingredient,
       amount,

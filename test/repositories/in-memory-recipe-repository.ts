@@ -23,10 +23,19 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     }
     return recipe;
   }
-  async findManyByTitle(userId: string, title: string): Promise<Recipe[]> {
+  async findManyByTitle(createdBy: string, title: string): Promise<Recipe[]> {
     const recipe = this.items.filter(
-      (item) => item.title === title && item.createdBy == new UniqueEntityID(userId),
+      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
     );
+    return recipe;
+  }
+  async findByTitle(createdBy: string, title: string): Promise<Recipe | null> {
+    const recipe = this.items.find(
+      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
+    );
+    if (!recipe) {
+      return null;
+    }
     return recipe;
   }
 }

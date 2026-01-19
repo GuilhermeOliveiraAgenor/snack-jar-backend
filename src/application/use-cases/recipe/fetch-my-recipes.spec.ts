@@ -24,7 +24,6 @@ describe("Fetch My Recipes Use Case", () => {
 
   it("should be able to fetch my recipes", async () => {
     const user = makeUser();
-
     await inMemoryUserRepository.create(user);
 
     const recipe1 = makeRecipe({

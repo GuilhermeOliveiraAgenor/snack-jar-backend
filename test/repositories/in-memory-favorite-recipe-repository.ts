@@ -12,7 +12,7 @@ export class InMemoryFavoriteRecipeRepository implements FavoriteRecipeRepositor
     if (index >= 0) this.items.splice(index, 1);
   }
   async findManyByUserId(id: string): Promise<FavoriteRecipe[]> {
-    const favoriteRecipe = this.items.filter((item) => item.userId.toString() === id.toString());
+    const favoriteRecipe = this.items.filter((item) => item.createdBy.toString() === id);
     return favoriteRecipe;
   }
   async findById(id: string): Promise<FavoriteRecipe | null> {

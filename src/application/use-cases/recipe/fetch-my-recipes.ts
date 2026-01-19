@@ -11,7 +11,7 @@ interface FetchMyRecipesUseCaseRequest {
 type FetchMyRecipesUseCaseResponse = Either<
   NotFoundError,
   {
-    recipe: Recipe[];
+    recipes: Recipe[];
   }
 >;
 
@@ -28,10 +28,10 @@ export class FetchMyRecipesUseCase {
       return failure(new NotFoundError("user"));
     }
 
-    const recipe = await this.recipeRepository.findManyByUserId(user.id.toString());
+    const recipes = await this.recipeRepository.findManyByUserId(user.id.toString());
 
     return success({
-      recipe,
+      recipes,
     });
   }
 }
