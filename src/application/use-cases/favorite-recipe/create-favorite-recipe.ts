@@ -2,6 +2,7 @@ import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity
 import { Either, failure, success } from "../../../core/either";
 import { FavoriteRecipe } from "../../../core/entities/favoriteRecipe";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { FavoriteRecipeRepository } from "../../repositories/favorite-recipe-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";
@@ -31,6 +32,10 @@ export class CreateFavoriteRecipeUseCase {
     const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
+    }
+
+    if (recipe.createdBy.toString() != createdBy) {
+      return failure(new NotAllowedError("user"));
     }
 
     // verify if favorite recipe already exists

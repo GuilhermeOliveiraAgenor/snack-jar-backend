@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { DeleteFavoriteRecipeUseCase } from "../../../application/use-cases/favorite-recipe/delete-favorite-recipe";
 import z from "zod";
 
-const requestParams = z.object({
+const deleteSchemaBody = z.object({
   id: z.string(),
 });
 
@@ -11,9 +11,11 @@ export class DeleteFavoriteRecipeController {
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = requestParams.parse(req.params);
+      const userId = req.user.id;
 
-      const result = await this.deleteFavoriteRecipeUseCase.execute({ id });
+      const { id } = deleteSchemaBody.parse(req.body);
+
+      const result = await this.deleteFavoriteRecipeUseCase.execute({ id, deletedBy: userId });
 
       if (result.isError()) {
         throw result.value;
@@ -21,6 +23,7 @@ export class DeleteFavoriteRecipeController {
 
       return res.status(200).json({ message: "Recipe deleted successufully" });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

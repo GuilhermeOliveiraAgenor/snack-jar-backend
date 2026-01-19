@@ -5,7 +5,8 @@
         "user": "USER_NOT_FOUND",
         "recipe": "RECIPE_NOT_FOUND",
         "recipeIngredient": "RECIPE_INGREDIENT_NOT_FOUND",
-        "recipeStep": "RECIPE_STEP_NOT_FOUND"
+        "recipeStep": "RECIPE_STEP_NOT_FOUND",
+        "favoriteRecipe": "FAVORITE_RECIPE_NOT_FOUND"
     },
     "alreadyExists": {
         "category": "CATEGORY_ALREADY_EXISTS",

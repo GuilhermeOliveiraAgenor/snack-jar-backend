@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { CreateFavoriteRecipeUseCase } from "../../../application/use-cases/favorite-recipe/create-favorite-recipe";
 import z from "zod";
 
-const requestParams = z.object({
+const createFavoriteRecipeSchema = z.object({
   recipeId: z.string(),
 });
 
@@ -11,11 +11,14 @@ export class CreateFavoriteRecipeController {
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const createdBy = req.user.id;
+      const userId = req.user.id;
 
-      const { recipeId } = requestParams.parse(req.params);
+      const { recipeId } = createFavoriteRecipeSchema.parse(req.body);
 
-      const result = await this.createFavoriteRecipeUseCase.execute({ recipeId, createdBy });
+      const result = await this.createFavoriteRecipeUseCase.execute({
+        recipeId,
+        createdBy: userId,
+      });
 
       if (result.isError()) {
         throw result.value;
@@ -23,6 +26,7 @@ export class CreateFavoriteRecipeController {
 
       return res.status(201).json(result.value.favoriteRecipe);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

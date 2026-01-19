@@ -8,13 +8,13 @@ export class FetchMyFavoriteRecipesController {
     try {
       const userId = req.user.id;
 
-      const result = await this.fetchMyFavoriteRecipesUseCase.execute({ userId });
+      const result = await this.fetchMyFavoriteRecipesUseCase.execute({ createdBy: userId });
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.favoriteRecipe);
+      return res.status(200).json(result.value.favoriteRecipes);
     } catch (error) {
       next(error);
     }
