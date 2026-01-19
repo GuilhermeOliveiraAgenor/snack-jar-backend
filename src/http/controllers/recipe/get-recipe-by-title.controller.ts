@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
-import { GetRecipeByTitleUseCase } from "../../../application/use-cases/recipe/get-recipe-by-title";
+import { GetRecipeByTitleUseCase } from "../../../application/use-cases/recipe/fetch-recipes-by-title";
 
 const getRecipeTitle = z.object({
   title: z.string(),

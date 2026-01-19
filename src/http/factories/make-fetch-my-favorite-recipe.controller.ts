@@ -12,7 +12,6 @@ export function makeFetchMyFavoriteRecipesController() {
 
   const fetchMyFavoriteRecipesUseCase = new FetchMyFavoriteRecipesUseCase(
     favoriteRecipeRepository,
-    userRepository,
   );
 
   return new FetchMyFavoriteRecipesController(fetchMyFavoriteRecipesUseCase);

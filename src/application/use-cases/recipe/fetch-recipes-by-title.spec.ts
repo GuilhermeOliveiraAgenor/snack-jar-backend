@@ -3,22 +3,22 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
-import { GetRecipeByTitleUseCase } from "./get-recipe-by-title";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { FetchRecipesByTitleUseCase } from "./fetch-recipes-by-title";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 
-let sut: GetRecipeByTitleUseCase;
+let sut: FetchRecipesByTitleUseCase;
 
-describe("Get Recipe By Title Use Case", () => {
+describe("Fetch Recipe By Title Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
-    sut = new GetRecipeByTitleUseCase(inMemoryRecipeRepository);
+    sut = new FetchRecipesByTitleUseCase(inMemoryRecipeRepository);
   });
 
-  it("should be able to get recipes by title", async () => {
+  it("should be able to Fetch recipes by title", async () => {
     const user = makeUser();
 
     await inMemoryUserRepository.create(user);
@@ -52,7 +52,7 @@ describe("Get Recipe By Title Use Case", () => {
       });
     }
   });
-  it("should not be able to get recipes by title when title does not exists", async () => {
+  it("should not be able to Fetch recipes by title when title does not exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 

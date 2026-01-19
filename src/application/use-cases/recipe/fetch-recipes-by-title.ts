@@ -3,25 +3,25 @@ import { Recipe } from "../../../core/entities/recipe";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
-interface GetRecipeByTitleUseCaseRequest {
+interface FetchRecipesByTitleUseCaseRequest {
   userId: string;
   title: string;
 }
 
-type GetRecipeByTitleUseCaseResponse = Either<
+type FetchRecipesByTitleUseCaseResponse = Either<
   NotFoundError,
   {
     recipes: Recipe[];
   }
 >;
 
-export class GetRecipeByTitleUseCase {
+export class FetchRecipesByTitleUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
 
   async execute({
     userId,
     title,
-  }: GetRecipeByTitleUseCaseRequest): Promise<GetRecipeByTitleUseCaseResponse> {
+  }: FetchRecipesByTitleUseCaseRequest): Promise<FetchRecipesByTitleUseCaseResponse> {
     const recipes = await this.recipeRepository.findManyByTitle(userId, title);
     if (recipes.length <= 0) {
       return failure(new NotFoundError("recipe"));
