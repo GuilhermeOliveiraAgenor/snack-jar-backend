@@ -4,7 +4,7 @@ import { PrismaCategoryRepository } from "../../infra/repositories/prisma-catego
 import { PrismaRecipeIngredientRepository } from "../../infra/repositories/prisma-recipe-ingredient-repository";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
 import { PrismaRecipeStepRepository } from "../../infra/repositories/prisma-recipe-step-repository";
-import { CreateRecipeController } from "../controllers/recipe/create-recipe-controller";
+import { CreateRecipeController } from "../controllers/recipe/create-recipe.controller";
 
 export function makeCreateRecipeController() {
   const prisma = getPrismaClient();
