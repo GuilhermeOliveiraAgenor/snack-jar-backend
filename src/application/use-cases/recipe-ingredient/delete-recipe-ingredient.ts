@@ -27,8 +27,6 @@ export class DeleteRecipeIngredientUseCase {
       return failure(new NotAllowedError("user"));
     }
 
-    recipeIngredient.deletedBy = new UniqueEntityID(deletedBy);
-
     await this.recipeIngredient.delete(recipeIngredient);
 
     return success(null);

@@ -8,6 +8,7 @@ import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-
 import { makeUser } from "../../../../test/factories/make-user";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { MeasurementUnit } from "../../../core/enum/enum-unit";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -38,7 +39,7 @@ describe("Create Recipe Ingredient Use Case", () => {
     const result = await sut.execute({
       ingredient: "Açucar",
       amount: "1",
-      unit: "Kg",
+      unit: MeasurementUnit.KG,
       recipeId: recipe.id.toString(),
       createdBy: user.id.toString(),
     });
@@ -49,7 +50,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       expect(result.value.recipeIngredient).toMatchObject({
         ingredient: "Açucar",
         amount: "1",
-        unit: "Kg",
+        unit: "kg",
       });
     }
   });
@@ -60,7 +61,7 @@ describe("Create Recipe Ingredient Use Case", () => {
     const result = await sut.execute({
       ingredient: "Açucar",
       amount: "1",
-      unit: "Kg",
+      unit: MeasurementUnit.KG,
       recipeId: "0",
       createdBy: user.id.toString(),
     });
@@ -84,7 +85,7 @@ describe("Create Recipe Ingredient Use Case", () => {
     const result = await sut.execute({
       ingredient: "Farinha",
       amount: "1000",
-      unit: "G",
+      unit: MeasurementUnit.KG,
       recipeId: recipe.id.toString(),
       createdBy: user2.id.toString(),
     });

@@ -26,8 +26,6 @@ export class DeleteRecipeStepUseCase {
       return failure(new NotAllowedError("user"));
     }
 
-    recipeStep.deletedBy = new UniqueEntityID(deletedBy);
-
     await this.recipeStepRepository.delete(recipeStep);
 
     return success(null);
