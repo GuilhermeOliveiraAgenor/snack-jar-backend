@@ -6,8 +6,8 @@ import { CategoryRepository } from "../../repositories/category-repository";
 
 // create request
 interface EditCategoryUseCaseRequest {
-  name: Category["name"] | undefined;
-  description: Category["description"] | undefined;
+  name?: Category["name"] | undefined;
+  description?: Category["description"] | undefined;
   id: string;
 }
 
@@ -28,10 +28,18 @@ export class EditCategoryUseCase {
     const category = await this.categoryRepository.findById(id.toString());
 
     // verify if exists category
-
     if (!category) {
       return failure(new NotFoundError("category"));
     }
+
+
+    if(name){
+      const categoryName = await this.categoryRepository.findByName(name)
+    if(categoryName && categoryName.id.toString() !== id){
+      return failure(new AlreadyExistsError("category"))
+    }
+    }
+    
 
     // update fields
     category.name = name ?? category.name;
