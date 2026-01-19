@@ -8,8 +8,8 @@ const paramsSchema = z.object({
 });
 // zod validation body
 const editCategorySchema = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
 });
 
 export class EditCategoryController {

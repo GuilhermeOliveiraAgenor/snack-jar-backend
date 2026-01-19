@@ -4,8 +4,8 @@ import { NextFunction, Request, Response } from "express";
 
 // fields validate zod
 const createCategorySchema = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().min(1),
+  description: z.string().min(1),
 });
 
 export class CreateCategoryController {

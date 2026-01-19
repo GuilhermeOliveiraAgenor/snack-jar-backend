@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { EditCategoryUseCase } from "../category/edit-category";
 import { makeCategory } from "../../../../test/factories/make-category";
@@ -25,7 +24,7 @@ describe("Edit Category Use Case", () => {
     const result = await sut.execute({
       name: "Prato doce",
       description: "Prato",
-      id: category.id,
+      id: category.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -39,7 +38,7 @@ describe("Edit Category Use Case", () => {
 
   it("should not be able to update a category when id does not exist", async () => {
     const result = await sut.execute({
-      id: new UniqueEntityID("0"),
+      id: "0",
       name: "Prato doce",
       description: "Prato",
     });

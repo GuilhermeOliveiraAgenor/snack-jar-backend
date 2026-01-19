@@ -6,8 +6,8 @@ import { CategoriesRepository } from "../../repositories/categories-repository";
 
 // create request
 interface EditCategoryUseCaseRequest {
-  name: Category["name"];
-  description: Category["description"];
+  name: Category["name"] | undefined;
+  description: Category["description"] | undefined;
   id: string;
 }
 
