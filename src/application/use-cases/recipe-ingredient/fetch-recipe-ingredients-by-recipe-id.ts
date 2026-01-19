@@ -4,23 +4,23 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
-interface FetchRecipeIngredientByRecipeIdRequest {
+interface FetchRecipeIngredientsByRecipeIdRequest {
   id: string;
 }
 
-type FetchRecipeIngredientByRecipeIdResponse = Either<
+type FetchRecipeIngredientsByRecipeIdResponse = Either<
   NotFoundError,
   { recipeIngredients: RecipeIngredient[] }
 >;
 
-export class FetchRecipeIngredientByRecipeIdUseCase {
+export class FetchRecipeIngredientsByRecipeIdUseCase {
   constructor(
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeRepository: RecipeRepository,
   ) {}
   async execute({
     id,
-  }: FetchRecipeIngredientByRecipeIdRequest): Promise<FetchRecipeIngredientByRecipeIdResponse> {
+  }: FetchRecipeIngredientsByRecipeIdRequest): Promise<FetchRecipeIngredientsByRecipeIdResponse> {
     // verify if exists recipe id
     const recipe = await this.recipeRepository.findById(id);
     if (!recipe) {

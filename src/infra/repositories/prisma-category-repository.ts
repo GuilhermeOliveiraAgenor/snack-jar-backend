@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { CategoriesRepository } from "../../application/repositories/categories-repository";
+import { CategoriesRepository } from "../../application/repositories/category-repository";
 import { Category } from "../../core/entities/category";
 import { PrismaCategoryMapper } from "../mappers/prisma-category-mapper";
 

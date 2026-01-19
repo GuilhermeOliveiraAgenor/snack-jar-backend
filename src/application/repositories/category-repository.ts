@@ -1,6 +1,6 @@
 import { Category } from "../../core/entities/category";
 
-export interface CategoriesRepository {
+export interface CategoryRepository {
   create(category: Category): Promise<void>;
   save(category: Category): Promise<void>;
   findMany(): Promise<Category[]>;

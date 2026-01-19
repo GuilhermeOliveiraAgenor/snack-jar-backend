@@ -3,8 +3,8 @@ import { makeAuthMiddleware } from "../factories/make-auth-middleware";
 import { makeCreateRecipeController } from "../factories/make-create-recipe.controller";
 import { makeDeleteRecipeController } from "../factories/make-delete-recipe.controller";
 import { makeEditRecipeController } from "../factories/make-edit-recipe.controller";
-import { makeFetchMyRecipesController } from "../factories/make-fetch-my-recipe.controller";
-import { makGetRecipeByTitleController } from "../factories/make-get-recipe-by-title.controller";
+import { makeFetchMyRecipesController } from "../factories/make-fetch-my-recipes.controller";
+import { makeFetchRecipesByTitleController } from "../factories/make-fetch-recipes-by-title.controller";
 
 const recipeRoutes = Router();
 
@@ -27,7 +27,7 @@ recipeRoutes.get("/menu", (req, res, next) => {
 });
 
 recipeRoutes.get("/recipe", (req, res, next) => {
-  return makGetRecipeByTitleController().handle(req, res, next);
+  return makeFetchRecipesByTitleController().handle(req, res, next);
 });
 
 export { recipeRoutes };

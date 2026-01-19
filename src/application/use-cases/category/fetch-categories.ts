@@ -1,6 +1,6 @@
 import { Either, success } from "../../../core/either";
 import { Category } from "../../../core/entities/category";
-import { CategoriesRepository } from "../../repositories/categories-repository";
+import { CategoryRepository } from "../../repositories/category-repository";
 
 type FetchCategoriesUseCaseResponse = Either<
   null,
@@ -10,9 +10,9 @@ type FetchCategoriesUseCaseResponse = Either<
 >;
 
 export class FetchCategoriesUseCase {
-  constructor(private categoriesRepository: CategoriesRepository) {}
+  constructor(private categoryRepository: CategoryRepository) {}
   async execute(): Promise<FetchCategoriesUseCaseResponse> {
-    const category = await this.categoriesRepository.findMany();
+    const category = await this.categoryRepository.findMany();
 
     return success({ category });
   }

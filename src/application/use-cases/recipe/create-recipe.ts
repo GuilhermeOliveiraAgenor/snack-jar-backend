@@ -5,7 +5,7 @@ import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient
 import { RecipeRepository } from "../../repositories/recipe-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
-import { CategoriesRepository } from "../../repositories/categories-repository";
+import { CategoryRepository } from "../../repositories/category-repository";
 import { RecipeStatus } from "../../../core/enum/enum-status";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { RecipeStep } from "../../../core/entities/recipeStep";
@@ -49,7 +49,7 @@ export class CreateRecipeUseCase {
     private recipeRepository: RecipeRepository,
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeStepRepository: RecipeStepRepository,
-    private categoryRepository: CategoriesRepository,
+    private categoryRepository: CategoryRepository,
   ) {}
 
   async execute({

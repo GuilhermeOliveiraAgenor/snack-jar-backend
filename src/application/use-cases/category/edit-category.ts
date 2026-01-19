@@ -2,7 +2,7 @@ import { Either, success, failure } from "../../../core/either";
 import { Category } from "../../../core/entities/category";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { CategoriesRepository } from "../../repositories/categories-repository";
+import { CategoryRepository } from "../../repositories/category-repository";
 
 // create request
 interface EditCategoryUseCaseRequest {
@@ -18,14 +18,14 @@ type EditCategoryUseCaseResponse = Either<
 >;
 
 export class EditCategoryUseCase {
-  constructor(private categoriesRepository: CategoriesRepository) {}
+  constructor(private categoryRepository: CategoryRepository) {}
 
   async execute({
     name,
     description,
     id,
   }: EditCategoryUseCaseRequest): Promise<EditCategoryUseCaseResponse> {
-    const category = await this.categoriesRepository.findById(id.toString());
+    const category = await this.categoryRepository.findById(id.toString());
 
     // verify if exists category
 
@@ -38,7 +38,7 @@ export class EditCategoryUseCase {
     category.description = description ?? category.description;
 
     // pass to repository
-    await this.categoriesRepository.save(category);
+    await this.categoryRepository.save(category);
 
     return success({
       category,

@@ -4,7 +4,7 @@ import { makeRecipeStep } from "../../../../test/factories/make-recipe-step";
 import { makeUser } from "../../../../test/factories/make-user";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { FetchRecipeStepByRecipeIdUseCase } from "./fetch-recipe-step-by-recipe-id";
+import { FetchRecipeStepsByRecipeIdUseCase } from "./fetch-recipe-steps-by-recipe-id";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 
@@ -12,14 +12,14 @@ let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
-let sut: FetchRecipeStepByRecipeIdUseCase;
+let sut: FetchRecipeStepsByRecipeIdUseCase;
 
 describe("Fetch Recipe Step By Recipe Id", () => {
   beforeEach(() => {
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
-    sut = new FetchRecipeStepByRecipeIdUseCase(
+    sut = new FetchRecipeStepsByRecipeIdUseCase(
       inMemoryRecipeStepRepository,
       inMemoryRecipeRepository,
     );

@@ -11,14 +11,14 @@ let inMemoryUserRepository: InMemoryUserRepository;
 
 let sut: FetchRecipesByTitleUseCase;
 
-describe("Fetch Recipe By Title Use Case", () => {
+describe("Fetch Recipes By Title Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
     sut = new FetchRecipesByTitleUseCase(inMemoryRecipeRepository);
   });
 
-  it("should be able to Fetch recipes by title", async () => {
+  it("should be able to fetch recipes by title", async () => {
     const user = makeUser();
 
     await inMemoryUserRepository.create(user);
@@ -52,7 +52,7 @@ describe("Fetch Recipe By Title Use Case", () => {
       });
     }
   });
-  it("should not be able to Fetch recipes by title when title does not exists", async () => {
+  it("should not be able to fetch recipes by title when title does not exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 

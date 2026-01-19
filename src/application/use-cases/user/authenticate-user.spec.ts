@@ -3,7 +3,7 @@ import { FakeHashProvider } from "../../../../test/cryptography/fake-hash-provid
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { AuthenticateUserUseCase } from "./authenticate-user";
 import { CreateUserUseCase } from "./create-user";
-import { InvalidFieldsError } from "../../errors/invalid-fields-error";
+import { InvalidCredentialsError } from "../../errors/invalid-credentials-error";
 
 let inMemoryUserRepository = new InMemoryUserRepository();
 let hashProvider: FakeHashProvider;
@@ -49,7 +49,7 @@ describe("Authenticate User Use Case", () => {
 
     expect(result.isError()).toBe(true);
     expect(inMemoryUserRepository.items).toHaveLength(1);
-    expect(result.value).toBeInstanceOf(InvalidFieldsError);
+    expect(result.value).toBeInstanceOf(InvalidCredentialsError);
   });
   it("should not be able to authenticate user with invalid password", async () => {
     await sutCreate.execute({
@@ -65,7 +65,7 @@ describe("Authenticate User Use Case", () => {
 
     expect(result.isError()).toBe(true);
     expect(inMemoryUserRepository.items).toHaveLength(1);
-    expect(result.value).toBeInstanceOf(InvalidFieldsError);
+    expect(result.value).toBeInstanceOf(InvalidCredentialsError);
   });
   it("should store hashed password and not plain text", async () => {
     await sutCreate.execute({

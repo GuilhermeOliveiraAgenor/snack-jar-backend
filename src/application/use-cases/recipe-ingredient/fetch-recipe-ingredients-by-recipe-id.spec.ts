@@ -4,19 +4,19 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { FetchRecipeIngredientByRecipeIdUseCase } from "./fetch-recipe-ingredient-by-recipe-id";
+import { FetchRecipeIngredientsByRecipeIdUseCase } from "./fetch-recipe-ingredients-by-recipe-id";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
-let sut: FetchRecipeIngredientByRecipeIdUseCase;
+let sut: FetchRecipeIngredientsByRecipeIdUseCase;
 
 describe("Fetch Recipe Ingredient By Recipe Id", () => {
   beforeEach(() => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
 
-    sut = new FetchRecipeIngredientByRecipeIdUseCase(
+    sut = new FetchRecipeIngredientsByRecipeIdUseCase(
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeRepository,
     );

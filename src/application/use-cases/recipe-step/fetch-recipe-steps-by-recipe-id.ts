@@ -4,33 +4,33 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 
-interface FetchRecipeStepByRecipeIdUseCaseRequest {
+interface FetchRecipeStepsByRecipeIdUseCaseRequest {
   id: string;
 }
-type FetchRecipeStepByRecipeIdResponse = Either<
+type FetchRecipeStepsByRecipeIdResponse = Either<
   NotFoundError,
   {
-    recipeStep: RecipeStep[];
+    recipeSteps: RecipeStep[];
   }
 >;
 
-export class FetchRecipeStepByRecipeIdUseCase {
+export class FetchRecipeStepsByRecipeIdUseCase {
   constructor(
     private recipeStepRepository: RecipeStepRepository,
     private recipeRepository: RecipeRepository,
   ) {}
   async execute({
     id,
-  }: FetchRecipeStepByRecipeIdUseCaseRequest): Promise<FetchRecipeStepByRecipeIdResponse> {
+  }: FetchRecipeStepsByRecipeIdUseCaseRequest): Promise<FetchRecipeStepsByRecipeIdResponse> {
     const recipe = await this.recipeRepository.findById(id);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
     }
 
-    const recipeStep = await this.recipeStepRepository.findManyByRecipeId(recipe.id.toString());
+    const recipeSteps = await this.recipeStepRepository.findManyByRecipeId(recipe.id.toString());
 
     return success({
-      recipeStep,
+      recipeSteps,
     });
   }
 }
