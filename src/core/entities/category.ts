@@ -6,7 +6,6 @@ export interface CategoryProps {
   description: string; // fields
   createdAt: Date;
   updatedAt: Date | null;
-  deletedAt: Date | null;
 }
 
 export class Category {
@@ -22,7 +21,6 @@ export class Category {
         ...props, // import fields
         createdAt: new Date(),
         updatedAt: null,
-        deletedAt: null,
       },
     );
     return category;
@@ -49,9 +47,7 @@ export class Category {
     return this.props.updatedAt;
   }
 
-  get deletedAt(): Date | null {
-    return this.props.deletedAt;
-  }
+  
   // set
 
   set name(name: string) {
@@ -71,11 +67,6 @@ export class Category {
 
   set updatedAt(updatedAt: Date) {
     this.props.updatedAt = updatedAt;
-    this.touch();
-  }
-
-  set deletedAt(deletedAt: Date) {
-    this.props.deletedAt = deletedAt;
     this.touch();
   }
 

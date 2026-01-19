@@ -10,8 +10,6 @@ export interface RecipeIngredientProps {
   createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
-  deletedAt: Date | null;
-  deletedBy: UniqueEntityID | null;
 }
 
 export class RecipeIngredient {
@@ -34,10 +32,8 @@ export class RecipeIngredient {
       ...props,
       createdAt: new Date(),
       updatedAt: null,
-      deletedAt: null,
       createdBy: props.createdBy,
       updatedBy: null,
-      deletedBy: null,
     });
 
     return recipeIngredient;
@@ -73,9 +69,6 @@ export class RecipeIngredient {
   get updatedBy(): UniqueEntityID | null {
     return this.props.updatedBy;
   }
-  get deletedBy(): UniqueEntityID | null {
-    return this.props.deletedBy;
-  }
 
   get updatedAt(): Date | null {
     return this.props.updatedAt;
@@ -110,11 +103,6 @@ export class RecipeIngredient {
     this.touch();
   }
 
-  set deletedAt(deletedAt: Date) {
-    this.props.deletedAt = deletedAt;
-    this.touch();
-  }
-
   set createdBy(createdBy: UniqueEntityID) {
     this.props.createdBy = createdBy;
     this.touch();
@@ -122,11 +110,6 @@ export class RecipeIngredient {
 
   set updatedBy(updatedBy: UniqueEntityID) {
     this.props.updatedBy = updatedBy;
-    this.touch();
-  }
-
-  set deletedBy(deletedBy: UniqueEntityID) {
-    this.props.deletedBy = deletedBy;
     this.touch();
   }
 
