@@ -7,8 +7,12 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
+import { makeRecipe } from "../../../../test/factories/make-recipe";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
+let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 
 let sut: EditRecipeIngredientUseCase;
@@ -16,16 +20,22 @@ let sut: EditRecipeIngredientUseCase;
 describe("Edit Recipe Ingredient", () => {
   beforeEach(() => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
+    inMemoryRecipeRepository = new InMemoryRecipeRepository
+
     inMemoryUserRepository = new InMemoryUserRepository();
 
-    sut = new EditRecipeIngredientUseCase(inMemoryRecipeIngredientRepository);
+    sut = new EditRecipeIngredientUseCase(inMemoryRecipeIngredientRepository, inMemoryRecipeRepository);
   });
   it("should be able edit a recipe ingredient", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
+    const recipe = makeRecipe()
+    await inMemoryRecipeRepository.create(recipe)
+    
     const recipeIngredient = makeRecipeIngredient({
       createdBy: user.id,
+      recipeId: recipe.id
     });
     await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
@@ -86,4 +96,27 @@ describe("Edit Recipe Ingredient", () => {
     expect(inMemoryRecipeIngredientRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
+  it("should not be able to edit ingredient when recipe is not ACTIVE", async() =>{
+    const recipe = makeRecipe({
+        status: RecipeStatus.INACTIVE,
+      });
+      await inMemoryRecipeRepository.create(recipe)
+
+      const recipeIngredient = makeRecipeIngredient({
+        recipeId: recipe.id
+      })
+      await inMemoryRecipeIngredientRepository.create(recipeIngredient)
+
+      const result = await sut.execute({
+          id: recipeIngredient.id.toString(),
+          ingredient: "Farinha",
+          amount: "1000",
+          unit: MeasurementUnit.G,
+          updatedBy: "user-1"
+      })
+
+      expect(result.isError()).toBe(true)
+      expect(result.value).toBeInstanceOf(NotAllowedError)
+
+  })
 });

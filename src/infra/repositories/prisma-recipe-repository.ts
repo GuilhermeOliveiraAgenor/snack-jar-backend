@@ -19,7 +19,7 @@ export class PrismaRecipeRepository implements RecipeRepository {
   }
   async findManyByUserId(id: string): Promise<Recipe[]> {
     const recipes = await this.prisma.recipe.findMany({
-      where: { createdBy: id, status: "ACTIVE" },
+      where: { createdBy: id, status: "ACTIVE", deletedAt: null },
     });
     return recipes.map(PrismaRecipeMapper.toDomain);
   }
@@ -39,6 +39,7 @@ export class PrismaRecipeRepository implements RecipeRepository {
           mode: "insensitive",
         },
         status: "ACTIVE",
+        deletedAt: null
       },
     });
     return recipes.map(PrismaRecipeMapper.toDomain);
@@ -52,6 +53,7 @@ export class PrismaRecipeRepository implements RecipeRepository {
           mode: "insensitive",
         },
         status: "ACTIVE",
+        deletedAt: null
       },
     });
     if (!recipe) return null;

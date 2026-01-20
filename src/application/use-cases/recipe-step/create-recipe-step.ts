@@ -46,8 +46,6 @@ export class CreateRecipeStepUseCase {
 
     if (recipe.status !== "ACTIVE") {
       return failure(new NotAllowedError("recipe"));
-    }if (recipe.status !== "ACTIVE") {
-      return failure(new NotAllowedError("recipe"));
     }
 
     const steps = await this.recipeStepRepository.findManyByRecipeId(recipe.id.toString());

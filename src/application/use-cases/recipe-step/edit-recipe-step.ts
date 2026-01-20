@@ -52,7 +52,7 @@ export class EditRecipeStepUseCase {
       return failure(new AlreadyExistsError("recipeStep"));
     }
 
-    if (step !== undefined && step <= 0) {
+    if (step && step <= 0) {
       return failure(new InvalidFieldsError("recipeStep"));
     }
 

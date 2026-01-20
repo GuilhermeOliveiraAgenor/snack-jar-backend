@@ -9,6 +9,8 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -94,4 +96,27 @@ describe("Create Recipe Ingredient Use Case", () => {
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
+  it("should not be able to edit ingredient when recipe is not ACTIVE", async() =>{
+    const recipe = makeRecipe({
+        status: RecipeStatus.INACTIVE,
+      });
+      await inMemoryRecipeRepository.create(recipe)
+
+      const recipeIngredient = makeRecipeIngredient({
+        recipeId: recipe.id
+      })
+      await inMemoryRecipeIngredientRepository.create(recipeIngredient)
+
+      const result = await sut.execute({
+          ingredient: "Açucar",
+          amount: "1000",
+          unit: MeasurementUnit.G,
+          recipeId: recipe.id.toString(),
+          createdBy: "user-1,"
+      })
+
+      expect(result.isError()).toBe(true)
+      expect(result.value).toBeInstanceOf(NotAllowedError)
+
+  })
 });
