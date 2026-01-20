@@ -10,7 +10,6 @@ import { NotAllowedError } from "../../errors/not-allowed-error";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeRecipeStep } from "../../../../test/factories/make-recipe-step";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;

@@ -9,6 +9,7 @@ import { NotAllowedError } from "../../errors/not-allowed-error";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -34,7 +35,7 @@ describe("Delete Recipe Ingredient", () => {
 
     const recipe = makeRecipe()
     await inMemoryRecipeRepository.create(recipe)
-  
+
     const recipeIngredient = makeRecipeIngredient({
       createdBy: user.id,
       recipeId: recipe.id
@@ -49,7 +50,7 @@ describe("Delete Recipe Ingredient", () => {
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryRecipeIngredientRepository.items).toHaveLength(0);
   });
-  it("should not be able to edit recipe ingredient when id does not exists", async () => {
+  it("should not be able to delete recipe ingredient when id does not exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -61,7 +62,30 @@ describe("Delete Recipe Ingredient", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to edit recipe ingredient when user is not creator", async () => {
+  it("should not be able to delete recipe ingredient when recipe id does not exists", async() =>{
+      const user = makeUser();
+      await inMemoryUserRepository.create(user);
+  
+      const recipe = makeRecipe({
+        createdBy: user.id
+      })
+      await inMemoryRecipeRepository.create(recipe)
+
+      const recipeIngredient = makeRecipeIngredient({
+        recipeId: new UniqueEntityID("0"),
+        createdBy: user.id
+      })
+      await inMemoryRecipeIngredientRepository.create(recipeIngredient)
+
+      const result = await sut.execute({
+        id: recipeIngredient.id.toString(),
+        deletedBy: user.id.toString(),
+      });
+      console.log(result.value)
+      expect(result.isError()).toBe(true);
+      expect(result.value).toBeInstanceOf(NotFoundError);
+  })
+  it("should not be able to delete recipe ingredient when user is not creator", async () => {
     const user1 = makeUser();
     await inMemoryUserRepository.create(user1);
 

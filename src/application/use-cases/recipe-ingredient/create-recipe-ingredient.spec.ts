@@ -56,7 +56,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       });
     }
   });
-  it("should not be able to create a recipe ingredient when recipeId does not exist", async () => {
+  it("should not be able to create a recipe ingredient when recipe id does not exist", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -96,7 +96,7 @@ describe("Create Recipe Ingredient Use Case", () => {
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
-  it("should not be able to edit ingredient when recipe is not ACTIVE", async() =>{
+  it("should not be able to create ingredient when recipe is not ACTIVE", async() =>{
     const recipe = makeRecipe({
         status: RecipeStatus.INACTIVE,
       });

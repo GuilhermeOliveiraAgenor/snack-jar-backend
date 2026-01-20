@@ -10,6 +10,7 @@ import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
+import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -69,6 +70,29 @@ describe("Edit Recipe Step Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
+  it("should not be able to delete recipe step when recipe id does not exists", async() =>{
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipe = makeRecipe({
+      createdBy: user.id
+    })
+    await inMemoryRecipeRepository.create(recipe)
+
+    const recipeStep = makeRecipeStep({
+      recipeId: new UniqueEntityID("0"),
+      createdBy: user.id
+    })
+    await inMemoryRecipeStepRepository.create(recipeStep)
+
+    const result = await sut.execute({
+      id: recipeStep.id.toString(),
+      updatedBy: user.id.toString(),
+    });
+    console.log(result.value)
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotFoundError);
+})
   it("should not be edit recipe step when user is not a creator", async () => {
     const user1 = makeUser();
     const user2 = makeUser();
