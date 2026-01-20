@@ -27,6 +27,10 @@ export class DeleteRecipeUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
     if (recipe.createdBy.toString() != deletedBy) {
       return failure(new NotAllowedError("user"));
     }

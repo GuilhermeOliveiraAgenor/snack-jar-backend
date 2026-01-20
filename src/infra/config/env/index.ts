@@ -11,7 +11,6 @@ const envSchema = z.object({
 const _env = envSchema.safeParse(process.env); //validate variable
 
 if (!_env.success == true) {
-  console.log("Invalid variable", _env.error);
   throw new Error("Error in variables");
 }
 

@@ -4,6 +4,7 @@ import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
+import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface EditRecipeIngredientUseCaseRequest {
   id: string;
@@ -21,7 +22,10 @@ type EditRecipeIngredientUseCaseResponse = Either<
 >;
 
 export class EditRecipeIngredientUseCase {
-  constructor(private recipeIngredientRepository: RecipeIngredientRepository) {}
+  constructor(
+    private recipeIngredientRepository: RecipeIngredientRepository,
+    private recipeRepository: RecipeRepository,
+  ) {}
 
   async execute({
     id,
@@ -39,6 +43,16 @@ export class EditRecipeIngredientUseCase {
 
     if (recipeIngredient.createdBy.toString() != updatedBy) {
       return failure(new NotAllowedError("user"));
+    }
+
+    const recipe = await this.recipeRepository.findById(recipeIngredient.recipeId.toString());
+
+    if (!recipe) {
+      return failure(new NotFoundError("recipe"));
+    }
+
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
     }
 
     recipeIngredient.ingredient = ingredient ?? recipeIngredient.ingredient;

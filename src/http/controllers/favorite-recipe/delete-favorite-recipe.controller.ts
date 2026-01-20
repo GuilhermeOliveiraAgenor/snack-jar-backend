@@ -23,7 +23,6 @@ export class DeleteFavoriteRecipeController {
 
       return res.status(200).json({ message: "Recipe deleted successufully" });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

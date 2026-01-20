@@ -5,6 +5,7 @@ import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { RecipeRepository } from "../../repositories/recipe-repository";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 
 interface EditRecipeStepUseCaseRequest {
@@ -22,7 +23,10 @@ type EditRecipeStepUseCaseResponse = Either<
 >;
 
 export class EditRecipeStepUseCase {
-  constructor(private recipeStepRepository: RecipeStepRepository) {}
+  constructor(
+    private recipeStepRepository: RecipeStepRepository,
+    private recipeRepository: RecipeRepository,
+  ) {}
   async execute({
     id,
     step,
@@ -50,6 +54,16 @@ export class EditRecipeStepUseCase {
 
     if (step !== undefined && step <= 0) {
       return failure(new InvalidFieldsError("recipeStep"));
+    }
+
+    const recipe = await this.recipeRepository.findById(recipeStep.recipeId.toString());
+
+    if (!recipe) {
+      return failure(new NotFoundError("recipe"));
+    }
+
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
     }
 
     recipeStep.step = step ?? recipeStep.step;

@@ -26,7 +26,6 @@ export class CreateFavoriteRecipeController {
 
       return res.status(201).json(result.value.favoriteRecipe);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

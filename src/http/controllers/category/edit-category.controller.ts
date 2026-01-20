@@ -23,8 +23,8 @@ export class EditCategoryController {
 
       const data = {
         id,
-        ...body
-      }
+        ...body,
+      };
 
       const result = await this.editCategoryUseCase.execute(data);
 

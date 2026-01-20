@@ -27,8 +27,8 @@ export class EditRecipeIngredientController {
       const data = {
         id,
         updatedBy: userId,
-        ...body
-      }
+        ...body,
+      };
 
       const result = await this.editRecipeIngredientUseCase.execute(data);
 

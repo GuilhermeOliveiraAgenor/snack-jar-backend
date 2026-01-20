@@ -6,8 +6,11 @@ import { DeleteRecipeIngredientUseCase } from "./delete-recipe-ingredient";
 import { makeUser } from "../../../../test/factories/make-user";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
+let inMemoryRecipeRepository: InMemoryRecipeRepository;
+
 let inMemoryUserRepository: InMemoryUserRepository;
 
 let sut: DeleteRecipeIngredientUseCase;
@@ -16,8 +19,12 @@ describe("Delete Recipe Ingredient", () => {
   beforeEach(() => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
+    inMemoryRecipeRepository = new InMemoryRecipeRepository();
 
-    sut = new DeleteRecipeIngredientUseCase(inMemoryRecipeIngredientRepository);
+    sut = new DeleteRecipeIngredientUseCase(
+      inMemoryRecipeIngredientRepository,
+      inMemoryRecipeRepository,
+    );
   });
   it("should be able to delete a recipe ingredient", async () => {
     const user = makeUser();

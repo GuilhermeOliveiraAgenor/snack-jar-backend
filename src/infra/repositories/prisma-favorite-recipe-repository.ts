@@ -21,6 +21,10 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
     const favoriteRecipe = await this.prisma.favoriteRecipe.findMany({
       where: {
         createdBy: id,
+        recipe: {
+          status: "ACTIVE",
+          deletedAt: null,
+        },
       },
     });
     return favoriteRecipe.map(PrismaFavoriteRecipeMapper.toDomain);

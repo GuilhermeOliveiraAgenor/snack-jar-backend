@@ -32,14 +32,12 @@ export class EditCategoryUseCase {
       return failure(new NotFoundError("category"));
     }
 
-
-    if(name){
-      const categoryName = await this.categoryRepository.findByName(name)
-    if(categoryName && categoryName.id.toString() !== id){
-      return failure(new AlreadyExistsError("category"))
+    if (name) {
+      const categoryName = await this.categoryRepository.findByName(name);
+      if (categoryName && categoryName.id.toString() !== id) {
+        return failure(new AlreadyExistsError("category"));
+      }
     }
-    }
-    
 
     // update fields
     category.name = name ?? category.name;

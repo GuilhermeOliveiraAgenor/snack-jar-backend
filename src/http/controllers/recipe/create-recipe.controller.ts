@@ -54,7 +54,6 @@ export class CreateRecipeController {
 
       return res.status(201).json(result.value.recipe);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

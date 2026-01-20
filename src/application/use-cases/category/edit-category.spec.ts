@@ -3,7 +3,6 @@ import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-m
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { EditCategoryUseCase } from "../category/edit-category";
 import { makeCategory } from "../../../../test/factories/make-category";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
@@ -48,23 +47,22 @@ describe("Edit Category Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to update a category when already exists name", async() =>{
+  it("should not be able to update a category when already exists name", async () => {
     const category1 = makeCategory({
-      name: "Salgados"
-    })
-    const category2 = makeCategory()
+      name: "Salgados",
+    });
+    const category2 = makeCategory();
 
-    await inMemoryCategoriesRepository.create(category1)
-    await inMemoryCategoriesRepository.create(category2)
+    await inMemoryCategoriesRepository.create(category1);
+    await inMemoryCategoriesRepository.create(category2);
 
     const result = await sut.execute({
       id: category2.id.toString(),
       name: "Salgados",
-      description: "Pratos salgados"
-    })
+      description: "Pratos salgados",
+    });
 
-    expect(result.isError()).toBe(true)
-    expect(result.value).toBeInstanceOf(AlreadyExistsError)
-
-  })
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(AlreadyExistsError);
+  });
 });

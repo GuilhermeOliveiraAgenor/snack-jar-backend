@@ -16,7 +16,6 @@ export class GetMeController {
 
       return res.status(200).json({ user: result.value.user });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

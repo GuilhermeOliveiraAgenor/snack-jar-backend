@@ -37,6 +37,10 @@ export class EditRecipeUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
     if (recipe.createdBy.toString() != updatedBy) {
       return failure(new NotAllowedError("user"));
     }

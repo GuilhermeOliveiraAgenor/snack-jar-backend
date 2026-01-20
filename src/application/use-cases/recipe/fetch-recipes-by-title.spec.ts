@@ -64,7 +64,6 @@ describe("Fetch Recipes By Title Use Case", () => {
     await inMemoryRecipeRepository.create(recipe);
 
     const result = await sut.execute({ userId: user.id.toString(), title: "Bolo de Laranja" });
-    console.log(result);
 
     expect(result.isError()).toBe(true);
     expect(inMemoryRecipeRepository.items).toHaveLength(1);

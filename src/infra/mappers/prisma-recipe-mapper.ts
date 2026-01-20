@@ -30,7 +30,7 @@ export class PrismaRecipeMapper {
       deletedBy: raw.deletedBy ? raw.deletedBy.toString() : null,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
-      deletedAt: raw.deletedAt
+      deletedAt: raw.deletedAt,
     };
   }
 }

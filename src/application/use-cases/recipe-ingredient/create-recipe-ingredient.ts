@@ -41,6 +41,11 @@ export class CreateRecipeIngredientUseCase {
     if (recipe.createdBy.toString() !== createdBy) {
       return failure(new NotAllowedError("user"));
     }
+
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
     const recipeIngredient = RecipeIngredient.create({
       ingredient,
       amount,

@@ -44,6 +44,12 @@ export class CreateRecipeStepUseCase {
       return failure(new NotAllowedError("user"));
     }
 
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
     const steps = await this.recipeStepRepository.findManyByRecipeId(recipe.id.toString());
     const stepDuplicated = steps.some((s) => s.step === step);
 

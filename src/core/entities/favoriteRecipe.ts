@@ -36,7 +36,6 @@ export class FavoriteRecipe {
     return this.props.createdBy;
   }
 
-  
   get createdAt(): Date | null {
     return this.props.createdAt;
   }
@@ -52,6 +51,4 @@ export class FavoriteRecipe {
   set createdAt(createdAt: Date) {
     this.props.createdAt = createdAt;
   }
-
-
 }
