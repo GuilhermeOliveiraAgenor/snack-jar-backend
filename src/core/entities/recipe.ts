@@ -109,7 +109,6 @@ export class Recipe {
 
   set status(status: RecipeStatus) {
     this.props.status = status;
-    this.touch();
   }
 
   set categoryId(categoryId: UniqueEntityID) {
