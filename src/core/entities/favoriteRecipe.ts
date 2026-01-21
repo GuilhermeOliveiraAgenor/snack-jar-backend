@@ -2,7 +2,7 @@ import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
 
 export interface FavoriteRecipeProps {
   recipeId: UniqueEntityID;
-  createdAt: Date | null;
+  createdAt: Date;
   createdBy: UniqueEntityID;
 }
 
@@ -36,7 +36,7 @@ export class FavoriteRecipe {
     return this.props.createdBy;
   }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 

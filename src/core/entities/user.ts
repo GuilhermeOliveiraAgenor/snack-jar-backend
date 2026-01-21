@@ -5,7 +5,7 @@ export interface UserProps {
   name: string;
   email: string;
   password: string;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 }
 

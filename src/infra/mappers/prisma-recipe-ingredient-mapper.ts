@@ -9,9 +9,10 @@ export class PrismaRecipeIngredientMapper {
       {
         ingredient: raw.ingredient,
         amount: raw.amount,
-        unit: raw.id as MeasurementUnit,
+        unit: raw.unit as MeasurementUnit,
         recipeId: new UniqueEntityID(raw.recipeId),
         createdBy: new UniqueEntityID(raw.createdBy),
+        createdAt: raw.createdAt,
       },
       new UniqueEntityID(raw.id),
     );

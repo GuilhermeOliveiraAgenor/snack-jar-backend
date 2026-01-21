@@ -6,7 +6,7 @@ export interface RecipeIngredientProps {
   amount: string;
   unit: MeasurementUnit;
   recipeId: UniqueEntityID;
-  createdAt: Date | null;
+  createdAt: Date;
   createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
@@ -19,24 +19,23 @@ export class RecipeIngredient {
   ) {}
 
   static create(
-    props: {
-      ingredient: string;
-      amount: string;
-      unit: MeasurementUnit;
-      recipeId: UniqueEntityID;
-      createdBy: UniqueEntityID;
-    },
+    props: Optional<
+      RecipeIngredientProps,
+      'createdAt' | 'updatedAt' | 'updatedBy'
+    >,
     id?: UniqueEntityID,
   ) {
-    const recipeIngredient = new RecipeIngredient(id ?? new UniqueEntityID(), {
-      ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-      createdBy: props.createdBy,
-      updatedBy: null,
-    });
-
-    return recipeIngredient;
+    const recipeIngredient = new RecipeIngredient(
+      id ?? new UniqueEntityID(),
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+        updatedAt: props.updatedAt ?? null,
+        updatedBy: props.updatedBy ?? null,
+      },
+    )
+  
+    return recipeIngredient
   }
 
   get id() {
@@ -59,7 +58,7 @@ export class RecipeIngredient {
     return this.props.recipeId;
   }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 

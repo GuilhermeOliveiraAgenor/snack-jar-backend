@@ -7,7 +7,7 @@ export interface RecipeProps {
   preparationTime: number;
   status: RecipeStatus;
   categoryId: UniqueEntityID;
-  createdAt: Date | null;
+  createdAt: Date;
   createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
@@ -69,7 +69,7 @@ export class Recipe {
     return this.props.categoryId;
   }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 

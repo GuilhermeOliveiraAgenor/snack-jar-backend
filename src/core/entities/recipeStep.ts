@@ -4,7 +4,7 @@ export interface RecipeStepProps {
   step: number;
   description: string;
   recipeId: UniqueEntityID;
-  createdAt: Date | null;
+  createdAt: Date;
   createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
@@ -59,7 +59,7 @@ export class RecipeStep {
     return this.props.updatedBy;
   }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
