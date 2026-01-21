@@ -2,7 +2,6 @@ import { RecipeDetailsRepository } from "../../src/application/repositories/reci
 import { RecipeIngredientRepository } from "../../src/application/repositories/recipe-ingredient-repository";
 import { RecipeRepository } from "../../src/application/repositories/recipe-repository";
 import { RecipeStepRepository } from "../../src/application/repositories/recipe-step-repository";
-import { UserRepository } from "../../src/application/repositories/user-repository";
 import { Recipe } from "../../src/core/entities/recipe";
 import { RecipeIngredient } from "../../src/core/entities/recipeIngredient";
 import { RecipeStep } from "../../src/core/entities/recipeStep";
@@ -12,7 +11,6 @@ export class InMemoryRecipeDetailsRepository implements RecipeDetailsRepository{
         private recipeRepository: RecipeRepository,
         private recipeIngredientRepository: RecipeIngredientRepository,
         private recipeStepRepository: RecipeStepRepository,
-        private userRepository: UserRepository
     ){}
     async getDetailsByRecipeId(recipeId: string): Promise<{ recipe: Recipe; steps: RecipeStep[]; ingredients: RecipeIngredient[]; } | null> {
         const recipe = await this.recipeRepository.findById(recipeId)

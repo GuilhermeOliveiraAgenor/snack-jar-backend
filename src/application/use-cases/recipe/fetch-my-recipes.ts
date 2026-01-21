@@ -14,6 +14,7 @@ type FetchMyRecipesUseCaseResponse = Either<
     recipes: Recipe[];
   }
 >;
+
 export class FetchMyRecipesUseCase {
   constructor(
     private recipeRepository: RecipeRepository,
