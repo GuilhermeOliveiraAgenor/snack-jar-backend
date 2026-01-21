@@ -9,7 +9,7 @@ const recipeIngredientRoutes = Router();
 
 recipeIngredientRoutes.use(makeAuthMiddleware());
 
-recipeIngredientRoutes.post("/recipe/ingredient", (req, res, next) => {
+recipeIngredientRoutes.post("/recipe/ingredient/:id", (req, res, next) => {
   return makeCreateRecipeIngredientController().handle(req, res, next);
 });
 

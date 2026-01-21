@@ -10,7 +10,11 @@ export class PrismaRecipeMapper {
         title: raw.title,
         description: raw.description,
         preparationTime: raw.preparationTime,
+<<<<<<< HEAD
         status: raw.id as RecipeStatus,
+=======
+        status: raw.status as RecipeStatus,
+>>>>>>> 83fdb9ef8881e2548e903af8660f900fb02f3182
         categoryId: new UniqueEntityID(raw.categoryId),
         createdBy: new UniqueEntityID(raw.createdBy),
       },
@@ -30,7 +34,6 @@ export class PrismaRecipeMapper {
       deletedBy: raw.deletedBy ? raw.deletedBy.toString() : null,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
-      deletedAt: raw.deletedAt,
     };
   }
 }

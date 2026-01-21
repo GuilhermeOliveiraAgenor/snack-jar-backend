@@ -16,7 +16,7 @@ export class DeleteRecipeIngredientController {
 
       const result = await this.deleteRecipeIngredientUseCase.execute({ id, deletedBy: userId });
 
-      if (result.isSuccess()) {
+      if (result.isError()) {
         throw result.value;
       }
 

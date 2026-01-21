@@ -30,12 +30,12 @@ describe("Edit Recipe Step Use Case", () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
-    const recipe = makeRecipe()
-    await inMemoryRecipeRepository.create(recipe)
+    const recipe = makeRecipe();
+    await inMemoryRecipeRepository.create(recipe);
 
     const recipeStep = makeRecipeStep({
       createdBy: user.id,
-      recipeId: recipe.id
+      recipeId: recipe.id,
     });
 
     await inMemoryRecipeStepRepository.create(recipeStep);
@@ -70,29 +70,29 @@ describe("Edit Recipe Step Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to delete recipe step when recipe id does not exists", async() =>{
+  it("should not be able to delete recipe step when recipe id does not exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
     const recipe = makeRecipe({
-      createdBy: user.id
-    })
-    await inMemoryRecipeRepository.create(recipe)
+      createdBy: user.id,
+    });
+    await inMemoryRecipeRepository.create(recipe);
 
     const recipeStep = makeRecipeStep({
       recipeId: new UniqueEntityID("0"),
-      createdBy: user.id
-    })
-    await inMemoryRecipeStepRepository.create(recipeStep)
+      createdBy: user.id,
+    });
+    await inMemoryRecipeStepRepository.create(recipeStep);
 
     const result = await sut.execute({
       id: recipeStep.id.toString(),
       updatedBy: user.id.toString(),
     });
-    console.log(result.value)
+    console.log(result.value);
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
-})
+  });
   it("should not be edit recipe step when user is not a creator", async () => {
     const user1 = makeUser();
     const user2 = makeUser();
@@ -150,26 +150,25 @@ describe("Edit Recipe Step Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
-  it("should not be able to edit step when recipe is not ACTIVE", async() =>{
+  it("should not be able to edit step when recipe is not ACTIVE", async () => {
     const recipe = makeRecipe({
-        status: RecipeStatus.INACTIVE,
-      });
-      await inMemoryRecipeRepository.create(recipe)
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
 
-      const recipeStep = makeRecipeStep({
-        recipeId: recipe.id
-      })
-      await inMemoryRecipeStepRepository.create(recipeStep)
+    const recipeStep = makeRecipeStep({
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeStepRepository.create(recipeStep);
 
-      const result = await sut.execute({
-        id: recipeStep.id.toString(),
-         step: 1,
-         description: "Jogue a farinha na bandeja",
-          updatedBy: "user-1"
-      })
+    const result = await sut.execute({
+      id: recipeStep.id.toString(),
+      step: 1,
+      description: "Jogue a farinha na bandeja",
+      updatedBy: "user-1",
+    });
 
-      expect(result.isError()).toBe(true)
-      expect(result.value).toBeInstanceOf(NotAllowedError)
-
-  })
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
 });

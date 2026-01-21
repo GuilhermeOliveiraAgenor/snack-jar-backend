@@ -113,26 +113,25 @@ describe("Create Recipe Step Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
-  it("should not be able to create step when recipe is not ACTIVE", async() =>{
+  it("should not be able to create step when recipe is not ACTIVE", async () => {
     const recipe = makeRecipe({
-        status: RecipeStatus.INACTIVE,
-      });
-      await inMemoryRecipeRepository.create(recipe)
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
 
-      const recipeStep = makeRecipeStep({
-        recipeId: recipe.id
-      })
-      await inMemoryRecipeStepRepository.create(recipeStep)
+    const recipeStep = makeRecipeStep({
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeStepRepository.create(recipeStep);
 
-      const result = await sut.execute({
-         step: 1,
-         description: "Jogue a farinha na bandeja",
-          recipeId: recipe.id.toString(),
-          createdBy: "user-1,"
-      })
+    const result = await sut.execute({
+      step: 1,
+      description: "Jogue a farinha na bandeja",
+      recipeId: recipe.id.toString(),
+      createdBy: "user-1,",
+    });
 
-      expect(result.isError()).toBe(true)
-      expect(result.value).toBeInstanceOf(NotAllowedError)
-
-  })
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
 });

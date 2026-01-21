@@ -74,20 +74,19 @@ describe("Soft delete Recipe Use Case", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
-  it("should not be able to delete recipe is not ACTIVE", async() =>{
+  it("should not be able to delete recipe is not ACTIVE", async () => {
     const recipe = makeRecipe({
-        status: RecipeStatus.INACTIVE
-      });
-      await inMemoryRecipeRepository.create(recipe)
-      console.log(recipe)
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+    console.log(recipe);
 
-      const result = await sut.execute({
-          id: recipe.id.toString(),
-          deletedBy: "user-1"
-      })
+    const result = await sut.execute({
+      id: recipe.id.toString(),
+      deletedBy: "user-1",
+    });
 
-      expect(result.isError()).toBe(true)
-      expect(result.value).toBeInstanceOf(NotAllowedError)
-
-  })
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
 });
