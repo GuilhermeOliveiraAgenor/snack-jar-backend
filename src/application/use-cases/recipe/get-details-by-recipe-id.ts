@@ -7,7 +7,6 @@ import { RecipeDetailsRepository } from "../../repositories/recipe-details-repos
 
 interface GetRecipeByRecipeIdRequest{
     recipeId: string
-    userId: string
 }
 
 type GetRecipeByRecipeIdResponse = Either<
@@ -22,10 +21,9 @@ export class GetDetailsByRecipeIdUseCase {
     constructor(private recipeDetailsRepository: RecipeDetailsRepository){}
     async execute({
         recipeId,
-        userId
     }: GetRecipeByRecipeIdRequest): Promise<GetRecipeByRecipeIdResponse>{
 
-        const details = await this.recipeDetailsRepository.getDetailsByRecipeId(recipeId, userId)        
+        const details = await this.recipeDetailsRepository.getDetailsByRecipeId(recipeId)        
         if(!details){
             return failure(new NotFoundError("recipe"))
         }

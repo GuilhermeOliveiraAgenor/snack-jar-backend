@@ -14,7 +14,7 @@ export class InMemoryRecipeDetailsRepository implements RecipeDetailsRepository{
         private recipeStepRepository: RecipeStepRepository,
         private userRepository: UserRepository
     ){}
-    async getDetailsByRecipeId(recipeId: string, userId:string): Promise<{ recipe: Recipe; steps: RecipeStep[]; ingredients: RecipeIngredient[]; } | null> {
+    async getDetailsByRecipeId(recipeId: string): Promise<{ recipe: Recipe; steps: RecipeStep[]; ingredients: RecipeIngredient[]; } | null> {
         const recipe = await this.recipeRepository.findById(recipeId)
         if(!recipe) return null
 

@@ -35,9 +35,6 @@ describe("Get Details By Recipe Id Use Case", () => {
         const recipe = makeRecipe()
         await inMemoryRecipeRepository.create(recipe)
 
-        const user = makeUser()
-        await inMemoryUserRepository.create(user)
-
         const recipeIngredient = makeRecipeIngredient({
             recipeId: recipe.id
         })
@@ -50,7 +47,6 @@ describe("Get Details By Recipe Id Use Case", () => {
 
         const result = await sut.execute({
             recipeId: recipe.id.toString(),
-            userId: user.id.toString()
         })
 
         expect(result.isSuccess()).toBe(true)
@@ -61,16 +57,11 @@ describe("Get Details By Recipe Id Use Case", () => {
         }
     })
     it("should be able to get details when recipe id does not exists", async() =>{
-        
-        const user = makeUser()
-        await inMemoryUserRepository.create(user)
-
         const recipe = makeRecipe()
         await inMemoryRecipeRepository.create(recipe)
    
         const result = await sut.execute({
             recipeId: "0",
-            userId: user.id.toString()
         })
 
         expect(result.isError()).toBe(true)
