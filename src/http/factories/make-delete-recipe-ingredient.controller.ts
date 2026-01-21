@@ -11,7 +11,8 @@ export function makeDeleteRecipeIngredientController() {
   const recipeRepository = new PrismaRecipeRepository(prisma);
 
   const deleteRecipeIngredientUseCase = new DeleteRecipeIngredientUseCase(
-    recipeIngredientRepository,recipeRepository
+    recipeIngredientRepository,
+    recipeRepository,
   );
 
   return new DeleteRecipeIngredientController(deleteRecipeIngredientUseCase);

@@ -39,7 +39,7 @@ export class PrismaRecipeRepository implements RecipeRepository {
           mode: "insensitive",
         },
         status: "ACTIVE",
-        deletedAt: null
+        deletedAt: null,
       },
     });
     return recipes.map(PrismaRecipeMapper.toDomain);
@@ -53,7 +53,7 @@ export class PrismaRecipeRepository implements RecipeRepository {
           mode: "insensitive",
         },
         status: "ACTIVE",
-        deletedAt: null
+        deletedAt: null,
       },
     });
     if (!recipe) return null;

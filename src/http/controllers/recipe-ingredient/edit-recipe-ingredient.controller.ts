@@ -13,7 +13,8 @@ const editRecipeIngredientSchema = z.object({
   unit: z
     .string()
     .transform((val) => val.toLocaleUpperCase())
-    .pipe(z.nativeEnum(MeasurementUnit)),
+    .pipe(z.nativeEnum(MeasurementUnit))
+    .optional(),
 });
 
 export class EditRecipeIngredientController {
@@ -38,6 +39,7 @@ export class EditRecipeIngredientController {
 
       return res.status(200).json(result.value.recipeIngredient);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

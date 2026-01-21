@@ -10,7 +10,10 @@ export function makeEditRecipeIngredientController() {
   const recipeIngredientRepository = new PrismaRecipeIngredientRepository(prisma);
   const recipeRepository = new PrismaRecipeRepository(prisma);
 
-  const editRecipeIngredientUseCase = new EditRecipeIngredientUseCase(recipeIngredientRepository, recipeRepository);
+  const editRecipeIngredientUseCase = new EditRecipeIngredientUseCase(
+    recipeIngredientRepository,
+    recipeRepository,
+  );
 
   return new EditRecipeIngredientController(editRecipeIngredientUseCase);
 }

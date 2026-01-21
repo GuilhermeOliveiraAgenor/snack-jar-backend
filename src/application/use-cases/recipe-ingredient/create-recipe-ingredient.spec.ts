@@ -96,27 +96,26 @@ describe("Create Recipe Ingredient Use Case", () => {
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
-  it("should not be able to create ingredient when recipe is not ACTIVE", async() =>{
+  it("should not be able to create ingredient when recipe is not ACTIVE", async () => {
     const recipe = makeRecipe({
-        status: RecipeStatus.INACTIVE,
-      });
-      await inMemoryRecipeRepository.create(recipe)
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
 
-      const recipeIngredient = makeRecipeIngredient({
-        recipeId: recipe.id
-      })
-      await inMemoryRecipeIngredientRepository.create(recipeIngredient)
+    const recipeIngredient = makeRecipeIngredient({
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
-      const result = await sut.execute({
-          ingredient: "Açucar",
-          amount: "1000",
-          unit: MeasurementUnit.G,
-          recipeId: recipe.id.toString(),
-          createdBy: "user-1,"
-      })
+    const result = await sut.execute({
+      ingredient: "Açucar",
+      amount: "1000",
+      unit: MeasurementUnit.G,
+      recipeId: recipe.id.toString(),
+      createdBy: "user-1,",
+    });
 
-      expect(result.isError()).toBe(true)
-      expect(result.value).toBeInstanceOf(NotAllowedError)
-
-  })
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
 });

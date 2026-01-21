@@ -21,22 +21,25 @@ let sut: EditRecipeIngredientUseCase;
 describe("Edit Recipe Ingredient", () => {
   beforeEach(() => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
-    inMemoryRecipeRepository = new InMemoryRecipeRepository
+    inMemoryRecipeRepository = new InMemoryRecipeRepository();
 
     inMemoryUserRepository = new InMemoryUserRepository();
 
-    sut = new EditRecipeIngredientUseCase(inMemoryRecipeIngredientRepository, inMemoryRecipeRepository);
+    sut = new EditRecipeIngredientUseCase(
+      inMemoryRecipeIngredientRepository,
+      inMemoryRecipeRepository,
+    );
   });
   it("should be able edit a recipe ingredient", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
-    const recipe = makeRecipe()
-    await inMemoryRecipeRepository.create(recipe)
-    
+    const recipe = makeRecipe();
+    await inMemoryRecipeRepository.create(recipe);
+
     const recipeIngredient = makeRecipeIngredient({
       createdBy: user.id,
-      recipeId: recipe.id
+      recipeId: recipe.id,
     });
     await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
@@ -73,20 +76,20 @@ describe("Edit Recipe Ingredient", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to edit recipe ingredient when recipe id does not exists", async() =>{
+  it("should not be able to edit recipe ingredient when recipe id does not exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
     const recipe = makeRecipe({
-      createdBy: user.id
-    })
-    await inMemoryRecipeRepository.create(recipe)
+      createdBy: user.id,
+    });
+    await inMemoryRecipeRepository.create(recipe);
 
     const recipeIngredient = makeRecipeIngredient({
       recipeId: new UniqueEntityID("0"),
-      createdBy: user.id
-    })
-    await inMemoryRecipeIngredientRepository.create(recipeIngredient)
+      createdBy: user.id,
+    });
+    await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
     const result = await sut.execute({
       id: recipeIngredient.id.toString(),
@@ -95,10 +98,10 @@ describe("Edit Recipe Ingredient", () => {
       unit: MeasurementUnit.G,
       updatedBy: user.id.toString(),
     });
-    console.log(result.value)
+    console.log(result.value);
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
-})
+  });
   it("should not be able edit a recipe ingredient when user is not a creator", async () => {
     const user1 = makeUser();
     await inMemoryUserRepository.create(user1);
@@ -123,27 +126,26 @@ describe("Edit Recipe Ingredient", () => {
     expect(inMemoryRecipeIngredientRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
-  it("should not be able to edit ingredient when recipe is not ACTIVE", async() =>{
+  it("should not be able to edit ingredient when recipe is not ACTIVE", async () => {
     const recipe = makeRecipe({
-        status: RecipeStatus.INACTIVE,
-      });
-      await inMemoryRecipeRepository.create(recipe)
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
 
-      const recipeIngredient = makeRecipeIngredient({
-        recipeId: recipe.id
-      })
-      await inMemoryRecipeIngredientRepository.create(recipeIngredient)
+    const recipeIngredient = makeRecipeIngredient({
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
-      const result = await sut.execute({
-          id: recipeIngredient.id.toString(),
-          ingredient: "Farinha",
-          amount: "1000",
-          unit: MeasurementUnit.G,
-          updatedBy: "user-1"
-      })
+    const result = await sut.execute({
+      id: recipeIngredient.id.toString(),
+      ingredient: "Farinha",
+      amount: "1000",
+      unit: MeasurementUnit.G,
+      updatedBy: "user-1",
+    });
 
-      expect(result.isError()).toBe(true)
-      expect(result.value).toBeInstanceOf(NotAllowedError)
-
-  })
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
 });

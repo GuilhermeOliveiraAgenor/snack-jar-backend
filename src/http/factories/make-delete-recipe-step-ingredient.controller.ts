@@ -10,7 +10,10 @@ export function makeDeleteRecipeStepController() {
   const recipeStepRepository = new PrismaRecipeStepRepository(prisma);
   const recipeRepository = new PrismaRecipeRepository(prisma);
 
-  const deleteRecipeStepUseCase = new DeleteRecipeStepUseCase(recipeStepRepository, recipeRepository);
+  const deleteRecipeStepUseCase = new DeleteRecipeStepUseCase(
+    recipeStepRepository,
+    recipeRepository,
+  );
 
   return new DeleteRecipeStepController(deleteRecipeStepUseCase);
 }
