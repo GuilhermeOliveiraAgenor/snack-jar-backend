@@ -1,4 +1,5 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { Optional } from "../types/optional";
 
 export interface CategoryProps {
   // create interface
@@ -14,16 +15,22 @@ export class Category {
     private props: CategoryProps, // import fields from interface
   ) {}
 
-  static create(props: { name: string; description: string }, id?: UniqueEntityID) {
-    const category = new Category(
-      id ?? new UniqueEntityID(), // create id
-      {
-        ...props, // import fields
-        createdAt: new Date(),
-        updatedAt: null,
-      },
-    );
-    return category;
+  static create(
+    props: Optional<
+    CategoryProps, 'createdAt' | 'updatedAt'
+    >,
+    id?: UniqueEntityID
+  ){
+   const category = new Category(
+    id ?? new  UniqueEntityID(),
+    {
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null
+    }
+    )
+
+    return category
   }
 
   // get

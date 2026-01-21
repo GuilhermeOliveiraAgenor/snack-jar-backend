@@ -1,4 +1,5 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { Optional } from "../types/optional";
 
 export interface FavoriteRecipeProps {
   recipeId: UniqueEntityID;
@@ -13,15 +14,20 @@ export class FavoriteRecipe {
   ) {}
 
   static create(
-    props: { recipeId: UniqueEntityID; createdBy: UniqueEntityID },
-    id?: UniqueEntityID,
-  ) {
-    const favoriteRecipe = new FavoriteRecipe(id ?? new UniqueEntityID(), {
+    props: Optional<
+    FavoriteRecipeProps, 'createdAt'
+    >,
+    id?: UniqueEntityID
+  ){
+   const favoriteRecipe = new FavoriteRecipe(
+    id ?? new  UniqueEntityID(),
+    {
       ...props,
-      createdAt: new Date(),
-      createdBy: props.createdBy,
-    });
-    return favoriteRecipe;
+      createdAt: props.createdAt ?? new Date()
+    }
+    )
+
+    return favoriteRecipe
   }
 
   get id() {

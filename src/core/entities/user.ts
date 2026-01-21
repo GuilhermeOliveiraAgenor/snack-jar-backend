@@ -1,4 +1,5 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { Optional } from "../types/optional";
 
 export interface UserProps {
   // create interface
@@ -15,13 +16,22 @@ export class User {
     private props: UserProps, // import fields props
   ) {}
 
-  static create(props: { name: string; email: string; password: string }, id?: UniqueEntityID) {
-    const user = new User(id ?? new UniqueEntityID(), {
+  static create(
+    props: Optional<
+    UserProps, 'createdAt' | 'updatedAt'
+    >,
+    id?: UniqueEntityID
+  ){
+   const user = new User(
+    id ?? new  UniqueEntityID(),
+    {
       ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-    });
-    return user;
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null
+    }
+    )
+
+    return user
   }
 
   get id() {

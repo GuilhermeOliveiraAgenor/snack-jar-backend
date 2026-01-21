@@ -1,5 +1,6 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
 import { RecipeStatus } from "../enum/recipe-status";
+import { Optional } from "../types/optional";
 
 export interface RecipeProps {
   title: string;
@@ -22,27 +23,22 @@ export class Recipe {
   ) {}
 
   static create(
-    props: {
-      title: string;
-      description: string;
-      preparationTime: number;
-      status: RecipeStatus;
-      categoryId: UniqueEntityID;
-      createdBy: UniqueEntityID;
-    },
+    props: Optional<
+    RecipeProps, 'createdAt' | 'updatedAt' | 'deletedAt' |'updatedBy' |'deletedBy' >,
     id?: UniqueEntityID,
-  ) {
-    const recipe = new Recipe(id ?? new UniqueEntityID(), {
-      ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-      deletedAt: null,
-      createdBy: props.createdBy,
-      updatedBy: null,
-      deletedBy: null,
-    });
-
-    return recipe;
+  ){
+    const recipe = new Recipe(
+      id ?? new UniqueEntityID(),
+    {
+     ...props,
+     createdAt: props.createdAt ?? new Date(),
+     updatedAt: props.updatedAt ?? null,
+     deletedAt: props.deletedAt ?? null,
+     updatedBy: props.updatedBy ?? null,
+     deletedBy: props.deletedBy ?? null,
+    },
+    )
+    return recipe
   }
 
   get id() {

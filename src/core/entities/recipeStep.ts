@@ -1,4 +1,6 @@
+import { update } from "ramda";
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { Optional } from "../types/optional";
 
 export interface RecipeStepProps {
   step: number;
@@ -17,23 +19,20 @@ export class RecipeStep {
   ) {}
 
   static create(
-    props: {
-      step: number;
-      description: string;
-      recipeId: UniqueEntityID;
-      createdBy: UniqueEntityID;
-    },
-    id?: UniqueEntityID,
-  ) {
-    const recipeStep = new RecipeStep(id ?? new UniqueEntityID(), {
+    props: Optional<
+    RecipeStepProps, 'createdAt' | 'updatedAt' | 'updatedBy' >,
+    id?: UniqueEntityID
+  ){
+    const recipeStep = new RecipeStep(
+      id ?? new UniqueEntityID(),
+    {
       ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-      createdBy: props.createdBy,
-      updatedBy: null,
-    });
-
-    return recipeStep;
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null,
+      updatedBy: props.updatedBy ?? null
+    },
+    )
+    return recipeStep
   }
 
   get id() {
