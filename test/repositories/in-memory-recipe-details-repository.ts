@@ -1,0 +1,33 @@
+import { RecipeDetailsRepository } from "../../src/application/repositories/recipe-details-repository";
+import { RecipeIngredientRepository } from "../../src/application/repositories/recipe-ingredient-repository";
+import { RecipeRepository } from "../../src/application/repositories/recipe-repository";
+import { RecipeStepRepository } from "../../src/application/repositories/recipe-step-repository";
+import { UserRepository } from "../../src/application/repositories/user-repository";
+import { Recipe } from "../../src/core/entities/recipe";
+import { RecipeIngredient } from "../../src/core/entities/recipeIngredient";
+import { RecipeStep } from "../../src/core/entities/recipeStep";
+
+export class InMemoryRecipeDetailsRepository implements RecipeDetailsRepository{
+    constructor(
+        private recipeRepository: RecipeRepository,
+        private recipeIngredientRepository: RecipeIngredientRepository,
+        private recipeStepRepository: RecipeStepRepository,
+        private userRepository: UserRepository
+    ){}
+    async getDetailsByRecipeId(recipeId: string, userId:string): Promise<{ recipe: Recipe; steps: RecipeStep[]; ingredients: RecipeIngredient[]; } | null> {
+        const recipe = await this.recipeRepository.findById(recipeId)
+        if(!recipe) return null
+
+        const ingredients = await this.recipeIngredientRepository.findManyByRecipeId(recipeId)
+        const steps = await this.recipeStepRepository.findManyByRecipeId(recipeId)
+
+
+        return{
+            recipe,
+            ingredients,
+            steps,
+        };   
+     }
+   
+}
+

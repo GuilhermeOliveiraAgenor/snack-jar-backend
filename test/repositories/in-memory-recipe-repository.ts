@@ -1,6 +1,8 @@
 import { RecipeRepository } from "../../src/application/repositories/recipe-repository";
 import { UniqueEntityID } from "../../src/core/domain/value-objects/unique-entity-id";
 import { Recipe } from "../../src/core/entities/recipe";
+import { InMemoryRecipeIngredientRepository } from "./in-memory-recipe-ingredient";
+import { InMemoryRecipeStepRepository } from "./in-memory-recipe-step";
 
 export class InMemoryRecipeRepository implements RecipeRepository {
   public items: Recipe[] = [];
