@@ -6,19 +6,19 @@ import { makeFetchRecipeStepsByRecipeIdController } from "../factories/make-fetc
 
 const recipeStepRoutes = Router();
 
-recipeStepRoutes.post("/recipe/step/:id", (req, res, next) => {
+recipeStepRoutes.post("/recipes/steps/:recipeId", (req, res, next) => {
   return makeCreateRecipeStepController().handle(req, res, next);
 });
 
-recipeStepRoutes.put("/recipe/step/:id", (req, res, next) => {
+recipeStepRoutes.put("/recipes/steps/:stepId", (req, res, next) => {
   return makeEditRecipeStepController().handle(req, res, next);
 });
 
-recipeStepRoutes.delete("/recipe/step/:id", (req, res, next) => {
+recipeStepRoutes.delete("/recipes/steps/stepId", (req, res, next) => {
   return makeDeleteRecipeStepController().handle(req, res, next);
 });
 
-recipeStepRoutes.get("/recipe/step/:id", (req, res, next) => {
+recipeStepRoutes.get("/recipes/steps/:recipeId", (req, res, next) => {
   return makeFetchRecipeStepsByRecipeIdController().handle(req, res, next);
 });
 
