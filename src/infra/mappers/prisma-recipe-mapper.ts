@@ -17,7 +17,7 @@ export class PrismaRecipeMapper {
         updatedAt: raw.updatedAt,
         updatedBy: raw.updatedBy ? new UniqueEntityID(raw.updatedBy) : null,
         deletedAt: raw.deletedAt,
-        deletedBy: raw.deletedBy ? new UniqueEntityID(raw.deletedBy) : null
+        deletedBy: raw.deletedBy ? new UniqueEntityID(raw.deletedBy) : null,
       },
       new UniqueEntityID(raw.id),
     );

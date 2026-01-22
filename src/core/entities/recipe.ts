@@ -24,21 +24,20 @@ export class Recipe {
 
   static create(
     props: Optional<
-    RecipeProps, 'createdAt' | 'updatedAt' | 'deletedAt' |'updatedBy' |'deletedBy' >,
+      RecipeProps,
+      "createdAt" | "updatedAt" | "deletedAt" | "updatedBy" | "deletedBy"
+    >,
     id?: UniqueEntityID,
-  ){
-    const recipe = new Recipe(
-      id ?? new UniqueEntityID(),
-    {
-     ...props,
-     createdAt: props.createdAt ?? new Date(),
-     updatedAt: props.updatedAt ?? null,
-     deletedAt: props.deletedAt ?? null,
-     updatedBy: props.updatedBy ?? null,
-     deletedBy: props.deletedBy ?? null,
-    },
-    )
-    return recipe
+  ) {
+    const recipe = new Recipe(id ?? new UniqueEntityID(), {
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null,
+      deletedAt: props.deletedAt ?? null,
+      updatedBy: props.updatedBy ?? null,
+      deletedBy: props.deletedBy ?? null,
+    });
+    return recipe;
   }
 
   get id() {
@@ -74,7 +73,7 @@ export class Recipe {
   }
 
   get deletedAt(): Date | null {
-    return this.props.updatedAt;
+    return this.props.deletedAt;
   }
 
   get createdBy(): UniqueEntityID {
@@ -124,7 +123,6 @@ export class Recipe {
 
   set deletedAt(deletedAt: Date) {
     this.props.deletedAt = deletedAt;
-    this.touch();
   }
 
   set createdBy(createdBy: UniqueEntityID) {
@@ -139,7 +137,6 @@ export class Recipe {
 
   set deletedBy(deletedBy: UniqueEntityID) {
     this.props.deletedBy = deletedBy;
-    this.touch();
   }
 
   private touch() {

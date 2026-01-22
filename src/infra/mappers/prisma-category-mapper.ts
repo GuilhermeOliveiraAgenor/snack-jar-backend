@@ -10,7 +10,7 @@ export class PrismaCategoryMapper {
         name: raw.name,
         description: raw.description,
         createdAt: raw.createdAt,
-        updatedAt: raw.updatedAt
+        updatedAt: raw.updatedAt,
       },
       new UniqueEntityID(raw.id),
     );

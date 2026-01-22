@@ -9,6 +9,7 @@ import { makeCategory } from "../../../../test/factories/make-category";
 import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -132,5 +133,22 @@ describe("Edit Recipe Use Case", () => {
 
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(AlreadyExistsError);
+  });
+  it("should not be able to delete recipe is not ACTIVE", async () => {
+    const recipe = makeRecipe({
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+
+    const result = await sut.execute({
+      id: recipe.id.toString(),
+      title: "Bolo de Cenoura",
+      description: "Receita de Bolo de Cenoura",
+      preparationTime: 60,
+      updatedBy: "user-1",
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });

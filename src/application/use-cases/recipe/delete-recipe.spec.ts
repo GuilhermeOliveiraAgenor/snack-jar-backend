@@ -79,7 +79,6 @@ describe("Soft delete Recipe Use Case", () => {
       status: RecipeStatus.INACTIVE,
     });
     await inMemoryRecipeRepository.create(recipe);
-    console.log(recipe);
 
     const result = await sut.execute({
       id: recipe.id.toString(),

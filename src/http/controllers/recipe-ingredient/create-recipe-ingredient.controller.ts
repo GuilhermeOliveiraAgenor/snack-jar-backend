@@ -40,7 +40,6 @@ export class CreateRecipeIngredientController {
 
       return res.status(201).json(result.value.recipeIngredient);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

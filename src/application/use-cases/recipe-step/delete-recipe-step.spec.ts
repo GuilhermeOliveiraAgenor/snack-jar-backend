@@ -79,7 +79,6 @@ describe("Delete Recipe Step Use Case", () => {
       id: recipeStep.id.toString(),
       deletedBy: user.id.toString(),
     });
-    console.log(result.value);
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });

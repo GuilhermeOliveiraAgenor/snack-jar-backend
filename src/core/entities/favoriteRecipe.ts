@@ -13,21 +13,13 @@ export class FavoriteRecipe {
     private props: FavoriteRecipeProps,
   ) {}
 
-  static create(
-    props: Optional<
-    FavoriteRecipeProps, 'createdAt'
-    >,
-    id?: UniqueEntityID
-  ){
-   const favoriteRecipe = new FavoriteRecipe(
-    id ?? new  UniqueEntityID(),
-    {
+  static create(props: Optional<FavoriteRecipeProps, "createdAt">, id?: UniqueEntityID) {
+    const favoriteRecipe = new FavoriteRecipe(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: props.createdAt ?? new Date()
-    }
-    )
+      createdAt: props.createdAt ?? new Date(),
+    });
 
-    return favoriteRecipe
+    return favoriteRecipe;
   }
 
   get id() {

@@ -34,7 +34,6 @@ export class CreateRecipeStepController {
 
       return res.status(201).json(result.value.recipeStep);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

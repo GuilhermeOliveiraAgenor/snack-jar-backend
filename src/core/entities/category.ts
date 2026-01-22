@@ -15,22 +15,14 @@ export class Category {
     private props: CategoryProps, // import fields from interface
   ) {}
 
-  static create(
-    props: Optional<
-    CategoryProps, 'createdAt' | 'updatedAt'
-    >,
-    id?: UniqueEntityID
-  ){
-   const category = new Category(
-    id ?? new  UniqueEntityID(),
-    {
+  static create(props: Optional<CategoryProps, "createdAt" | "updatedAt">, id?: UniqueEntityID) {
+    const category = new Category(id ?? new UniqueEntityID(), {
       ...props,
       createdAt: props.createdAt ?? new Date(),
-      updatedAt: props.updatedAt ?? null
-    }
-    )
+      updatedAt: props.updatedAt ?? null,
+    });
 
-    return category
+    return category;
   }
 
   // get

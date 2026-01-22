@@ -81,7 +81,7 @@ describe("Delete Recipe Ingredient", () => {
       id: recipeIngredient.id.toString(),
       deletedBy: user.id.toString(),
     });
-    console.log(result.value);
+
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });

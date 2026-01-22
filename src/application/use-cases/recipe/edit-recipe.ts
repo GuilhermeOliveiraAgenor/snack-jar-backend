@@ -1,6 +1,7 @@
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { Either, failure, success } from "../../../core/either";
 import { Recipe } from "../../../core/entities/recipe";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
@@ -37,7 +38,7 @@ export class EditRecipeUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
-    if (recipe.status !== "ACTIVE") {
+    if (recipe.status !== RecipeStatus.ACTIVE) {
       return failure(new NotAllowedError("recipe"));
     }
 

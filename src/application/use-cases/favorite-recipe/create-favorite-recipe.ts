@@ -38,6 +38,10 @@ export class CreateFavoriteRecipeUseCase {
       return failure(new NotAllowedError("user"));
     }
 
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
     // verify if favorite recipe already exists
     const favoriteRecipes = await this.favoriteRecipeRepository.findManyByUserId(createdBy);
     const alreadyExists = favoriteRecipes.some(

@@ -89,7 +89,7 @@ describe("Edit Recipe Step Use Case", () => {
       id: recipeStep.id.toString(),
       updatedBy: user.id.toString(),
     });
-    console.log(result.value);
+
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });

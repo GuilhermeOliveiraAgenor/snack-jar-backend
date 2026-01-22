@@ -16,22 +16,14 @@ export class User {
     private props: UserProps, // import fields props
   ) {}
 
-  static create(
-    props: Optional<
-    UserProps, 'createdAt' | 'updatedAt'
-    >,
-    id?: UniqueEntityID
-  ){
-   const user = new User(
-    id ?? new  UniqueEntityID(),
-    {
+  static create(props: Optional<UserProps, "createdAt" | "updatedAt">, id?: UniqueEntityID) {
+    const user = new User(id ?? new UniqueEntityID(), {
       ...props,
       createdAt: props.createdAt ?? new Date(),
-      updatedAt: props.updatedAt ?? null
-    }
-    )
+      updatedAt: props.updatedAt ?? null,
+    });
 
-    return user
+    return user;
   }
 
   get id() {

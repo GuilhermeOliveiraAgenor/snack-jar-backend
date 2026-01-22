@@ -35,7 +35,6 @@ export class EditRecipeIngredientUseCase {
     updatedBy,
   }: EditRecipeIngredientUseCaseRequest): Promise<EditRecipeIngredientUseCaseResponse> {
     // verify if recipe exists
-
     const recipeIngredient = await this.recipeIngredientRepository.findById(id);
     if (!recipeIngredient) {
       return failure(new NotFoundError("recipeIngredient"));

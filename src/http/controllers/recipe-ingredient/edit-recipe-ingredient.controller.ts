@@ -39,7 +39,6 @@ export class EditRecipeIngredientController {
 
       return res.status(200).json(result.value.recipeIngredient);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

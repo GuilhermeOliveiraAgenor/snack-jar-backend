@@ -20,23 +20,17 @@ export class RecipeIngredient {
   ) {}
 
   static create(
-    props: Optional<
-      RecipeIngredientProps,
-      'createdAt' | 'updatedAt' | 'updatedBy'
-    >,
+    props: Optional<RecipeIngredientProps, "createdAt" | "updatedAt" | "updatedBy">,
     id?: UniqueEntityID,
   ) {
-    const recipeIngredient = new RecipeIngredient(
-      id ?? new UniqueEntityID(),
-      {
-        ...props,
-        createdAt: props.createdAt ?? new Date(),
-        updatedAt: props.updatedAt ?? null,
-        updatedBy: props.updatedBy ?? null,
-      },
-    )
-  
-    return recipeIngredient
+    const recipeIngredient = new RecipeIngredient(id ?? new UniqueEntityID(), {
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null,
+      updatedBy: props.updatedBy ?? null,
+    });
+
+    return recipeIngredient;
   }
 
   get id() {

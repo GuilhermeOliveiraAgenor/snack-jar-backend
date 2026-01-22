@@ -7,65 +7,62 @@ import { GetDetailsByRecipeIdUseCase } from "./get-details-by-recipe-id";
 import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
 import { makeRecipeStep } from "../../../../test/factories/make-recipe-step";
 import { InMemoryRecipeDetailsRepository } from "../../../../test/repositories/in-memory-recipe-details-repository";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
-import { makeUser } from "../../../../test/factories/make-user";
 
-let inMemoryRecipeRepository: InMemoryRecipeRepository
-let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository
-let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository
-let inMemoryRecipeDetailsRepository: InMemoryRecipeDetailsRepository
-let inMemoryUserRepository: InMemoryUserRepository
+let inMemoryRecipeRepository: InMemoryRecipeRepository;
+let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
+let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
+let inMemoryRecipeDetailsRepository: InMemoryRecipeDetailsRepository;
 
-let sut: GetDetailsByRecipeIdUseCase
+let sut: GetDetailsByRecipeIdUseCase;
 
 describe("Get Details By Recipe Id Use Case", () => {
-    beforeEach(() =>{
-    inMemoryRecipeRepository = new InMemoryRecipeRepository()
-    inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository()
-    inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository()
-    inMemoryRecipeDetailsRepository = new InMemoryRecipeDetailsRepository(inMemoryRecipeRepository, inMemoryRecipeIngredientRepository, inMemoryRecipeStepRepository, inMemoryUserRepository)
-    inMemoryUserRepository = new InMemoryUserRepository()
+  beforeEach(() => {
+    inMemoryRecipeRepository = new InMemoryRecipeRepository();
+    inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
+    inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
+    inMemoryRecipeDetailsRepository = new InMemoryRecipeDetailsRepository(
+      inMemoryRecipeRepository,
+      inMemoryRecipeIngredientRepository,
+      inMemoryRecipeStepRepository,
+    );
 
-        sut = new GetDetailsByRecipeIdUseCase(inMemoryRecipeDetailsRepository)
+    sut = new GetDetailsByRecipeIdUseCase(inMemoryRecipeDetailsRepository);
+  });
+  it("should be able to get details by recipe id", async () => {
+    const recipe = makeRecipe();
+    await inMemoryRecipeRepository.create(recipe);
 
-    })
-    it("should be able to get details by recipe id", async() =>{
-        const recipe = makeRecipe()
-        await inMemoryRecipeRepository.create(recipe)
+    const recipeIngredient = makeRecipeIngredient({
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
-        const recipeIngredient = makeRecipeIngredient({
-            recipeId: recipe.id
-        })
-        await inMemoryRecipeIngredientRepository.create(recipeIngredient)
+    const recipeStep = makeRecipeStep({
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeStepRepository.create(recipeStep);
 
-        const recipeStep = makeRecipeStep({
-            recipeId: recipe.id
-        })
-        await inMemoryRecipeStepRepository.create(recipeStep)
+    const result = await sut.execute({
+      recipeId: recipe.id.toString(),
+    });
 
-        const result = await sut.execute({
-            recipeId: recipe.id.toString(),
-        })
+    expect(result.isSuccess()).toBe(true);
+    if (result.isSuccess()) {
+      expect(result.value.steps).toHaveLength(1);
+      expect(result.value.ingredients).toHaveLength(1);
+      expect(result.value.steps).toHaveLength(1);
+    }
+  });
+  it("should be able to get details when recipe id does not exists", async () => {
+    const recipe = makeRecipe();
+    await inMemoryRecipeRepository.create(recipe);
 
-        expect(result.isSuccess()).toBe(true)
-        if(result.isSuccess()){
-            expect(result.value.steps).toHaveLength(1)
-            expect(result.value.ingredients).toHaveLength(1)
-            expect(result.value.steps).toHaveLength(1)
-        }
-    })
-    it("should be able to get details when recipe id does not exists", async() =>{
-        const recipe = makeRecipe()
-        await inMemoryRecipeRepository.create(recipe)
-   
-        const result = await sut.execute({
-            recipeId: "0",
-        })
+    const result = await sut.execute({
+      recipeId: "0",
+    });
 
-        expect(result.isError()).toBe(true)
-        expect(result.value).toBeInstanceOf(NotFoundError)
-    })
-})
-
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotFoundError);
+  });
+});
