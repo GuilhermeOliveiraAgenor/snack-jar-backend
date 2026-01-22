@@ -11,10 +11,11 @@ export class PrismaRecipeDetailsRepository implements RecipeDetailsRepository {
   async getDetailsByRecipeId(
     recipeId: string,
   ): Promise<{ recipe: Recipe; steps: RecipeStep[]; ingredients: RecipeIngredient[] } | null> {
-    const recipe = await this.prisma.recipe.findUnique({
+    const recipe = await this.prisma.recipe.findFirst({
       where: { 
         id: recipeId,
-        status: "ACTIVE"
+        status: "ACTIVE",
+        deletedAt: null
       },
       include: {
         category: true,
