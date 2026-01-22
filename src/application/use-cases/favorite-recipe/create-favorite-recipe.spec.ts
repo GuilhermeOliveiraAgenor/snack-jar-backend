@@ -27,7 +27,7 @@ describe("Create Favorite Recipe Use Case", () => {
       inMemoryRecipeRepository,
     );
   });
-  it("should be able to create favorite", async () => {
+  it("should be able to create favorite recipe", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -58,7 +58,7 @@ describe("Create Favorite Recipe Use Case", () => {
     expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to create favorite recipe already exists", async () => {
+  it("should not be able to create favorite already existing", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 

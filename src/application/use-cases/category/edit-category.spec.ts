@@ -1,17 +1,17 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { EditCategoryUseCase } from "../category/edit-category";
 import { makeCategory } from "../../../../test/factories/make-category";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let sut: EditCategoryUseCase;
 
 describe("Edit Category Use Case", () => {
   beforeEach(() => {
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository(); // define repository
-    sut = new EditCategoryUseCase(inMemoryCategoriesRepository); // use case receive repository
+    inMemoryCategoryRepository = new InMemoryCategoryRepository(); // define repository
+    sut = new EditCategoryUseCase(inMemoryCategoryRepository); // use case receive repository
   });
 
   it("should be able to update category", async () => {
@@ -19,7 +19,7 @@ describe("Edit Category Use Case", () => {
     const category = makeCategory();
 
     // pass to repository
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     // pass the object to use case
     const result = await sut.execute({
@@ -29,7 +29,7 @@ describe("Edit Category Use Case", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    expect(inMemoryCategoriesRepository.items).toHaveLength(1);
+    expect(inMemoryCategoryRepository.items).toHaveLength(1);
     if (result.isSuccess()) {
       expect(result.value.category).toMatchObject({
         name: "Prato doce",
@@ -53,8 +53,8 @@ describe("Edit Category Use Case", () => {
     });
     const category2 = makeCategory();
 
-    await inMemoryCategoriesRepository.create(category1);
-    await inMemoryCategoriesRepository.create(category2);
+    await inMemoryCategoryRepository.create(category1);
+    await inMemoryCategoryRepository.create(category2);
 
     const result = await sut.execute({
       id: category2.id.toString(),

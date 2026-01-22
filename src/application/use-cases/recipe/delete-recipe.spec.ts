@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { DeleteRecipeUseCase } from "./delete-recipe";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeCategory } from "../../../../test/factories/make-category";
@@ -12,7 +12,7 @@ import { NotAllowedError } from "../../errors/not-allowed-error";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 
 let sut: DeleteRecipeUseCase;
@@ -20,7 +20,7 @@ let sut: DeleteRecipeUseCase;
 describe("Soft delete Recipe Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
+    inMemoryCategoryRepository = new InMemoryCategoryRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
 
     sut = new DeleteRecipeUseCase(inMemoryRecipeRepository);
@@ -31,7 +31,7 @@ describe("Soft delete Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const recipe = makeRecipe({
       createdBy: new UniqueEntityID(user.id.toString()),

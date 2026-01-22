@@ -35,7 +35,7 @@ describe("Fetch Recipe Step By Recipe Id", () => {
     await inMemoryRecipeStepRepository.create(recipeStep);
 
     const result = await sut.execute({
-      id: recipe.id.toString(),
+      recipeId: recipe.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -43,7 +43,7 @@ describe("Fetch Recipe Step By Recipe Id", () => {
   });
   it("should not be able to fetch recipe step when id does not exists", async () => {
     const result = await sut.execute({
-      id: "0",
+      recipeId: "0",
     });
 
     expect(result.isError()).toBe(true);

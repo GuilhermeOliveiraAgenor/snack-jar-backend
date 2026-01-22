@@ -2,7 +2,7 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { CreateRecipeUseCase } from "./create-recipe";
 import { InMemoryRecipeIngredientRepository } from "../../../../test/repositories/in-memory-recipe-ingredient";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { Category } from "../../../core/entities/category";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeNullError } from "../../errors/recipe-null-error";
@@ -18,7 +18,7 @@ import { MeasurementUnit } from "../../../core/enum/measurement-unit";
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 
 let sut: CreateRecipeUseCase;
@@ -28,13 +28,13 @@ describe("Create Recipe Use Case", () => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
+    inMemoryCategoryRepository = new InMemoryCategoryRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
     sut = new CreateRecipeUseCase(
       inMemoryRecipeRepository,
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeStepRepository,
-      inMemoryCategoriesRepository,
+      inMemoryCategoryRepository,
     );
   });
 
@@ -43,7 +43,7 @@ describe("Create Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Cenoura",
@@ -119,7 +119,7 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Laranja",
@@ -163,7 +163,7 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const recipe = makeRecipe({
       title: "Bolo de Laranja",
@@ -242,7 +242,7 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Laranja",
@@ -274,7 +274,7 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Laranja",
@@ -303,7 +303,7 @@ describe("Create Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Cenoura",

@@ -5,7 +5,7 @@ import { makeDeleteRecipeController } from "../factories/make-delete-recipe.cont
 import { makeEditRecipeController } from "../factories/make-edit-recipe.controller";
 import { makeFetchMyRecipesController } from "../factories/make-fetch-my-recipes.controller";
 import { makeFetchRecipesByTitleController } from "../factories/make-fetch-recipes-by-title.controller";
-import { makeGetDetailsByRecipeIdController } from "../factories/make-get-details-recipe-id";
+import { makeGetDetailsByRecipeIdController } from "../factories/make-get-details-by-recipe-id.controller";
 
 const recipeRoutes = Router();
 

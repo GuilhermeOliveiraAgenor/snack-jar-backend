@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { makeAuthMiddleware } from "../factories/make-auth-middleware";
-import { makeCreateRecipeIngredientController } from "../factories/make-create-recipe-step.controller";
+import { makeCreateRecipeIngredientController } from "../factories/make-create-recipe-ingredient.controller";
 import { makeDeleteRecipeIngredientController } from "../factories/make-delete-recipe-ingredient.controller";
 import { makeEditRecipeIngredientController } from "../factories/make-edit-recipe-ingredient.controller";
 import { makeFetchRecipeIngredientsByRecipeIdController } from "../factories/make-fetch-recipe-ingredients-by-recipe-id.controller";

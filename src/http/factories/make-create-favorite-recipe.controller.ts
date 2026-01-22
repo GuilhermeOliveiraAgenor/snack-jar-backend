@@ -14,7 +14,6 @@ export function makeCreateFavoriteRecipeController() {
   const createFavoriteRecipeUseCase = new CreateFavoriteRecipeUseCase(
     favoriteRecipeRepository,
     recipeRepository,
-    userRepository,
   );
 
   return new CreateFavoriteRecipeController(createFavoriteRecipeUseCase);

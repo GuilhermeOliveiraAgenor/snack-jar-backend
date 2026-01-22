@@ -6,14 +6,14 @@ import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeCategory } from "../../../../test/factories/make-category";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryCategoryRepository: InMemoryCategoryRepository;
 
 let sut: EditRecipeUseCase;
 
@@ -21,7 +21,7 @@ describe("Edit Recipe Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
+    inMemoryCategoryRepository = new InMemoryCategoryRepository();
 
     sut = new EditRecipeUseCase(inMemoryRecipeRepository);
   });
@@ -30,7 +30,7 @@ describe("Edit Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     // create recipe
     const recipe = makeRecipe({
@@ -63,7 +63,7 @@ describe("Edit Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       id: "0",
@@ -83,7 +83,7 @@ describe("Edit Recipe Use Case", () => {
     await inMemoryUserRepository.create(user2);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const recipe = makeRecipe({
       createdBy: user1.id,
@@ -108,7 +108,7 @@ describe("Edit Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const recipe1 = makeRecipe({
       title: "Bolo de Chocolate",

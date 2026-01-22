@@ -1,19 +1,19 @@
-import { CreateRecipeStepUseCase } from "../../application/use-cases/recipe-step/create-recipe-step";
+import { CreateRecipeIngredientUseCase } from "../../application/use-cases/recipe-ingredient/create-recipe-ingredient";
 import { getPrismaClient } from "../../infra/prisma/client";
+import { PrismaRecipeIngredientRepository } from "../../infra/repositories/prisma-recipe-ingredient-repository";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
-import { PrismaRecipeStepRepository } from "../../infra/repositories/prisma-recipe-step-repository";
-import { CreateRecipeStepController } from "../controllers/recipe-step/create-recipe-step.controller";
+import { CreateRecipeIngredientController } from "../controllers/recipe-ingredient/create-recipe-ingredient.controller";
 
-export function makeCreateRecipeStepController() {
+export function makeCreateRecipeIngredientController() {
   const prisma = getPrismaClient();
 
-  const recipeStepRepository = new PrismaRecipeStepRepository(prisma);
+  const recipeIngredientRepository = new PrismaRecipeIngredientRepository(prisma);
   const recipeRepository = new PrismaRecipeRepository(prisma);
 
-  const createRecipeStepUseCase = new CreateRecipeStepUseCase(
-    recipeStepRepository,
+  const createRecipeIngredientUseCase = new CreateRecipeIngredientUseCase(
+    recipeIngredientRepository,
     recipeRepository,
   );
 
-  return new CreateRecipeStepController(createRecipeStepUseCase);
+  return new CreateRecipeIngredientController(createRecipeIngredientUseCase);
 }

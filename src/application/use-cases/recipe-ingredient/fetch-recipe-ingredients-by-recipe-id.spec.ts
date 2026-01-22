@@ -29,7 +29,7 @@ describe("Fetch Recipe Ingredient By Recipe Id", () => {
     const recipeIngredient = makeRecipeIngredient({ recipeId: recipe.id, ingredient: "Açucar" });
     await inMemoryRecipeIngredientRepository.create(recipeIngredient);
 
-    const result = await sut.execute({ id: recipe.id.toString() });
+    const result = await sut.execute({ recipeId: recipe.id.toString() });
 
     expect(result.isSuccess()).toBe(true);
     if (result.isSuccess()) {
@@ -44,7 +44,7 @@ describe("Fetch Recipe Ingredient By Recipe Id", () => {
     }
   });
   it("should not be able to fetch recipe ingredient when recipe id does not exists", async () => {
-    const result = await sut.execute({ id: "0" });
+    const result = await sut.execute({ recipeId: "0" });
 
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);

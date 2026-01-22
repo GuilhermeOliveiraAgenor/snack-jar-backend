@@ -32,7 +32,7 @@ export class EditRecipeController {
         throw result.value;
       }
 
-      return res.status(201).json(result.value.recipe);
+      return res.status(200).json(result.value.recipe);
     } catch (error) {
       next(error);
     }
