@@ -3,7 +3,7 @@ import z from "zod";
 import { CreateRecipeStepUseCase } from "../../../application/use-cases/recipe-step/create-recipe-step";
 
 const requestParams = z.object({
-  id: z.string(),
+  recipeId: z.string(),
 });
 
 const createRecipeStepSchema = z.object({
@@ -18,13 +18,13 @@ export class CreateRecipeStepController {
     try {
       const userId = req.user.id;
 
-      const { id } = requestParams.parse(req.params);
+      const { recipeId } = requestParams.parse(req.params);
       const { step, description } = createRecipeStepSchema.parse(req.body);
 
       const result = await this.createRecipeStepUseCase.execute({
         step,
         description,
-        recipeId: id,
+        recipeId,
         createdBy: userId,
       });
 

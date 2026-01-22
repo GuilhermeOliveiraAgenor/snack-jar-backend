@@ -5,7 +5,7 @@ import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface FetchRecipeIngredientsByRecipeIdRequest {
-  id: string;
+  recipeId: string;
 }
 
 type FetchRecipeIngredientsByRecipeIdResponse = Either<
@@ -19,15 +19,15 @@ export class FetchRecipeIngredientsByRecipeIdUseCase {
     private recipeRepository: RecipeRepository,
   ) {}
   async execute({
-    id,
+    recipeId,
   }: FetchRecipeIngredientsByRecipeIdRequest): Promise<FetchRecipeIngredientsByRecipeIdResponse> {
     // verify if exists recipe id
-    const recipe = await this.recipeRepository.findById(id);
+    const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
     }
 
-    const recipeIngredients = await this.recipeIngredientRepository.findManyByRecipeId(id);
+    const recipeIngredients = await this.recipeIngredientRepository.findManyByRecipeId(recipe.id.toString());
 
     return success({
       recipeIngredients,

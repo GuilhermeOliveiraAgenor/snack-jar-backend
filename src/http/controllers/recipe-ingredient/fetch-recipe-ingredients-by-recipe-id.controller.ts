@@ -14,7 +14,7 @@ export class FetchRecipeIngredientsByRecipeIdController {
     try {
       const { recipeId } = requestParams.parse(req.params);
 
-      const result = await this.fetchRecipeIngredientsByIdUseCase.execute({ id: recipeId });
+      const result = await this.fetchRecipeIngredientsByIdUseCase.execute({ recipeId });
 
       if (result.isError()) {
         throw result.value;

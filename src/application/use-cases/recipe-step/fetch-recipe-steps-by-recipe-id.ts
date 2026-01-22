@@ -5,7 +5,7 @@ import { RecipeRepository } from "../../repositories/recipe-repository";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 
 interface FetchRecipeStepsByRecipeIdUseCaseRequest {
-  id: string;
+  recipeId: string;
 }
 type FetchRecipeStepsByRecipeIdResponse = Either<
   NotFoundError,
@@ -20,9 +20,9 @@ export class FetchRecipeStepsByRecipeIdUseCase {
     private recipeRepository: RecipeRepository,
   ) {}
   async execute({
-    id,
+    recipeId,
   }: FetchRecipeStepsByRecipeIdUseCaseRequest): Promise<FetchRecipeStepsByRecipeIdResponse> {
-    const recipe = await this.recipeRepository.findById(id);
+    const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
     }

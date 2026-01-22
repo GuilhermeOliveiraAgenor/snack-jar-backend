@@ -3,7 +3,7 @@ import z from "zod";
 import { EditRecipeStepUseCase } from "../../../application/use-cases/recipe-step/edit-recipe-step";
 
 const requestParams = z.object({
-  id: z.string(),
+  stepId: z.string(),
 });
 
 const editRecipeStepSchema = z.object({
@@ -16,11 +16,11 @@ export class EditRecipeStepController {
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user.id;
-      const { id } = requestParams.parse(req.params);
+      const { stepId } = requestParams.parse(req.params);
       const body = editRecipeStepSchema.parse(req.body);
 
       const data = {
-        id,
+        id: stepId,
         updatedBy: userId,
         ...body,
       };

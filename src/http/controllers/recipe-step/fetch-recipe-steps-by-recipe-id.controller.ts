@@ -3,16 +3,16 @@ import z from "zod";
 import { FetchRecipeStepsByRecipeIdUseCase } from "../../../application/use-cases/recipe-step/fetch-recipe-steps-by-recipe-id";
 
 const requestParams = z.object({
-  id: z.string(),
+  recipeId: z.string(),
 });
 
 export class FetchRecipeStepsByRecipeIdController {
   constructor(private readonly fetchRecipeStepsByIdUseCase: FetchRecipeStepsByRecipeIdUseCase) {}
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = requestParams.parse(req.params);
+      const { recipeId } = requestParams.parse(req.params);
 
-      const result = await this.fetchRecipeStepsByIdUseCase.execute({ id });
+      const result = await this.fetchRecipeStepsByIdUseCase.execute({ recipeId });
 
       if (result.isError()) {
         throw result.value;
