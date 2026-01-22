@@ -14,7 +14,7 @@ recipeStepRoutes.put("/recipes/steps/:stepId", (req, res, next) => {
   return makeEditRecipeStepController().handle(req, res, next);
 });
 
-recipeStepRoutes.delete("/recipes/steps/stepId", (req, res, next) => {
+recipeStepRoutes.delete("/recipes/steps/:stepId", (req, res, next) => {
   return makeDeleteRecipeStepController().handle(req, res, next);
 });
 
