@@ -1,7 +1,7 @@
 import { GetDetailsByRecipeIdUseCase } from "../../application/use-cases/recipe/get-details-by-recipe-id";
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaRecipeDetailsRepository } from "../../infra/repositories/prisma-recipe-details-repository";
-import { GetDetailsByRecipeIdController } from "../controllers/recipe/get-details-by-recipe-id-controller";
+import { GetDetailsByRecipeIdController } from "../controllers/recipe/get-details-by-recipe-id.controller";
 
 export function makeGetDetailsByRecipeIdController() {
   const prisma = getPrismaClient();

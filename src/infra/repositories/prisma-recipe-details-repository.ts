@@ -12,13 +12,14 @@ export class PrismaRecipeDetailsRepository implements RecipeDetailsRepository {
     recipeId: string,
   ): Promise<{ recipe: Recipe; steps: RecipeStep[]; ingredients: RecipeIngredient[] } | null> {
     const recipe = await this.prisma.recipe.findUnique({
-      where: { id: recipeId },
+      where: { 
+        id: recipeId,
+        status: "ACTIVE"
+      },
       include: {
         category: true,
         recipeIngredient: true,
-        recipeStep: {
-          orderBy: { step: "asc" },
-        },
+        recipeStep: true,
       },
     });
 

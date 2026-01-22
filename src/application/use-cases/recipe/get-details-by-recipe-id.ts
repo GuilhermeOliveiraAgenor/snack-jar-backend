@@ -5,11 +5,11 @@ import { RecipeStep } from "../../../core/entities/recipeStep";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeDetailsRepository } from "../../repositories/recipe-details-repository";
 
-interface GetRecipeByRecipeIdRequest {
+interface GetDetailsByRecipeIdRequest {
   recipeId: string;
 }
 
-type GetRecipeByRecipeIdResponse = Either<
+type GetDetailsByRecipeIdResponse = Either<
   NotFoundError,
   {
     recipe: Recipe;
@@ -20,16 +20,12 @@ type GetRecipeByRecipeIdResponse = Either<
 
 export class GetDetailsByRecipeIdUseCase {
   constructor(private recipeDetailsRepository: RecipeDetailsRepository) {}
-  async execute({ recipeId }: GetRecipeByRecipeIdRequest): Promise<GetRecipeByRecipeIdResponse> {
+  async execute({ recipeId }: GetDetailsByRecipeIdRequest): Promise<GetDetailsByRecipeIdResponse> {
     const details = await this.recipeDetailsRepository.getDetailsByRecipeId(recipeId);
     if (!details) {
       return failure(new NotFoundError("recipe"));
     }
 
-    return success({
-      recipe: details?.recipe,
-      ingredients: details?.ingredients,
-      steps: details?.steps,
-    });
+    return success(details);
   }
 }

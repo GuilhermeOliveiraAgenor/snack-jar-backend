@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import z from "zod";
 import { GetDetailsByRecipeIdUseCase } from "../../../application/use-cases/recipe/get-details-by-recipe-id";
 
-const getDetailsSchema = z.object({
-  recipeId: z.string(),
+const requestParams = z.object({
+  id: z.string(),
 });
 
 export class GetDetailsByRecipeIdController {
@@ -11,9 +11,9 @@ export class GetDetailsByRecipeIdController {
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const { recipeId } = getDetailsSchema.parse(req.body);
+      const { id } = requestParams.parse(req.params);
 
-      const result = await this.getDetailsByRecipeId.execute({ recipeId });
+      const result = await this.getDetailsByRecipeId.execute({ recipeId: id });
 
       if (result.isError()) {
         throw result.value;

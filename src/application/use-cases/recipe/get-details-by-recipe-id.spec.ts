@@ -49,7 +49,7 @@ describe("Get Details By Recipe Id Use Case", () => {
 
     expect(result.isSuccess()).toBe(true);
     if (result.isSuccess()) {
-      expect(result.value.steps).toHaveLength(1);
+      expect(result.value.recipe.id.toString()).toBe(recipe.id.toString());
       expect(result.value.ingredients).toHaveLength(1);
       expect(result.value.steps).toHaveLength(1);
     }

@@ -9,19 +9,19 @@ const recipeIngredientRoutes = Router();
 
 recipeIngredientRoutes.use(makeAuthMiddleware());
 
-recipeIngredientRoutes.post("/recipe/ingredient/:id", (req, res, next) => {
+recipeIngredientRoutes.post("/recipes/ingredients/:recipeId", (req, res, next) => {
   return makeCreateRecipeIngredientController().handle(req, res, next);
 });
 
-recipeIngredientRoutes.put("/recipe/ingredient/:id", (req, res, next) => {
+recipeIngredientRoutes.put("/recipes/ingredients/:ingredientId", (req, res, next) => {
   return makeEditRecipeIngredientController().handle(req, res, next);
 });
 
-recipeIngredientRoutes.delete("/recipe/ingredient/:id", (req, res, next) => {
+recipeIngredientRoutes.delete("/recipes/ingredients/:ingredientId", (req, res, next) => {
   return makeDeleteRecipeIngredientController().handle(req, res, next);
 });
 
-recipeIngredientRoutes.get("/recipe/ingredient/:id", (req, res, next) => {
+recipeIngredientRoutes.get("/recipes/ingredients/:recipeId", (req, res, next) => {
   return makeFetchRecipeIngredientsByRecipeIdController().handle(req, res, next);
 });
 
