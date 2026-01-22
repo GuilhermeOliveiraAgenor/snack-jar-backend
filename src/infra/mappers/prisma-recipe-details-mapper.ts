@@ -2,39 +2,27 @@ import {
   Recipe as PrismaRecipe,
   RecipeIngredient as PrismaRecipeIngredient,
   RecipeStep as PrismaRecipeStep,
+  Category as PrismaCategory,
 } from "@prisma/client";
 
+import { PrismaRecipeMapper } from "./prisma-recipe-mapper";
+import { PrismaRecipeIngredientMapper } from "./prisma-recipe-ingredient-mapper";
+import { PrismaRecipeStepMapper } from "./prisma-recipe-step-mapper";
+
 type PrismaRecipeDetails = PrismaRecipe & {
-  ingredients: PrismaRecipeIngredient[];
-  steps: PrismaRecipeStep[];
+  category: PrismaCategory;
+  recipeIngredient: PrismaRecipeIngredient[];
+  recipeStep: PrismaRecipeStep[];
 };
+
 export class PrismaRecipeDetailsMapper {
   static toDomain(raw: PrismaRecipeDetails) {
     return {
-      id: raw.id.toString(),
+      recipe: PrismaRecipeMapper.toDomain(raw),
 
-      ingredients: raw.ingredients.map((ingredient) => ({
-        id: ingredient.id.toString(),
-        ingredient: ingredient.ingredient,
-        amount: ingredient.amount,
-        unit: ingredient.unit,
-        recipeId: ingredient.recipeId.toString(),
-        createdAt: ingredient.createdAt,
-        createdBy: ingredient.createdBy.toString(),
-        updatedAt: ingredient.updatedAt,
-        updatedBy: ingredient.updatedBy ? ingredient.updatedBy.toString() : null,
-      })),
+      ingredients: raw.recipeIngredient.map(PrismaRecipeIngredientMapper.toDomain),
 
-      steps: raw.steps.map((step) => ({
-        id: step.id.toString(),
-        step: step.step,
-        description: step.description,
-        recipeId: step.recipeId.toString(),
-        createdAt: step.createdAt,
-        createdBy: step.createdBy.toString(),
-        updatedAt: step.updatedAt,
-        updatedBy: step.updatedBy ? step.updatedBy.toString() : null,
-      })),
+      steps: raw.recipeStep.map(PrismaRecipeStepMapper.toDomain),
     };
   }
 }

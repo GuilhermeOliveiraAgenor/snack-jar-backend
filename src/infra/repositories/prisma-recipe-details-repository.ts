@@ -3,9 +3,7 @@ import { RecipeDetailsRepository } from "../../application/repositories/recipe-d
 import { Recipe } from "../../core/entities/recipe";
 import { RecipeIngredient } from "../../core/entities/recipeIngredient";
 import { RecipeStep } from "../../core/entities/recipeStep";
-import { PrismaRecipeIngredientMapper } from "../mappers/prisma-recipe-ingredient-mapper";
-import { PrismaRecipeMapper } from "../mappers/prisma-recipe-mapper";
-import { PrismaRecipeStepMapper } from "../mappers/prisma-recipe-step-mapper";
+import { PrismaRecipeDetailsMapper } from "../mappers/prisma-recipe-details-mapper";
 
 export class PrismaRecipeDetailsRepository implements RecipeDetailsRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -16,17 +14,16 @@ export class PrismaRecipeDetailsRepository implements RecipeDetailsRepository {
     const recipe = await this.prisma.recipe.findUnique({
       where: { id: recipeId },
       include: {
+        category: true,
         recipeIngredient: true,
-        recipeStep: true,
+        recipeStep: {
+          orderBy: { step: "asc" },
+        },
       },
     });
 
     if (!recipe) return null;
 
-    return {
-      recipe: PrismaRecipeMapper.toDomain(recipe),
-      steps: recipe.recipeStep.map(PrismaRecipeStepMapper.toDomain),
-      ingredients: recipe.recipeIngredient.map(PrismaRecipeIngredientMapper.toDomain),
-    };
+    return PrismaRecipeDetailsMapper.toDomain(recipe);
   }
 }

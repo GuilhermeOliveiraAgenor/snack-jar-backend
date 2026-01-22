@@ -19,7 +19,7 @@ export class GetDetailsByRecipeIdController {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.ingredients);
+      return res.status(200).json(result.value);
     } catch (error) {
       next(error);
     }
