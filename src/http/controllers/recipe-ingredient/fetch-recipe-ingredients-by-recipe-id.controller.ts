@@ -3,7 +3,7 @@ import z from "zod";
 import { FetchRecipeIngredientsByRecipeIdUseCase } from "../../../application/use-cases/recipe-ingredient/fetch-recipe-ingredients-by-recipe-id";
 
 const requestParams = z.object({
-  id: z.string(),
+  recipeId: z.string(),
 });
 
 export class FetchRecipeIngredientsByRecipeIdController {
@@ -12,9 +12,9 @@ export class FetchRecipeIngredientsByRecipeIdController {
   ) {}
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = requestParams.parse(req.params);
+      const { recipeId } = requestParams.parse(req.params);
 
-      const result = await this.fetchRecipeIngredientsByIdUseCase.execute({ id });
+      const result = await this.fetchRecipeIngredientsByIdUseCase.execute({ id: recipeId });
 
       if (result.isError()) {
         throw result.value;

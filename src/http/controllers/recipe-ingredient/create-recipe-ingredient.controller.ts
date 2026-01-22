@@ -4,7 +4,7 @@ import z from "zod";
 import { MeasurementUnit } from "../../../core/enum/measurement-unit";
 
 const requestParams = z.object({
-  id: z.string(),
+  recipeId: z.string(),
 });
 
 const createRecipeIngredientSchema = z.object({
@@ -23,14 +23,14 @@ export class CreateRecipeIngredientController {
     try {
       const userId = req.user.id;
 
-      const { id } = requestParams.parse(req.params);
+      const { recipeId } = requestParams.parse(req.params);
       const { ingredient, amount, unit } = createRecipeIngredientSchema.parse(req.body);
 
       const result = await this.createRecipeIngredientUseCase.execute({
         ingredient,
         amount,
         unit,
-        recipeId: id,
+        recipeId,
         createdBy: userId,
       });
 

@@ -15,11 +15,11 @@ recipeRoutes.post("/recipes", (req, res, next) => {
   return makeCreateRecipeController().handle(req, res, next);
 });
 
-recipeRoutes.put("/recipes/:recipeId", (req, res, next) => {
+recipeRoutes.put("/recipes/:id", (req, res, next) => {
   return makeEditRecipeController().handle(req, res, next);
 });
 
-recipeRoutes.delete("/recipes/:recipeId", (req, res, next) => {
+recipeRoutes.delete("/recipes/:id", (req, res, next) => {
   return makeDeleteRecipeController().handle(req, res, next);
 });
 

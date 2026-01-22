@@ -3,7 +3,7 @@ import z from "zod";
 import { DeleteRecipeIngredientUseCase } from "../../../application/use-cases/recipe-ingredient/delete-recipe-ingredient";
 
 const requestParams = z.object({
-  id: z.string(),
+  ingredientId: z.string(),
 });
 
 export class DeleteRecipeIngredientController {
@@ -12,9 +12,9 @@ export class DeleteRecipeIngredientController {
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user.id;
-      const { id } = requestParams.parse(req.params);
+      const { ingredientId } = requestParams.parse(req.params);
 
-      const result = await this.deleteRecipeIngredientUseCase.execute({ id, deletedBy: userId });
+      const result = await this.deleteRecipeIngredientUseCase.execute({ id: ingredientId, deletedBy: userId });
 
       if (result.isError()) {
         throw result.value;
