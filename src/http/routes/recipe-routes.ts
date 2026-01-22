@@ -11,15 +11,15 @@ const recipeRoutes = Router();
 
 recipeRoutes.use(makeAuthMiddleware());
 
-recipeRoutes.post("/recipe", (req, res, next) => {
+recipeRoutes.post("/recipes", (req, res, next) => {
   return makeCreateRecipeController().handle(req, res, next);
 });
 
-recipeRoutes.put("/recipe/:id", (req, res, next) => {
+recipeRoutes.put("/recipes/:recipeId", (req, res, next) => {
   return makeEditRecipeController().handle(req, res, next);
 });
 
-recipeRoutes.delete("/recipe/:id", (req, res, next) => {
+recipeRoutes.delete("/recipes/:recipeId", (req, res, next) => {
   return makeDeleteRecipeController().handle(req, res, next);
 });
 
@@ -27,11 +27,11 @@ recipeRoutes.get("/menu", (req, res, next) => {
   return makeFetchMyRecipesController().handle(req, res, next);
 });
 
-recipeRoutes.get("/recipe", (req, res, next) => {
+recipeRoutes.get("/recipes", (req, res, next) => {
   return makeFetchRecipesByTitleController().handle(req, res, next);
 });
 
-recipeRoutes.get("/recipe/details", (req, res, next) => {
+recipeRoutes.get("/recipes/details", (req, res, next) => {
   return makeGetDetailsByRecipeIdController().handle(req, res, next);
 });
 
