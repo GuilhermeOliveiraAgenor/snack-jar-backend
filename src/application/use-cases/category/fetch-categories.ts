@@ -6,9 +6,13 @@ type FetchCategoriesUseCaseResponse = Either<
   null,
   {
     categories: Category[];
+    meta: {
+      page: number;
+      per_page: number;
+      total_count: number;
+    };
   }
 >;
-
 export class FetchCategoriesUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
   async execute(): Promise<FetchCategoriesUseCaseResponse> {

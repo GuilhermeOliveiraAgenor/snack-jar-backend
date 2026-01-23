@@ -13,14 +13,7 @@ export class FetchCategoriesController {
         throw result.value;
       }
 
-      return res.status(200).json(
-        CategoryPresenter.toPaginatedResponse(result.value.categories, {
-          page: 1,
-          per_page: 10,
-          total_count: 100,
-          filters: {},
-        }),
-      );
+      return res.status(200).json(CategoryPresenter.toHTPPPaginated(result.value.categories));
     } catch (error) {
       next(error);
     }
