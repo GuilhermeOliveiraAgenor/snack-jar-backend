@@ -1,6 +1,7 @@
 import z from "zod";
 import { CreateCategoryUseCase } from "../../../application/use-cases/category/create-category";
 import { NextFunction, Request, Response } from "express";
+import { CategoryPresenter } from "../../presenters/category-presenter";
 
 // fields validate zod
 const createCategorySchema = z.object({
@@ -24,7 +25,7 @@ export class CreateCategoryController {
         throw result.value;
       }
 
-      return res.status(201).json({ category: result.value.category });
+      return res.status(200).json(CategoryPresenter.toResponse(result.value.category, 201));
     } catch (error) {
       next(error);
     }

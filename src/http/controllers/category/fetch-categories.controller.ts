@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { FetchCategoriesUseCase } from "../../../application/use-cases/category/fetch-categories";
+import { CategoryPresenter } from "../../presenters/category-presenter";
 
 export class FetchCategoriesController {
   constructor(private readonly fetchCategoriesUseCase: FetchCategoriesUseCase) {}
@@ -12,7 +13,14 @@ export class FetchCategoriesController {
         throw result.value;
       }
 
-      return res.status(200).json({ category: result.value.categories });
+      return res.status(200).json(
+        CategoryPresenter.toPaginatedResponse(result.value.categories, {
+          page: 1,
+          per_page: 10,
+          total_count: 100,
+          filters: {},
+        }),
+      );
     } catch (error) {
       next(error);
     }
