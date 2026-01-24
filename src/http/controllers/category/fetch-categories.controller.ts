@@ -3,7 +3,7 @@ import { FetchCategoriesUseCase } from "../../../application/use-cases/category/
 import { CategoryPresenter } from "../../presenters/category-presenter";
 import z from "zod";
 
-export const fetchCategoriesParamsSchema = z.object({
+const fetchCategoriesQuery = z.object({
   page: z.coerce.number().int().min(1).default(1),
 });
 
@@ -12,7 +12,7 @@ export class FetchCategoriesController {
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page } = fetchCategoriesParamsSchema.parse(req.query);
+      const { page } = fetchCategoriesQuery.parse(req.query);
 
       const result = await this.fetchCategoriesUseCase.execute({ page });
 

@@ -25,7 +25,7 @@ export class EditCategoryUseCase {
     description,
     id,
   }: EditCategoryUseCaseRequest): Promise<EditCategoryUseCaseResponse> {
-    const category = await this.categoryRepository.findById(id.toString());
+    const category = await this.categoryRepository.findById(id);
 
     // verify if exists category
     if (!category) {

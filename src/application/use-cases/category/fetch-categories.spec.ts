@@ -24,9 +24,6 @@ describe("Fetch categories", () => {
 
     const result = await sut.execute({});
 
-    console.log(result.value?.categories);
-    console.log(result.value?.meta);
-
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryCategoryRepository.items.length).toBeGreaterThan(1);
     expect(inMemoryCategoryRepository.items).toHaveLength(2);
