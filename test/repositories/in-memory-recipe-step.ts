@@ -18,9 +18,16 @@ export class InMemoryRecipeStepRepository implements RecipeStepRepository {
     const index = this.items.findIndex((f) => f.id.toString() === recipeStep.id.toString());
     if (index >= 0) this.items.splice(index, 1);
   }
-  async findManyByRecipeId(id: string): Promise<RecipeStep[]> {
-    const recipeStep = this.items.filter((item) => item.recipeId.toString() === id.toString());
-    return recipeStep;
+  async findManyByRecipeId(
+    id: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipeSteps: RecipeStep[]; totalCount: number }> {
+    const steps = this.items.filter((item) => item.id.toString() === id);
+    const totalCount = this.items.length;
+
+    const recipeSteps = steps.slice((page - 1) * perPage, page * perPage);
+    return { recipeSteps, totalCount };
   }
   async findById(id: string): Promise<RecipeStep | null> {
     const recipeStep = this.items.find((item) => item.id.toString() === id.toString());

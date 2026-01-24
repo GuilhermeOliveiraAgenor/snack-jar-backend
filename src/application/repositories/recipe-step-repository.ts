@@ -5,6 +5,10 @@ export interface RecipeStepRepository {
   create(recipeStep: RecipeStep): Promise<void>;
   save(recipeStep: RecipeStep): Promise<void>;
   delete(recipeStep: RecipeStep): Promise<void>;
-  findManyByRecipeId(id: string): Promise<RecipeStep[]>;
+  findManyByRecipeId(
+    id: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipeSteps: RecipeStep[]; totalCount: number }>;
   findById(id: string): Promise<RecipeStep | null>;
 }
