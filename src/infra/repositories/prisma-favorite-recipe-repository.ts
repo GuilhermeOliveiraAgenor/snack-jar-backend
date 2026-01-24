@@ -17,17 +17,41 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
       },
     });
   }
-  async findManyByUserId(id: string): Promise<FavoriteRecipe[]> {
-    const favoriteRecipe = await this.prisma.favoriteRecipe.findMany({
-      where: {
-        createdBy: id,
-        recipe: {
-          status: "ACTIVE",
-          deletedAt: null,
+  async findManyByUserId(
+    id: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ favoritesRecipes: FavoriteRecipe[]; totalCount: number }> {
+    const skip = (page - 1) * perPage;
+
+    const [totalCount, favoriteRecipe] = await Promise.all([
+      this.prisma.favoriteRecipe.count(),
+      this.prisma.favoriteRecipe.findMany({
+        where: {
+          createdBy: id,
+          recipe: {
+            status: "ACTIVE",
+            deletedAt: null,
+          },
         },
+        skip,
+        take: perPage,
+      }),
+    ]);
+    return {
+      favoritesRecipes: favoriteRecipe.map((raw) => PrismaFavoriteRecipeMapper.toDomain(raw)),
+      totalCount,
+    };
+  }
+  async existsByUserAndRecipe(createdBy: string, recipeId: string): Promise<boolean> {
+    const result = await this.prisma.favoriteRecipe.findFirst({
+      where: {
+        createdBy,
+        recipeId,
       },
     });
-    return favoriteRecipe.map(PrismaFavoriteRecipeMapper.toDomain);
+    if (!result) return false;
+    return true;
   }
   async findById(id: string): Promise<FavoriteRecipe | null> {
     const favoriteRecipe = await this.prisma.favoriteRecipe.findUnique({

@@ -14,13 +14,13 @@ export class FetchMyFavoriteRecipesController {
       const userId = req.user.id;
       const { page } = fetchFavoriteRecipesQuery.parse(req.query);
 
-      const result = await this.fetchMyFavoriteRecipesUseCase.execute({ createdBy: userId });
+      const result = await this.fetchMyFavoriteRecipesUseCase.execute({ createdBy: userId, page });
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.favoriteRecipes);
+      return res.status(200).json();
     } catch (error) {
       next(error);
     }
