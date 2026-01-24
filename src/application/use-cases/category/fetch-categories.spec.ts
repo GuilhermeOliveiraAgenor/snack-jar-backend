@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { FetchCategoriesUseCase } from "./fetch-categories";
 import { beforeEach } from "vitest";
 import { makeCategory } from "../../../../test/factories/make-category";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
 let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let sut: FetchCategoriesUseCase;

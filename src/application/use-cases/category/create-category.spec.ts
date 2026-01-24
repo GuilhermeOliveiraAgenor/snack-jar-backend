@@ -2,7 +2,7 @@ import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { describe, it, expect, beforeEach } from "vitest";
 import { CreateCategoryUseCase } from "./create-category";
 import { makeCategory } from "../../../../test/factories/make-category";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
 let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let sut: CreateCategoryUseCase;

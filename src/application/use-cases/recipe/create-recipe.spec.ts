@@ -13,7 +13,7 @@ import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { MeasurementUnit } from "../../../core/enum/measurement-unit";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;

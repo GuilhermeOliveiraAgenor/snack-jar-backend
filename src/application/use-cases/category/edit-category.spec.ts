@@ -3,7 +3,7 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { EditCategoryUseCase } from "../category/edit-category";
 import { makeCategory } from "../../../../test/factories/make-category";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
 let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let sut: EditCategoryUseCase;

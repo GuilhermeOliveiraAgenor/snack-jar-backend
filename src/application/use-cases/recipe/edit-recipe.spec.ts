@@ -9,7 +9,7 @@ import { makeCategory } from "../../../../test/factories/make-category";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;

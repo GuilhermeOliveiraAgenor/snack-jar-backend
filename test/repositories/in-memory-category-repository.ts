@@ -31,6 +31,7 @@ export class InMemoryCategoryRepository implements CategoryRepository {
     }
     return category;
   }
+
   async findById(id: string): Promise<Category | null> {
     const category = this.items.find((item) => item.id.toString() == id);
     if (!category) {
