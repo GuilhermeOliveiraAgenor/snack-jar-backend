@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { EditRecipeIngredientUseCase } from "../../../application/use-cases/recipe-ingredient/edit-recipe-ingredient";
 import z from "zod";
 import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { RecipeIngredientPresenter } from "../../presenters/recipe-ingredient-presenter";
 
 const requestParams = z.object({
   ingredientId: z.string(),
@@ -37,7 +38,7 @@ export class EditRecipeIngredientController {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.recipeIngredient);
+      return res.status(200).json(RecipeIngredientPresenter.toHTTP(result.value.recipeIngredient));
     } catch (error) {
       next(error);
     }

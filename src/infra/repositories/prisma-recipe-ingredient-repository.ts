@@ -5,6 +5,7 @@ import { PrismaRecipeIngredientMapper } from "../mappers/prisma-recipe-ingredien
 
 export class PrismaRecipeIngredientRepository implements RecipeIngredientRepository {
   constructor(private readonly prisma: PrismaClient) {}
+
   async createMany(recipeIngredient: RecipeIngredient[]): Promise<void> {
     const data = recipeIngredient.map((recipe) =>
       PrismaRecipeIngredientMapper.toPersistency(recipe),
@@ -26,6 +27,29 @@ export class PrismaRecipeIngredientRepository implements RecipeIngredientReposit
       data: PrismaRecipeIngredientMapper.toPersistency(recipeIngredient),
     });
   }
+  async findManyByRecipeId(
+    id: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipeIngredients: RecipeIngredient[]; totalCount: number }> {
+    const skip = (page - 1) * perPage;
+
+    const [totalCount, recipeIngredients] = await Promise.all([
+      this.prisma.recipeIngredient.count(),
+      this.prisma.recipeIngredient.findMany({
+        where: {
+          recipeId: id,
+        },
+        orderBy: { createdAt: "asc" },
+        skip,
+        take: perPage,
+      }),
+    ]);
+    return {
+      recipeIngredients: recipeIngredients.map((raw) => PrismaRecipeIngredientMapper.toDomain(raw)),
+      totalCount,
+    };
+  }
   async delete(recipeIngredient: RecipeIngredient): Promise<void> {
     await this.prisma.recipeIngredient.delete({
       where: {
@@ -33,14 +57,7 @@ export class PrismaRecipeIngredientRepository implements RecipeIngredientReposit
       },
     });
   }
-  async findManyByRecipeId(id: string): Promise<RecipeIngredient[]> {
-    const recipeIngredients = await this.prisma.recipeIngredient.findMany({
-      where: {
-        recipeId: id,
-      },
-    });
-    return recipeIngredients.map(PrismaRecipeIngredientMapper.toDomain);
-  }
+
   async findById(id: string): Promise<RecipeIngredient | null> {
     const recipeIngredient = await this.prisma.recipeIngredient.findUnique({
       where: { id },

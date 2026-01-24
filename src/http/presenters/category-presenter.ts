@@ -3,11 +3,13 @@ import { BasePresenter } from "./base-presenter";
 import { PaginationMeta } from "./pagination.meta";
 
 export class CategoryPresenter {
-  private static map(category: Category) {
+  private static map(raw: Category) {
     return {
-      id: category.id.toString(),
-      name: category.name,
-      description: category.description,
+      id: raw.id.toString(),
+      name: raw.name,
+      description: raw.description,
+      createdAt: raw.createdAt,
+      updateAt: raw.updatedAt,
     };
   }
 

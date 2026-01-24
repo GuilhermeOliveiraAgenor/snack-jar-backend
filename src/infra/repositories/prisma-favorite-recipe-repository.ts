@@ -24,7 +24,7 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
   ): Promise<{ favoritesRecipes: FavoriteRecipe[]; totalCount: number }> {
     const skip = (page - 1) * perPage;
 
-    const [totalCount, favoriteRecipe] = await Promise.all([
+    const [totalCount, favoriteRecipes] = await Promise.all([
       this.prisma.favoriteRecipe.count(),
       this.prisma.favoriteRecipe.findMany({
         where: {
@@ -39,7 +39,7 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
       }),
     ]);
     return {
-      favoritesRecipes: favoriteRecipe.map((raw) => PrismaFavoriteRecipeMapper.toDomain(raw)),
+      favoritesRecipes: favoriteRecipes.map((raw) => PrismaFavoriteRecipeMapper.toDomain(raw)),
       totalCount,
     };
   }
