@@ -31,7 +31,9 @@ describe("Fetch Recipe Step By Recipe Id", () => {
     const recipe = makeRecipe();
     await inMemoryRecipeRepository.create(recipe);
 
-    const recipeStep = makeRecipeStep();
+    const recipeStep = makeRecipeStep({
+      recipeId: recipe.id,
+    });
     await inMemoryRecipeStepRepository.create(recipeStep);
 
     const result = await sut.execute({

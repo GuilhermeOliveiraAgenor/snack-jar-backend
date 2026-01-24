@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
 import { EditRecipeStepUseCase } from "../../../application/use-cases/recipe-step/edit-recipe-step";
+import { RecipeStepPresenter } from "../../presenters/recipe-step-presenter";
 
 const requestParams = z.object({
   stepId: z.string(),
@@ -31,7 +32,7 @@ export class EditRecipeStepController {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.recipeStep);
+      return res.status(200).json(RecipeStepPresenter.toHTTP(result.value.recipeStep));
     } catch (error) {
       next(error);
     }

@@ -23,7 +23,7 @@ export class InMemoryRecipeStepRepository implements RecipeStepRepository {
     page: number,
     perPage: number,
   ): Promise<{ recipeSteps: RecipeStep[]; totalCount: number }> {
-    const steps = this.items.filter((item) => item.id.toString() === id);
+    const steps = this.items.filter((item) => item.recipeId.toString() === id);
     const totalCount = this.items.length;
 
     const recipeSteps = steps.slice((page - 1) * perPage, page * perPage);
