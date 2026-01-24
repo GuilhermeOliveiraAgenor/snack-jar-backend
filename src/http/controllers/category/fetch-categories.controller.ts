@@ -7,13 +7,15 @@ export class FetchCategoriesController {
 
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.fetchCategoriesUseCase.execute();
+      const result = await this.fetchCategoriesUseCase.execute({});
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(200).json(CategoryPresenter.toHTPPPaginated(result.value.categories));
+      return res
+        .status(200)
+        .json(CategoryPresenter.toHTTPPaginated(result.value.categories, result.value.meta));
     } catch (error) {
       next(error);
     }

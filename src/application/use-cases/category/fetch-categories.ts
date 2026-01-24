@@ -17,7 +17,7 @@ export class FetchCategoriesUseCase {
 
     const meta: PaginationMeta = {
       page,
-      perPage,
+      per_page: perPage,
       total_count: result.totalCount,
       filters: {},
     };

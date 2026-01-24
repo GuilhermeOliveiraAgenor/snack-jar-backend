@@ -25,7 +25,7 @@ export class CreateCategoryController {
         throw result.value;
       }
 
-      return res.status(200).json(CategoryPresenter.toResponse(result.value.category, 201));
+      return res.status(201).json(CategoryPresenter.toHTTP(result.value.category));
     } catch (error) {
       next(error);
     }

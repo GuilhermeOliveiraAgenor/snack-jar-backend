@@ -4,7 +4,7 @@ import { app } from "../../../app";
 
 describe("Authenticate User Controller", () => {
   it("should be able to authenticate user", async () => {
-    await request(app).post("/user").send({
+    await request(app).post("/users").send({
       name: "Joao",
       email: "joao@gmail.com",
       password: "joao123",

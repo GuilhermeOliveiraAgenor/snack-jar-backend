@@ -12,10 +12,10 @@ export class CategoryPresenter {
   }
 
   static toHTTP(category: Category) {
-    return BasePresenter.toResponse(this.map);
+    return BasePresenter.toResponse(this.map(category));
   }
 
-  static toHTPPPaginated(categories: Category[], meta: PaginationMeta) {
-    return BasePresenter.toPaginatedResponse(this.map, meta);
+  static toHTTPPaginated(categories: Category[], meta: PaginationMeta) {
+    return BasePresenter.toPaginatedResponse(categories.map(CategoryPresenter.map), meta);
   }
 }

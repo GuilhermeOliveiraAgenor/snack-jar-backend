@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { EditCategoryUseCase } from "../../../application/use-cases/category/edit-category";
 import { z } from "zod";
+import { CategoryPresenter } from "../../presenters/category-presenter";
 
 // zod validation id
 const paramsSchema = z.object({
@@ -32,7 +33,7 @@ export class EditCategoryController {
         throw result.value;
       }
 
-      return res.status(204).send();
+      return res.status(200).json(CategoryPresenter.toHTTP(result.value.category));
     } catch (error) {
       next(error);
     }
