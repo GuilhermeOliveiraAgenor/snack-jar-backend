@@ -27,7 +27,9 @@ export class FetchRecipeIngredientsByRecipeIdUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
-    const recipeIngredients = await this.recipeIngredientRepository.findManyByRecipeId(recipe.id.toString());
+    const recipeIngredients = await this.recipeIngredientRepository.findManyByRecipeId(
+      recipe.id.toString(),
+    );
 
     return success({
       recipeIngredients,

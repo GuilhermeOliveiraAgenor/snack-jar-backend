@@ -2,7 +2,6 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { CreateRecipeUseCase } from "./create-recipe";
 import { InMemoryRecipeIngredientRepository } from "../../../../test/repositories/in-memory-recipe-ingredient";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { Category } from "../../../core/entities/category";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeNullError } from "../../errors/recipe-null-error";
@@ -14,6 +13,7 @@ import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;

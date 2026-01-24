@@ -2,11 +2,11 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { FetchMyRecipesUseCase } from "./fetch-my-recipes";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeCategory } from "../../../../test/factories/make-category";
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;

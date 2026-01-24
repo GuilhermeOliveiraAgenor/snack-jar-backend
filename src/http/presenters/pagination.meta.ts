@@ -1,6 +1,6 @@
 export interface PaginationMeta {
   page: number;
-  per_page: number;
+  perPage: number;
   total_count: number;
   filters?: Record<string, any>;
 }

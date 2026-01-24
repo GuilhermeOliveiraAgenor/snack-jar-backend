@@ -6,10 +6,10 @@ import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeCategory } from "../../../../test/factories/make-category";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;

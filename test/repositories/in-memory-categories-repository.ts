@@ -1,7 +1,7 @@
-import { CategoriesRepository } from "../../src/application/repositories/category-repository";
+import { CategoryRepository } from "../../src/application/repositories/category-repository";
 import { Category } from "../../src/core/entities/category";
 
-export class InMemoryCategoriesRepository implements CategoriesRepository {
+export class InMemoryCategoryRepository implements CategoryRepository {
   public items: Category[] = []; // array data
 
   async create(category: Category): Promise<void> {
@@ -11,8 +11,18 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     const itemIndex = this.items.findIndex((item) => item.id === category.id);
     this.items[itemIndex] = category;
   }
-  async findMany(): Promise<Category[]> {
-    return this.items;
+  async findMany(
+    page: number,
+    perPage: number,
+  ): Promise<{ categories: Category[]; totalCount: number }> {
+    const totalCount = this.items.length;
+
+    const categories = this.items.slice((page - 1) * perPage, page * perPage);
+
+    return {
+      categories,
+      totalCount,
+    };
   }
   async findByName(name: string): Promise<Category | null> {
     const category = this.items.find((item) => item.name == name);

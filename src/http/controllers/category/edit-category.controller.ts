@@ -32,7 +32,7 @@ export class EditCategoryController {
         throw result.value;
       }
 
-      return res.status(204).send()
+      return res.status(204).send();
     } catch (error) {
       next(error);
     }

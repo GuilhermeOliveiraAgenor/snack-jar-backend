@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { DeleteRecipeUseCase } from "./delete-recipe";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeCategory } from "../../../../test/factories/make-category";
@@ -10,6 +9,7 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { RecipeStatus } from "../../../core/enum/recipe-status";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryCategoryRepository: InMemoryCategoryRepository;

@@ -1,23 +1,27 @@
 import { Either, success } from "../../../core/either";
 import { Category } from "../../../core/entities/category";
+import { PaginationMeta } from "../../../http/presenters/pagination.meta";
 import { CategoryRepository } from "../../repositories/category-repository";
 
 type FetchCategoriesUseCaseResponse = Either<
   null,
   {
     categories: Category[];
-    meta: {
-      page: number;
-      per_page: number;
-      total_count: number;
-    };
+    meta: PaginationMeta;
   }
 >;
 export class FetchCategoriesUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
-  async execute(): Promise<FetchCategoriesUseCaseResponse> {
-    const categories = await this.categoryRepository.findMany();
+  async execute({ page = 1, perPage = 10 }): Promise<FetchCategoriesUseCaseResponse> {
+    const result = await this.categoryRepository.findMany(page, perPage);
 
-    return success({ categories });
+    const meta: PaginationMeta = {
+      page,
+      perPage,
+      total_count: result.totalCount,
+      filters: {},
+    };
+
+    return success({ categories: result.categories, meta });
   }
 }

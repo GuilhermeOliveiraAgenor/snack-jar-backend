@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 import { FetchCategoriesUseCase } from "./fetch-categories";
 import { beforeEach } from "vitest";
 import { makeCategory } from "../../../../test/factories/make-category";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-categories-repository";
 
 let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let sut: FetchCategoriesUseCase;
@@ -22,7 +22,10 @@ describe("Fetch categories", () => {
     await inMemoryCategoryRepository.create(category1);
     await inMemoryCategoryRepository.create(category2);
 
-    const result = await sut.execute();
+    const result = await sut.execute({});
+
+    console.log(result.value?.categories);
+    console.log(result.value?.meta);
 
     expect(result.isSuccess()).toBe(true);
     expect(inMemoryCategoryRepository.items.length).toBeGreaterThan(1);

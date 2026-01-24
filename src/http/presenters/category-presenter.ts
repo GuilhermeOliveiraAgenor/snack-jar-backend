@@ -11,14 +11,11 @@ export class CategoryPresenter {
     };
   }
 
-  static toHTTP(category: Category){
-      return BasePresenter.toResponse(this.map)
+  static toHTTP(category: Category) {
+    return BasePresenter.toResponse(this.map);
   }
 
-  static toHTPPPaginated(categories: Category[], meta: PaginationMeta){
-    return BasePresenter.toPaginatedResponse(this.map, meta)
+  static toHTPPPaginated(categories: Category[], meta: PaginationMeta) {
+    return BasePresenter.toPaginatedResponse(this.map, meta);
   }
-
-
-  
 }
