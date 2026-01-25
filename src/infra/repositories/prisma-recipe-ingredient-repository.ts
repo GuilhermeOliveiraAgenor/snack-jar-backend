@@ -50,6 +50,13 @@ export class PrismaRecipeIngredientRepository implements RecipeIngredientReposit
       totalCount,
     };
   }
+  async findByRecipeId(recipeId: string): Promise<RecipeIngredient[]> {
+    const recipeIngredients = await this.prisma.recipeIngredient.findMany({
+      where: { recipeId },
+    });
+    return recipeIngredients.map(PrismaRecipeIngredientMapper.toDomain);
+  }
+
   async delete(recipeIngredient: RecipeIngredient): Promise<void> {
     await this.prisma.recipeIngredient.delete({
       where: {

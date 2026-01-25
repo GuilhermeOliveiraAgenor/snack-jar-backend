@@ -30,8 +30,8 @@ export class InMemoryRecipeStepRepository implements RecipeStepRepository {
     return { recipeSteps, totalCount };
   }
   async findByRecipeId(recipeId: string): Promise<RecipeStep[]> {
-    const steps = this.items.filter((item) => item.recipeId.toString() === recipeId);
-    return steps;
+    const recipeSteps = this.items.filter((item) => item.recipeId.toString() === recipeId);
+    return recipeSteps;
   }
   async findByRecipeIdAndStep(recipeId: string, step: number): Promise<RecipeStep | null> {
     const recipeStep = this.items.find(

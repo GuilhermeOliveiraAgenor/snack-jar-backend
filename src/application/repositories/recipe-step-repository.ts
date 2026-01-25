@@ -1,4 +1,3 @@
-import { RecipeIngredient } from "@prisma/client";
 import { RecipeStep } from "../../core/entities/recipeStep";
 
 export interface RecipeStepRepository {

@@ -48,6 +48,12 @@ export class PrismaRecipeStepRepository implements RecipeStepRepository {
       totalCount,
     };
   }
+  async findByRecipeId(recipeId: string): Promise<RecipeStep[]> {
+    const recipeSteps = await this.prisma.recipeStep.findMany({
+      where: { recipeId },
+    });
+    return recipeSteps.map(PrismaRecipeStepMapper.toDomain);
+  }
   async delete(recipeStep: RecipeStep): Promise<void> {
     await this.prisma.recipeStep.delete({
       where: {
@@ -55,7 +61,6 @@ export class PrismaRecipeStepRepository implements RecipeStepRepository {
       },
     });
   }
-
   async findByRecipeIdAndStep(recipeId: string, step: number): Promise<RecipeStep | null> {
     const recipeStep = await this.prisma.recipeStep.findFirst({
       where: {
