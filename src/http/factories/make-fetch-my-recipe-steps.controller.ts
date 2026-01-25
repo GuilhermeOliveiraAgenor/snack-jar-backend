@@ -1,19 +1,19 @@
 import { getPrismaClient } from "../../infra/prisma/client";
 import { PrismaRecipeStepRepository } from "../../infra/repositories/prisma-recipe-step-repository";
-import { FetchRecipeStepsByRecipeIdUseCase } from "../../application/use-cases/recipe-step/fetch-recipe-steps-by-recipe-id";
 import { PrismaRecipeRepository } from "../../infra/repositories/prisma-recipe-repository";
-import { FetchRecipeStepsByRecipeIdController } from "../controllers/recipe-step/fetch-recipe-steps-by-recipe-id.controller";
+import { FetchMyRecipeStepsController } from "../controllers/recipe-step/fetch-my-recipe-steps.controller";
+import { FetchMyRecipeStepsUseCase } from "../../application/use-cases/recipe-step/fetch-my-recipe-steps";
 
-export function makeFetchRecipeStepsByRecipeIdController() {
+export function makeFetchMyRecipeStepsController() {
   const prisma = getPrismaClient();
 
   const recipeStepRepository = new PrismaRecipeStepRepository(prisma);
   const recipeRepository = new PrismaRecipeRepository(prisma);
 
-  const fetchRecipeStepsByRecipeIdUseCase = new FetchRecipeStepsByRecipeIdUseCase(
+  const fetchMyRecipeStepsUseCase = new FetchMyRecipeStepsUseCase(
     recipeStepRepository,
     recipeRepository,
   );
 
-  return new FetchRecipeStepsByRecipeIdController(fetchRecipeStepsByRecipeIdUseCase);
+  return new FetchMyRecipeStepsController(fetchMyRecipeStepsUseCase);
 }

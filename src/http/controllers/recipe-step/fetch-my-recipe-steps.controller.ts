@@ -1,24 +1,25 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
-import { FetchRecipeStepsByRecipeIdUseCase } from "../../../application/use-cases/recipe-step/fetch-recipe-steps-by-recipe-id";
+import { FetchMyRecipeStepsUseCase } from "../../../application/use-cases/recipe-step/fetch-my-recipe-steps";
 import { RecipeStepPresenter } from "../../presenters/recipe-step-presenter";
 
 const requestParams = z.object({
   recipeId: z.string(),
 });
 
-const fetchRecipeStepQuerySchema = z.object({
+const fetchMyRecipeStepQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
 });
 
-export class FetchRecipeStepsByRecipeIdController {
-  constructor(private readonly fetchRecipeStepsByIdUseCase: FetchRecipeStepsByRecipeIdUseCase) {}
+export class FetchMyRecipeStepsController {
+  constructor(private readonly fetchMyRecipeStepsUseCase: FetchMyRecipeStepsUseCase) {}
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = req.user.id;
       const { recipeId } = requestParams.parse(req.params);
-      const { page } = fetchRecipeStepQuerySchema.parse(req.query);
+      const { page } = fetchMyRecipeStepQuerySchema.parse(req.query);
 
-      const result = await this.fetchRecipeStepsByIdUseCase.execute({ recipeId, page });
+      const result = await this.fetchMyRecipeStepsUseCase.execute({ recipeId, userId, page });
 
       if (result.isError()) {
         throw result.value;

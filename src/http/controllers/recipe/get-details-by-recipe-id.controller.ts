@@ -22,7 +22,6 @@ export class GetDetailsByRecipeIdController {
 
       return res.status(200).json(RecipeDetailsPresenter.toHTTP(result.value));
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

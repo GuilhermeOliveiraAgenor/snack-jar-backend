@@ -2,7 +2,7 @@ import { Router } from "express";
 import { makeCreateRecipeStepController } from "../factories/make-create-recipe-step.controller";
 import { makeEditRecipeStepController } from "../factories/make-edit-recipe-step.controller";
 import { makeDeleteRecipeStepController } from "../factories/make-delete-recipe-step-ingredient.controller";
-import { makeFetchRecipeStepsByRecipeIdController } from "../factories/make-fetch-recipe-steps-by-recipe-id.controller";
+import { makeFetchMyRecipeStepsController } from "../factories/make-fetch-my-recipe-steps.controller";
 
 const recipeStepRoutes = Router();
 
@@ -19,7 +19,7 @@ recipeStepRoutes.delete("/recipes/steps/:stepId", (req, res, next) => {
 });
 
 recipeStepRoutes.get("/recipes/steps/:recipeId", (req, res, next) => {
-  return makeFetchRecipeStepsByRecipeIdController().handle(req, res, next);
+  return makeFetchMyRecipeStepsController().handle(req, res, next);
 });
 
 export { recipeStepRoutes };

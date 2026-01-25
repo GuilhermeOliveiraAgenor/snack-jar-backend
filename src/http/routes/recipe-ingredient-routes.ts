@@ -3,7 +3,7 @@ import { makeAuthMiddleware } from "../factories/make-auth-middleware";
 import { makeCreateRecipeIngredientController } from "../factories/make-create-recipe-ingredient.controller";
 import { makeDeleteRecipeIngredientController } from "../factories/make-delete-recipe-ingredient.controller";
 import { makeEditRecipeIngredientController } from "../factories/make-edit-recipe-ingredient.controller";
-import { makeFetchRecipeIngredientsByRecipeIdController } from "../factories/make-fetch-recipe-ingredients-by-recipe-id.controller";
+import { makeFetchMyRecipeIngredientsController } from "../factories/make-fetch-my-recipe-ingredients.controller";
 
 const recipeIngredientRoutes = Router();
 
@@ -22,7 +22,7 @@ recipeIngredientRoutes.delete("/recipes/ingredients/:ingredientId", (req, res, n
 });
 
 recipeIngredientRoutes.get("/recipes/ingredients/:recipeId", (req, res, next) => {
-  return makeFetchRecipeIngredientsByRecipeIdController().handle(req, res, next);
+  return makeFetchMyRecipeIngredientsController().handle(req, res, next);
 });
 
 export { recipeIngredientRoutes };

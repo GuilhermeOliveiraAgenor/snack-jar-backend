@@ -1,35 +1,42 @@
 import { Either, failure, success } from "../../../core/either";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { PaginationMeta } from "../../../http/presenters/base/pagination-meta";
+import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
-interface FetchRecipeIngredientsByRecipeIdRequest {
+interface FetchMyRecipeIngredientsRequest {
   recipeId: string;
+  userId: string;
   page?: number;
   perPage?: number;
 }
 
-type FetchRecipeIngredientsByRecipeIdResponse = Either<
+type FetchMyRecipeIngredientsResponse = Either<
   NotFoundError,
   { recipeIngredients: RecipeIngredient[]; meta: PaginationMeta }
 >;
 
-export class FetchRecipeIngredientsByRecipeIdUseCase {
+export class FetchMyRecipeIngredientsUseCase {
   constructor(
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeRepository: RecipeRepository,
   ) {}
   async execute({
     recipeId,
+    userId,
     page = 1,
     perPage = 10,
-  }: FetchRecipeIngredientsByRecipeIdRequest): Promise<FetchRecipeIngredientsByRecipeIdResponse> {
+  }: FetchMyRecipeIngredientsRequest): Promise<FetchMyRecipeIngredientsResponse> {
     // verify if exists recipe id
     const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
+    }
+
+    if (recipe.createdBy.toString() !== userId) {
+      return failure(new NotAllowedError("user"));
     }
 
     const result = await this.recipeIngredientRepository.findManyByRecipeId(
