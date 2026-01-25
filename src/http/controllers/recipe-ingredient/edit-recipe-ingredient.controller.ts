@@ -28,7 +28,7 @@ export class EditRecipeIngredientController {
 
       const data = {
         id: ingredientId,
-        updatedBy: userId,
+        userId,
         ...body,
       };
 

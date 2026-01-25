@@ -32,7 +32,7 @@ export class CreateRecipeIngredientController {
         amount,
         unit,
         recipeId,
-        createdBy: userId,
+        userId,
       });
 
       if (result.isError()) {
