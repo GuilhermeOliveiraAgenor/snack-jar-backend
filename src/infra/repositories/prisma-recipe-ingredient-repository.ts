@@ -28,7 +28,7 @@ export class PrismaRecipeIngredientRepository implements RecipeIngredientReposit
     });
   }
   async findManyByRecipeId(
-    id: string,
+    recipeId: string,
     page: number,
     perPage: number,
   ): Promise<{ recipeIngredients: RecipeIngredient[]; totalCount: number }> {
@@ -38,7 +38,7 @@ export class PrismaRecipeIngredientRepository implements RecipeIngredientReposit
       this.prisma.recipeIngredient.count(),
       this.prisma.recipeIngredient.findMany({
         where: {
-          recipeId: id,
+          recipeId,
         },
         orderBy: { createdAt: "asc" },
         skip,

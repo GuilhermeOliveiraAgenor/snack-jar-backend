@@ -18,7 +18,7 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
     });
   }
   async findManyByUserId(
-    id: string,
+    userId: string,
     page: number,
     perPage: number,
   ): Promise<{ favoritesRecipes: FavoriteRecipe[]; totalCount: number }> {
@@ -28,7 +28,7 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
       this.prisma.favoriteRecipe.count(),
       this.prisma.favoriteRecipe.findMany({
         where: {
-          createdBy: id,
+          createdBy: userId,
           recipe: {
             status: "ACTIVE",
             deletedAt: null,
@@ -43,10 +43,10 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
       totalCount,
     };
   }
-  async existsByUserAndRecipe(createdBy: string, recipeId: string): Promise<boolean> {
+  async existsByUserAndRecipe(userId: string, recipeId: string): Promise<boolean> {
     const result = await this.prisma.favoriteRecipe.findFirst({
       where: {
-        createdBy,
+        createdBy: userId,
         recipeId,
       },
     });

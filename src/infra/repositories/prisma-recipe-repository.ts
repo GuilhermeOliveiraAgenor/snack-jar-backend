@@ -17,9 +17,9 @@ export class PrismaRecipeRepository implements RecipeRepository {
       data: PrismaRecipeMapper.toPersistency(recipe),
     });
   }
-  async findManyByUserId(id: string): Promise<Recipe[]> {
+  async findManyByUserId(userId: string): Promise<Recipe[]> {
     const recipes = await this.prisma.recipe.findMany({
-      where: { createdBy: id, status: "ACTIVE", deletedAt: null },
+      where: { createdBy: userId, status: "ACTIVE", deletedAt: null },
     });
     return recipes.map(PrismaRecipeMapper.toDomain);
   }
@@ -30,10 +30,10 @@ export class PrismaRecipeRepository implements RecipeRepository {
     if (!recipe) return null;
     return PrismaRecipeMapper.toDomain(recipe);
   }
-  async findManyByTitle(createdBy: string, title: string): Promise<Recipe[]> {
+  async findManyByUserIdAndTitle(userId: string, title: string): Promise<Recipe[]> {
     const recipes = await this.prisma.recipe.findMany({
       where: {
-        createdBy,
+        createdBy: userId,
         title: {
           contains: title,
           mode: "insensitive",
@@ -44,10 +44,10 @@ export class PrismaRecipeRepository implements RecipeRepository {
     });
     return recipes.map(PrismaRecipeMapper.toDomain);
   }
-  async findByTitle(createdBy: string, title: string): Promise<Recipe | null> {
+  async findByUserIdAndTitle(userId: string, title: string): Promise<Recipe | null> {
     const recipe = await this.prisma.recipe.findFirst({
       where: {
-        createdBy,
+        createdBy: userId,
         title: {
           equals: title,
           mode: "insensitive",

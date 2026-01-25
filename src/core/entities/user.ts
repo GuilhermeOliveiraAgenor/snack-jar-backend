@@ -42,7 +42,7 @@ export class User {
     return this.props.password;
   }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
