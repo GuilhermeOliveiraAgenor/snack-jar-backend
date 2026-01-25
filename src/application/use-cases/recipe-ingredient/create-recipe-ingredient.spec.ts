@@ -43,7 +43,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       amount: "1",
       unit: MeasurementUnit.KG,
       recipeId: recipe.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -65,7 +65,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       amount: "1",
       unit: MeasurementUnit.KG,
       recipeId: "0",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -89,7 +89,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       amount: "1000",
       unit: MeasurementUnit.KG,
       recipeId: recipe.id.toString(),
-      createdBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -112,7 +112,7 @@ describe("Create Recipe Ingredient Use Case", () => {
       amount: "1000",
       unit: MeasurementUnit.G,
       recipeId: recipe.id.toString(),
-      createdBy: "user-1,",
+      userId: "user-1,",
     });
 
     expect(result.isError()).toBe(true);

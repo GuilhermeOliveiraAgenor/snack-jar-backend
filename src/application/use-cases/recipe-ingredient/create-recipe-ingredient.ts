@@ -11,7 +11,7 @@ interface CreateRecipeIngredientUseCaseRequest {
   amount: RecipeIngredient["amount"];
   unit: RecipeIngredient["unit"];
   recipeId: string;
-  createdBy: string;
+  userId: string;
 }
 
 type CreateRecipeIngredientUseCaseResponse = Either<
@@ -30,7 +30,7 @@ export class CreateRecipeIngredientUseCase {
     amount,
     unit,
     recipeId,
-    createdBy,
+    userId,
   }: CreateRecipeIngredientUseCaseRequest): Promise<CreateRecipeIngredientUseCaseResponse> {
     // verify if exists recipeId
     const recipe = await this.recipeRepository.findById(recipeId);
@@ -38,7 +38,7 @@ export class CreateRecipeIngredientUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
-    if (recipe.createdBy.toString() !== createdBy) {
+    if (recipe.createdBy.toString() !== userId) {
       return failure(new NotAllowedError("user"));
     }
 
@@ -51,7 +51,7 @@ export class CreateRecipeIngredientUseCase {
       amount,
       unit,
       recipeId: recipe.id,
-      createdBy: new UniqueEntityID(createdBy),
+      createdBy: new UniqueEntityID(userId),
     });
 
     await this.recipeIngredientRepository.create(recipeIngredient);
