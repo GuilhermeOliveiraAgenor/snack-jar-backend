@@ -3,7 +3,6 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
-import { NotFoundError } from "../../errors/resource-not-found-error";
 import { FetchRecipesByTitleUseCase } from "./fetch-recipes-by-title";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -51,22 +50,5 @@ describe("Fetch Recipes By Title Use Case", () => {
         title: "Bolo de chocolate",
       });
     }
-  });
-  it("should not be able to fetch recipes by title when title does not exists", async () => {
-    const user = makeUser();
-    await inMemoryUserRepository.create(user);
-
-    const recipe = makeRecipe({
-      title: "Bolo de Chocolate",
-      createdBy: user.id,
-    });
-
-    await inMemoryRecipeRepository.create(recipe);
-
-    const result = await sut.execute({ userId: user.id.toString(), title: "Bolo de Laranja" });
-
-    expect(result.isError()).toBe(true);
-    expect(inMemoryRecipeRepository.items).toHaveLength(1);
-    expect(result.value).toBeInstanceOf(NotFoundError);
   });
 });

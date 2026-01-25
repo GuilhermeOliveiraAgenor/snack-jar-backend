@@ -8,7 +8,12 @@ export interface RecipeRepository {
     page: number,
     perPage: number,
   ): Promise<{ recipes: Recipe[]; totalCount: number }>;
-  findManyByUserIdAndTitle(userId: string, title: string): Promise<Recipe[]>;
+  findManyByUserIdAndTitle(
+    userId: string,
+    title: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipes: Recipe[]; totalCount: number }>;
   findByUserIdAndTitle(userId: string, title: string): Promise<Recipe | null>;
   findById(id: string): Promise<Recipe | null>;
 }
