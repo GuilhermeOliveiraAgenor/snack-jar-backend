@@ -42,18 +42,17 @@ export class EditRecipeStepUseCase {
       return failure(new NotAllowedError("user"));
     }
 
-    const steps = await this.recipeStepRepository.findManyByRecipeId(
-      recipeStep.recipeId.toString(),
-    );
-
-    const stepDuplicated = steps.some((s) => s.step === step && s.id.toString() !== id);
-
-    if (stepDuplicated) {
-      return failure(new AlreadyExistsError("recipeStep"));
-    }
-
-    if (step && step <= 0) {
-      return failure(new InvalidFieldsError("recipeStep"));
+    if (step !== undefined) {
+      if (step <= 0) {
+        return failure(new InvalidFieldsError("recipeStep"));
+      }
+      const stepDuplicated = await this.recipeStepRepository.findByRecipeIdAndStep(
+        recipeStep.recipeId.toString(),
+        step,
+      );
+      if (stepDuplicated && stepDuplicated.id.toString() !== id) {
+        return failure(new AlreadyExistsError("recipeStep"));
+      }
     }
 
     const recipe = await this.recipeRepository.findById(recipeStep.recipeId.toString());

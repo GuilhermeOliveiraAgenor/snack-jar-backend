@@ -9,7 +9,7 @@ import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface CreateFavoriteRecipeUseCaseRequest {
   recipeId: string;
-  createdBy: string;
+  userId: string;
 }
 
 type CreateFavoriteRecipeUseCaseResponse = Either<
@@ -26,7 +26,7 @@ export class CreateFavoriteRecipeUseCase {
   ) {}
   async execute({
     recipeId,
-    createdBy,
+    userId,
   }: CreateFavoriteRecipeUseCaseRequest): Promise<CreateFavoriteRecipeUseCaseResponse> {
     // verify if recipe id exists
     const recipe = await this.recipeRepository.findById(recipeId);
@@ -34,7 +34,7 @@ export class CreateFavoriteRecipeUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
-    if (recipe.createdBy.toString() != createdBy) {
+    if (recipe.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
     }
 
@@ -44,7 +44,7 @@ export class CreateFavoriteRecipeUseCase {
 
     // verify if favorite recipe already exists
     const alreadyExists = await this.favoriteRecipeRepository.existsByUserAndRecipe(
-      createdBy,
+      userId,
       recipeId,
     );
     if (alreadyExists) {
@@ -53,7 +53,7 @@ export class CreateFavoriteRecipeUseCase {
 
     const favoriteRecipe = FavoriteRecipe.create({
       recipeId: new UniqueEntityID(recipeId),
-      createdBy: new UniqueEntityID(createdBy),
+      createdBy: new UniqueEntityID(userId),
     });
 
     await this.favoriteRecipeRepository.create(favoriteRecipe);

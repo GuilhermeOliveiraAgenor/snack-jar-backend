@@ -48,9 +48,10 @@ export class CreateRecipeStepUseCase {
       return failure(new NotAllowedError("recipe"));
     }
 
-    const steps = await this.recipeStepRepository.findManyByRecipeId(recipe.id.toString());
-    const stepDuplicated = steps.some((s) => s.step === step);
-
+    const stepDuplicated = await this.recipeStepRepository.findByRecipeIdAndStep(
+      recipe.id.toString(),
+      step,
+    );
     if (stepDuplicated) {
       return failure(new AlreadyExistsError("recipeStep"));
     }

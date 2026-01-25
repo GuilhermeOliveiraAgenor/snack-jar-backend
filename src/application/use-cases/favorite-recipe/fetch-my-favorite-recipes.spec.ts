@@ -29,7 +29,7 @@ describe("Fetch My Favorite Recipes", () => {
     await inMemoryFavoriteRecipeRepository.create(favoriteRecipe);
 
     const result = await sut.execute({
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);

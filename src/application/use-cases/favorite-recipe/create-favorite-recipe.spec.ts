@@ -38,7 +38,7 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -51,7 +51,7 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: "0",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -72,7 +72,7 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -92,7 +92,7 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
-      createdBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -109,7 +109,7 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);

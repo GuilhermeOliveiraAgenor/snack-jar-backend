@@ -46,7 +46,7 @@ export class EditRecipeUseCase {
       return failure(new NotAllowedError("user"));
     }
 
-    if (title) {
+    if (title !== undefined) {
       const alreadyExists = await this.recipeRepository.findByTitle(updatedBy, title);
 
       if (alreadyExists && alreadyExists.id.toString() != id) {

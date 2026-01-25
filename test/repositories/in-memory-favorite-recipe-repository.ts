@@ -12,11 +12,11 @@ export class InMemoryFavoriteRecipeRepository implements FavoriteRecipeRepositor
     if (index >= 0) this.items.splice(index, 1);
   }
   async findManyByUserId(
-    id: string,
+    userId: string,
     page: number,
     perPage: number,
   ): Promise<{ favoritesRecipes: FavoriteRecipe[]; totalCount: number }> {
-    const userRecipes = this.items.filter((item) => item.createdBy.toString() === id);
+    const userRecipes = this.items.filter((item) => item.createdBy.toString() === userId);
     const totalCount = this.items.length;
 
     const favoritesRecipes = userRecipes.slice((page - 1) * perPage, page * perPage);
@@ -26,15 +26,15 @@ export class InMemoryFavoriteRecipeRepository implements FavoriteRecipeRepositor
       totalCount,
     };
   }
-  async existsByUserAndRecipe(createdBy: string, recipeId: string): Promise<boolean> {
+  async existsByUserAndRecipe(userId: string, recipeId: string): Promise<boolean> {
     const result = this.items.find(
-      (item) => item.createdBy.toString() == createdBy && item.recipeId.toString() === recipeId,
+      (item) => item.createdBy.toString() == userId && item.recipeId.toString() === recipeId,
     );
     if (!result) return false;
     return true;
   }
-  async findByUserId(id: string): Promise<FavoriteRecipe[]> {
-    const recipe = this.items.filter((item) => item.createdBy.toString() === id.toString());
+  async findByUserId(userId: string): Promise<FavoriteRecipe[]> {
+    const recipe = this.items.filter((item) => item.createdBy.toString() === userId.toString());
     return recipe;
   }
 

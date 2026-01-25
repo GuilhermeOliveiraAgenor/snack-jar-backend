@@ -12,8 +12,8 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     const itemIndex = this.items.findIndex((item) => item.id === recipe.id);
     this.items[itemIndex] = recipe;
   }
-  async findManyByUserId(id: string): Promise<Recipe[]> {
-    const recipe = this.items.filter((item) => item.createdBy === new UniqueEntityID(id));
+  async findManyByUserId(userId: string): Promise<Recipe[]> {
+    const recipe = this.items.filter((item) => item.createdBy.toString() === userId);
     return recipe;
   }
   async findById(id: string): Promise<Recipe | null> {
@@ -23,15 +23,15 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     }
     return recipe;
   }
-  async findManyByTitle(createdBy: string, title: string): Promise<Recipe[]> {
+  async findManyByTitle(userId: string, title: string): Promise<Recipe[]> {
     const recipe = this.items.filter(
-      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
+      (item) => item.title === title && item.createdBy.toString() == userId.toString(),
     );
     return recipe;
   }
-  async findByTitle(createdBy: string, title: string): Promise<Recipe | null> {
+  async findByTitle(userId: string, title: string): Promise<Recipe | null> {
     const recipe = this.items.find(
-      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
+      (item) => item.title === title && item.createdBy.toString() == userId.toString(),
     );
     if (!recipe) {
       return null;

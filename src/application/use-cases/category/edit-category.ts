@@ -32,7 +32,7 @@ export class EditCategoryUseCase {
       return failure(new NotFoundError("category"));
     }
 
-    if (name) {
+    if (name !== undefined) {
       const categoryName = await this.categoryRepository.findByName(name);
       if (categoryName && categoryName.id.toString() !== id) {
         return failure(new AlreadyExistsError("category"));

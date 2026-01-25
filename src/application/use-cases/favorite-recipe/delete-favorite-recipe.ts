@@ -5,7 +5,7 @@ import { FavoriteRecipeRepository } from "../../repositories/favorite-recipe-rep
 
 interface DeleteFavoriteRecipeUseCaseRequest {
   id: string;
-  deletedBy: string;
+  userId: string;
 }
 
 type DeleteFavoriteRecipeUseCaseResponse = Either<NotFoundError | NotAllowedError, null>;
@@ -15,14 +15,14 @@ export class DeleteFavoriteRecipeUseCase {
 
   async execute({
     id,
-    deletedBy,
+    userId,
   }: DeleteFavoriteRecipeUseCaseRequest): Promise<DeleteFavoriteRecipeUseCaseResponse> {
     const favoriteRecipe = await this.favoriteRecipeRepository.findById(id);
     if (!favoriteRecipe) {
       return failure(new NotFoundError("favoriteRecipe"));
     }
 
-    if (favoriteRecipe.createdBy.toString() !== deletedBy) {
+    if (favoriteRecipe.createdBy.toString() !== userId) {
       return failure(new NotAllowedError("user"));
     }
 

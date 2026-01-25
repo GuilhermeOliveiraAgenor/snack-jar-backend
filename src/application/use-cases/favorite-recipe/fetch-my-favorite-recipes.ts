@@ -5,7 +5,7 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { FavoriteRecipeRepository } from "../../repositories/favorite-recipe-repository";
 
 interface FetchMyFavoriteRecipesRequest {
-  createdBy: string;
+  userId: string;
   page?: number;
   perPage?: number;
 }
@@ -21,11 +21,11 @@ type FetchMyFavoriteRecipesResponse = Either<
 export class FetchMyFavoriteRecipesUseCase {
   constructor(private favoriteRecipeRepository: FavoriteRecipeRepository) {}
   async execute({
-    createdBy,
+    userId,
     page = 1,
     perPage = 10,
   }: FetchMyFavoriteRecipesRequest): Promise<FetchMyFavoriteRecipesResponse> {
-    const result = await this.favoriteRecipeRepository.findManyByUserId(createdBy, page, perPage);
+    const result = await this.favoriteRecipeRepository.findManyByUserId(userId, page, perPage);
 
     const meta: PaginationMeta = {
       page,
