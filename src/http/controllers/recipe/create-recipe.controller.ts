@@ -45,7 +45,7 @@ export class CreateRecipeController {
         categoryId,
         recipeIngredient,
         recipeStep,
-        createdBy: userId,
+        userId,
       });
 
       if (result.isError()) {

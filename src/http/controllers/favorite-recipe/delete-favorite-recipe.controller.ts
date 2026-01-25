@@ -15,7 +15,7 @@ export class DeleteFavoriteRecipeController {
 
       const { id } = deleteSchemaBody.parse(req.body);
 
-      const result = await this.deleteFavoriteRecipeUseCase.execute({ id, deletedBy: userId });
+      const result = await this.deleteFavoriteRecipeUseCase.execute({ id, userId });
 
       if (result.isError()) {
         throw result.value;

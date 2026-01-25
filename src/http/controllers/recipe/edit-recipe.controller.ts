@@ -22,7 +22,7 @@ export class EditRecipeController {
 
       const data = {
         id,
-        updatedBy: userId,
+        userId,
         ...body,
       };
 

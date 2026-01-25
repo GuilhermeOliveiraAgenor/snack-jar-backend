@@ -18,8 +18,8 @@ export class InMemoryRecipeDetailsRepository implements RecipeDetailsRepository 
     const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) return null;
 
-    const ingredients = await this.recipeIngredientRepository.findManyByRecipeId(recipeId);
-    const steps = await this.recipeStepRepository.findManyByRecipeId(recipeId);
+    const ingredients = await this.recipeIngredientRepository.findByRecipeId(recipeId);
+    const steps = await this.recipeStepRepository.findByRecipeId(recipeId);
 
     return {
       recipe,

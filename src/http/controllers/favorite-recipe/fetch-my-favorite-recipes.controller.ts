@@ -15,7 +15,7 @@ export class FetchMyFavoriteRecipesController {
       const userId = req.user.id;
       const { page } = fetchFavoriteRecipesQuerySchema.parse(req.query);
 
-      const result = await this.fetchMyFavoriteRecipesUseCase.execute({ createdBy: userId, page });
+      const result = await this.fetchMyFavoriteRecipesUseCase.execute({ userId, page });
 
       if (result.isError()) {
         throw result.value;
