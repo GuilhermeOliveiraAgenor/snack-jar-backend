@@ -26,7 +26,7 @@ export class PrismaRecipeStepRepository implements RecipeStepRepository {
     });
   }
   async findManyByRecipeId(
-    id: string,
+    recipeId: string,
     page: number,
     perPage: number,
   ): Promise<{ recipeSteps: RecipeStep[]; totalCount: number }> {
@@ -36,7 +36,7 @@ export class PrismaRecipeStepRepository implements RecipeStepRepository {
       this.prisma.recipeStep.count(),
       this.prisma.recipeStep.findMany({
         where: {
-          recipeId: id,
+          recipeId,
         },
         orderBy: { step: "asc" },
         skip,
@@ -56,6 +56,16 @@ export class PrismaRecipeStepRepository implements RecipeStepRepository {
     });
   }
 
+  async findByRecipeIdAndStep(recipeId: string, step: number): Promise<RecipeStep | null> {
+    const recipeStep = await this.prisma.recipeStep.findFirst({
+      where: {
+        recipeId,
+        step,
+      },
+    });
+    if (!recipeStep) return null;
+    return PrismaRecipeStepMapper.toDomain(recipeStep);
+  }
   async findById(id: string): Promise<RecipeStep | null> {
     const recipeStep = await this.prisma.recipeStep.findUnique({
       where: { id },
