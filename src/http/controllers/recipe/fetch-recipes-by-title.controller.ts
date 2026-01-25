@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
 import { FetchRecipesByTitleUseCase } from "../../../application/use-cases/recipe/fetch-recipes-by-title";
+import { RecipePresenter } from "../../presenters/recipe-presenter";
 
 const fetchTitleSchema = z.object({
   title: z.string(),
@@ -20,7 +21,9 @@ export class FetchRecipesByTitleController {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.recipes);
+      return res
+        .status(200)
+        .json(RecipePresenter.toHTTPPaginated(result.value.recipes, result.value.meta));
     } catch (error) {
       next(error);
     }

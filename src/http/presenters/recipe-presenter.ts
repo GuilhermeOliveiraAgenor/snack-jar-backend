@@ -14,9 +14,9 @@ export class RecipePresenter {
       createdAt: raw.createdAt,
       createdBy: raw.createdBy.toString(),
       updatedAt: raw.updatedAt,
-      updatedBy: raw.updatedBy,
+      updatedBy: raw.updatedBy?.toString(),
       deletedAt: raw.deletedAt,
-      deletedBy: raw.updatedBy,
+      deletedBy: raw.deletedBy?.toString(),
     };
   }
 
