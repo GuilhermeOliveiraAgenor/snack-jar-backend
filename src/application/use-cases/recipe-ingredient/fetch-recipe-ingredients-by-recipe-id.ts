@@ -42,7 +42,6 @@ export class FetchRecipeIngredientsByRecipeIdUseCase {
       page,
       per_page: perPage,
       total_count: result.totalCount,
-      filters: {},
     };
 
     return success({

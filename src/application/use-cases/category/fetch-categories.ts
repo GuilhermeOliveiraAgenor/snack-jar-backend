@@ -19,7 +19,6 @@ export class FetchCategoriesUseCase {
       page,
       per_page: perPage,
       total_count: result.totalCount,
-      filters: {},
     };
 
     return success({ categories: result.categories, meta });

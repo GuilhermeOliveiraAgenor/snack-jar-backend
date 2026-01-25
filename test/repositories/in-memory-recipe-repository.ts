@@ -11,9 +11,20 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     const itemIndex = this.items.findIndex((item) => item.id === recipe.id);
     this.items[itemIndex] = recipe;
   }
-  async findManyByUserId(userId: string): Promise<Recipe[]> {
-    const recipe = this.items.filter((item) => item.createdBy.toString() === userId);
-    return recipe;
+  async findManyByUserId(
+    userId: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipes: Recipe[]; totalCount: number }> {
+    const userRecipes = this.items.filter((item) => item.createdBy.toString() === userId);
+    const totalCount = this.items.length;
+
+    const recipes = userRecipes.slice((page - 1) * perPage, page * perPage);
+
+    return {
+      recipes,
+      totalCount,
+    };
   }
   async findById(id: string): Promise<Recipe | null> {
     const recipe = this.items.find((item) => item.id.toString() === id);
