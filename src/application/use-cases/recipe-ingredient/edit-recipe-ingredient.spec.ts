@@ -48,7 +48,7 @@ describe("Edit Recipe Ingredient", () => {
       ingredient: "Farinha",
       amount: "1000",
       unit: MeasurementUnit.G,
-      updatedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -70,7 +70,7 @@ describe("Edit Recipe Ingredient", () => {
       ingredient: "Farinha",
       amount: "1000",
       unit: MeasurementUnit.KG,
-      updatedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -96,7 +96,7 @@ describe("Edit Recipe Ingredient", () => {
       ingredient: "Farinha",
       amount: "1000",
       unit: MeasurementUnit.G,
-      updatedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
@@ -118,7 +118,7 @@ describe("Edit Recipe Ingredient", () => {
       ingredient: "Farinha",
       amount: "1000",
       unit: MeasurementUnit.KG,
-      updatedBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -141,7 +141,7 @@ describe("Edit Recipe Ingredient", () => {
       ingredient: "Farinha",
       amount: "1000",
       unit: MeasurementUnit.G,
-      updatedBy: "user-1",
+      userId: "user-1",
     });
 
     expect(result.isError()).toBe(true);

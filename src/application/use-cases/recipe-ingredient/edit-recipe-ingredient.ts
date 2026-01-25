@@ -11,7 +11,7 @@ interface EditRecipeIngredientUseCaseRequest {
   ingredient?: RecipeIngredient["ingredient"] | undefined;
   amount?: RecipeIngredient["amount"] | undefined;
   unit?: RecipeIngredient["unit"] | undefined;
-  updatedBy: string;
+  userId: string;
 }
 
 type EditRecipeIngredientUseCaseResponse = Either<
@@ -32,7 +32,7 @@ export class EditRecipeIngredientUseCase {
     ingredient,
     amount,
     unit,
-    updatedBy,
+    userId,
   }: EditRecipeIngredientUseCaseRequest): Promise<EditRecipeIngredientUseCaseResponse> {
     // verify if recipe exists
     const recipeIngredient = await this.recipeIngredientRepository.findById(id);
@@ -40,7 +40,7 @@ export class EditRecipeIngredientUseCase {
       return failure(new NotFoundError("recipeIngredient"));
     }
 
-    if (recipeIngredient.createdBy.toString() != updatedBy) {
+    if (recipeIngredient.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
     }
 
@@ -57,7 +57,7 @@ export class EditRecipeIngredientUseCase {
     recipeIngredient.ingredient = ingredient ?? recipeIngredient.ingredient;
     recipeIngredient.amount = amount ?? recipeIngredient.amount;
     recipeIngredient.unit = unit ?? recipeIngredient.unit;
-    recipeIngredient.updatedBy = new UniqueEntityID(updatedBy);
+    recipeIngredient.updatedBy = new UniqueEntityID(userId);
 
     await this.recipeIngredientRepository.save(recipeIngredient);
 

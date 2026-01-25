@@ -44,7 +44,7 @@ describe("Delete Recipe Ingredient", () => {
 
     const result = await sut.execute({
       id: recipeIngredient.id.toString(),
-      deletedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -56,7 +56,7 @@ describe("Delete Recipe Ingredient", () => {
 
     const result = await sut.execute({
       id: "0",
-      deletedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -79,7 +79,7 @@ describe("Delete Recipe Ingredient", () => {
 
     const result = await sut.execute({
       id: recipeIngredient.id.toString(),
-      deletedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -99,7 +99,7 @@ describe("Delete Recipe Ingredient", () => {
 
     const result = await sut.execute({
       id: recipeIngredient.id.toString(),
-      deletedBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -118,7 +118,7 @@ describe("Delete Recipe Ingredient", () => {
 
     const result = await sut.execute({
       id: recipeIngredient.id.toString(),
-      deletedBy: "user-1",
+      userId: "user-1",
     });
 
     expect(result.isError()).toBe(true);
