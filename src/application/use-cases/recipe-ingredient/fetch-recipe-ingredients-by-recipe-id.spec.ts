@@ -4,31 +4,30 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { FetchMyRecipeIngredientsUseCase } from "./fetch-my-recipe-ingredients";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeUser } from "../../../../test/factories/make-user";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { FetchRecipeIngredientsByRecipeIdUseCase } from "./fetch-recipe-ingredients-by-recipe-id";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
-let sut: FetchMyRecipeIngredientsUseCase;
+let sut: FetchRecipeIngredientsByRecipeIdUseCase;
 
-describe("Fetch My Recipe Ingredient By Recipe Id", () => {
+describe("Fetch  Recipe Ingredients By Recipe Id", () => {
   beforeEach(() => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
 
-    sut = new FetchMyRecipeIngredientsUseCase(
+    sut = new FetchRecipeIngredientsByRecipeIdUseCase(
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeRepository,
     );
   });
 
-  it("should be able to fetch recipe ingredient by recipe id", async () => {
+  it("should be able to fetch  recipe ingredients by recipe id", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -57,7 +56,7 @@ describe("Fetch My Recipe Ingredient By Recipe Id", () => {
       ).toBe(true);
     }
   });
-  it("should not be able to fetch recipe ingredient when recipe id does not exists", async () => {
+  it("should not be able to fetch  recipe ingredients when recipe id does not exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -66,7 +65,7 @@ describe("Fetch My Recipe Ingredient By Recipe Id", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to fetch recipe ingredient when user is not creator", async () => {
+  it("should not be able to fetch  recipe ingredients when user is not creator", async () => {
     const user1 = makeUser();
     await inMemoryUserRepository.create(user1);
 

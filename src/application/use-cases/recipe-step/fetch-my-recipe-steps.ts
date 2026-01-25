@@ -6,13 +6,13 @@ import { RecipeRepository } from "../../repositories/recipe-repository";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 
-interface FetchMyRecipeStepsUseCaseRequest {
+interface FetchRecipeStepsByRecipeIdUseCaseRequest {
   recipeId: string;
   userId: string;
   page?: number;
   perPage?: number;
 }
-type FetchMyRecipeStepsResponse = Either<
+type FetchRecipeStepsByRecipeIdResponse = Either<
   NotFoundError,
   {
     recipeSteps: RecipeStep[];
@@ -20,7 +20,7 @@ type FetchMyRecipeStepsResponse = Either<
   }
 >;
 
-export class FetchMyRecipeStepsUseCase {
+export class FetchRecipeStepsByRecipeIdUseCase {
   constructor(
     private recipeStepRepository: RecipeStepRepository,
     private recipeRepository: RecipeRepository,
@@ -30,7 +30,7 @@ export class FetchMyRecipeStepsUseCase {
     userId,
     page = 1,
     perPage = 10,
-  }: FetchMyRecipeStepsUseCaseRequest): Promise<FetchMyRecipeStepsResponse> {
+  }: FetchRecipeStepsByRecipeIdUseCaseRequest): Promise<FetchRecipeStepsByRecipeIdResponse> {
     const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));

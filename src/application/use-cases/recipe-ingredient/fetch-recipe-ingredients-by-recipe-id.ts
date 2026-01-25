@@ -6,19 +6,19 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";
 
-interface FetchMyRecipeIngredientsRequest {
+interface FetchRecipeIngredientsByRecipeIdRequest {
   recipeId: string;
   userId: string;
   page?: number;
   perPage?: number;
 }
 
-type FetchMyRecipeIngredientsResponse = Either<
+type FetchRecipeIngredientsByRecipeIdResponse = Either<
   NotFoundError,
   { recipeIngredients: RecipeIngredient[]; meta: PaginationMeta }
 >;
 
-export class FetchMyRecipeIngredientsUseCase {
+export class FetchRecipeIngredientsByRecipeIdUseCase {
   constructor(
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeRepository: RecipeRepository,
@@ -28,7 +28,7 @@ export class FetchMyRecipeIngredientsUseCase {
     userId,
     page = 1,
     perPage = 10,
-  }: FetchMyRecipeIngredientsRequest): Promise<FetchMyRecipeIngredientsResponse> {
+  }: FetchRecipeIngredientsByRecipeIdRequest): Promise<FetchRecipeIngredientsByRecipeIdResponse> {
     // verify if exists recipe id
     const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
