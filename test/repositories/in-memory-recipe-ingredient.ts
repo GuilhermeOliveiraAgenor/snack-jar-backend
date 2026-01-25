@@ -29,6 +29,10 @@ export class InMemoryRecipeIngredientRepository implements RecipeIngredientRepos
     const recipeIngredients = ingredients.slice((page - 1) * page, page * perPage);
     return { recipeIngredients, totalCount };
   }
+  async findByRecipeId(recipeId: string): Promise<RecipeIngredient[]> {
+    const ingredients = this.items.filter((item) => item.recipeId.toString() === recipeId);
+    return ingredients;
+  }
   async findById(id: string): Promise<RecipeIngredient | null> {
     const recipeIngredient = this.items.find((item) => item.id.toString() === id.toString());
     if (!recipeIngredient) {

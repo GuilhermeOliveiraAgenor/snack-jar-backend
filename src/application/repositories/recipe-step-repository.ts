@@ -1,3 +1,4 @@
+import { RecipeIngredient } from "@prisma/client";
 import { RecipeStep } from "../../core/entities/recipeStep";
 
 export interface RecipeStepRepository {
@@ -11,5 +12,6 @@ export interface RecipeStepRepository {
     perPage: number,
   ): Promise<{ recipeSteps: RecipeStep[]; totalCount: number }>;
   findByRecipeIdAndStep(recipeId: string, step: number): Promise<RecipeStep | null>;
+  findByRecipeId(recipeId: string): Promise<RecipeStep[]>;
   findById(id: string): Promise<RecipeStep | null>;
 }

@@ -44,7 +44,7 @@ describe("Edit Recipe Step Use Case", () => {
       id: recipeStep.id.toString(),
       step: 1,
       description: "Jogue a açucar na bandeja",
-      updatedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -64,7 +64,7 @@ describe("Edit Recipe Step Use Case", () => {
       id: "0",
       step: 1,
       description: "Jogue a farinha na bandeja",
-      updatedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -87,7 +87,7 @@ describe("Edit Recipe Step Use Case", () => {
 
     const result = await sut.execute({
       id: recipeStep.id.toString(),
-      updatedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -110,7 +110,7 @@ describe("Edit Recipe Step Use Case", () => {
       id: recipeStep.id.toString(),
       step: 1,
       description: "Jogue a farinha na bandeja",
-      updatedBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -144,7 +144,7 @@ describe("Edit Recipe Step Use Case", () => {
       id: recipeStep2.id.toString(),
       step: 1,
       description: "Jogue açucar na farinha",
-      updatedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -165,7 +165,7 @@ describe("Edit Recipe Step Use Case", () => {
       id: recipeStep.id.toString(),
       step: 1,
       description: "Jogue a farinha na bandeja",
-      updatedBy: "user-1",
+      userId: "user-1",
     });
 
     expect(result.isError()).toBe(true);

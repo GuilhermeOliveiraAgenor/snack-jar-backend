@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { DeleteRecipeUseCase } from "./delete-recipe";
-import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeCategory } from "../../../../test/factories/make-category";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
@@ -44,7 +43,7 @@ describe("Soft delete Recipe Use Case", () => {
     if (result.isSuccess()) {
       expect(result.value.recipe).toMatchObject({
         status: RecipeStatus.INACTIVE,
-        userId: new UniqueEntityID(user.id.toString()),
+        deletedBy: user.id,
       });
     }
   });

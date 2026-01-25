@@ -29,7 +29,10 @@ export class InMemoryRecipeStepRepository implements RecipeStepRepository {
     const recipeSteps = steps.slice((page - 1) * perPage, page * perPage);
     return { recipeSteps, totalCount };
   }
-
+  async findByRecipeId(recipeId: string): Promise<RecipeStep[]> {
+    const steps = this.items.filter((item) => item.recipeId.toString() === recipeId);
+    return steps;
+  }
   async findByRecipeIdAndStep(recipeId: string, step: number): Promise<RecipeStep | null> {
     const recipeStep = this.items.find(
       (item) => item.recipeId.toString() === recipeId && item.step === step,
@@ -37,6 +40,7 @@ export class InMemoryRecipeStepRepository implements RecipeStepRepository {
     if (!recipeStep) return null;
     return recipeStep;
   }
+
   async findById(id: string): Promise<RecipeStep | null> {
     const recipeStep = this.items.find((item) => item.id.toString() === id.toString());
     if (!recipeStep) {

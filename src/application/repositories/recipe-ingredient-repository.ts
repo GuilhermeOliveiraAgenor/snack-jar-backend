@@ -10,5 +10,6 @@ export interface RecipeIngredientRepository {
     page: number,
     perPage: number,
   ): Promise<{ recipeIngredients: RecipeIngredient[]; totalCount: number }>;
+  findByRecipeId(recipeId: string): Promise<RecipeIngredient[]>;
   findById(id: string): Promise<RecipeIngredient | null>;
 }
