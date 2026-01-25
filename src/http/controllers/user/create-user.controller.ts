@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateUserUseCase } from "../../../application/use-cases/user/create-user";
 import z from "zod";
+import { UserPresenter } from "../../presenters/user-presenter";
 
 const createUserSchema = z.object({
   name: z.string(),
@@ -20,7 +21,7 @@ export class CreateUserController {
       if (result.isError()) {
         throw result.value;
       }
-      return res.status(201).json(result);
+      return res.status(201).json(UserPresenter.toHTTP(result.value.user));
     } catch (error) {
       next(error);
     }
