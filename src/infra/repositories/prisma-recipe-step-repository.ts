@@ -33,16 +33,15 @@ export class PrismaRecipeStepRepository implements RecipeStepRepository {
     const skip = (page - 1) * perPage;
 
     const [totalCount, recipeSteps] = await Promise.all([
-      this.prisma.recipeStep.count(),
-      this.prisma.recipeStep.findMany({
-        where: {
-          recipeId,
-        },
+      this.prisma.recipeStep.count({ where: { recipeId } }),
+      await this.prisma.recipeStep.findMany({
+        where: { recipeId },
         orderBy: { step: "asc" },
         skip,
         take: perPage,
       }),
     ]);
+
     return {
       recipeSteps: recipeSteps.map((raw) => PrismaRecipeStepMapper.toDomain(raw)),
       totalCount,

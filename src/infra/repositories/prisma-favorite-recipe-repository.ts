@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { FavoriteRecipeRepository } from "../../application/repositories/favorite-recipe-repository";
 import { FavoriteRecipe } from "../../core/entities/favoriteRecipe";
 import { PrismaFavoriteRecipeMapper } from "../mappers/prisma-favorite-recipe-mapper";
+import { RecipeStatus } from "../../core/enum/recipe-status";
 
 export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -24,16 +25,18 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
   ): Promise<{ favoritesRecipes: FavoriteRecipe[]; totalCount: number }> {
     const skip = (page - 1) * perPage;
 
+    const where = {
+      createdBy: userId,
+      recipe: {
+        status: RecipeStatus.ACTIVE,
+        deletedAt: null,
+      },
+    };
+
     const [totalCount, favoriteRecipes] = await Promise.all([
-      this.prisma.favoriteRecipe.count(),
+      this.prisma.favoriteRecipe.count({ where }),
       this.prisma.favoriteRecipe.findMany({
-        where: {
-          createdBy: userId,
-          recipe: {
-            status: "ACTIVE",
-            deletedAt: null,
-          },
-        },
+        where,
         skip,
         take: perPage,
       }),

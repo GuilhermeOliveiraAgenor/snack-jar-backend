@@ -7,6 +7,10 @@ const fetchTitleSchema = z.object({
   title: z.string(),
 });
 
+const fetchTitleQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+});
+
 export class FetchRecipesByTitleController {
   constructor(private readonly fetchRecipesByTitleUseCase: FetchRecipesByTitleUseCase) {}
 
@@ -14,8 +18,9 @@ export class FetchRecipesByTitleController {
     try {
       const userId = req.user.id;
       const { title } = fetchTitleSchema.parse(req.body);
+      const { page } = fetchTitleQuerySchema.parse(req.query);
 
-      const result = await this.fetchRecipesByTitleUseCase.execute({ userId, title });
+      const result = await this.fetchRecipesByTitleUseCase.execute({ userId, title, page });
 
       if (result.isError()) {
         throw result.value;

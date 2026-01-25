@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { QueryMode, PrismaClient } from "@prisma/client";
 import { RecipeRepository } from "../../application/repositories/recipe-repository";
 import { Recipe } from "../../core/entities/recipe";
 import { PrismaRecipeMapper } from "../mappers/prisma-recipe-mapper";
+import { RecipeStatus } from "../../core/enum/recipe-status";
 
 export class PrismaRecipeRepository implements RecipeRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -24,10 +25,12 @@ export class PrismaRecipeRepository implements RecipeRepository {
   ): Promise<{ recipes: Recipe[]; totalCount: number }> {
     const skip = (page - 1) * perPage;
 
+    const where = { createdBy: userId, status: RecipeStatus.ACTIVE, deletedAt: null };
+
     const [totalCount, recipes] = await Promise.all([
-      this.prisma.recipe.count(),
+      this.prisma.recipe.count({ where }),
       this.prisma.recipe.findMany({
-        where: { createdBy: userId, status: "ACTIVE", deletedAt: null },
+        where,
         orderBy: { createdAt: "desc" },
         skip,
         take: perPage,
@@ -54,18 +57,20 @@ export class PrismaRecipeRepository implements RecipeRepository {
   ): Promise<{ recipes: Recipe[]; totalCount: number }> {
     const skip = (page - 1) * perPage;
 
+    const where = {
+      createdBy: userId,
+      title: {
+        contains: title,
+        mode: QueryMode.insensitive,
+      },
+      status: RecipeStatus.ACTIVE,
+      deletedAt: null,
+    };
+
     const [totalCount, recipes] = await Promise.all([
-      this.prisma.recipe.count(),
+      this.prisma.recipe.count({ where }),
       this.prisma.recipe.findMany({
-        where: {
-          createdBy: userId,
-          title: {
-            contains: title,
-            mode: "insensitive",
-          },
-          status: "ACTIVE",
-          deletedAt: null,
-        },
+        where,
         skip,
         take: perPage,
       }),

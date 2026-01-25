@@ -35,7 +35,7 @@ export class PrismaRecipeIngredientRepository implements RecipeIngredientReposit
     const skip = (page - 1) * perPage;
 
     const [totalCount, recipeIngredients] = await Promise.all([
-      this.prisma.recipeIngredient.count(),
+      this.prisma.recipeIngredient.count({ where: { recipeId } }),
       this.prisma.recipeIngredient.findMany({
         where: {
           recipeId,
