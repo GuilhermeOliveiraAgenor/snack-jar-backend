@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CreateRecipeUseCase } from "../../../application/use-cases/recipe/create-recipe";
 import z from "zod";
 import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { RecipePresenter } from "../../presenters/recipe-presenter";
 
 const createRecipeSchema = z.object({
   title: z.string().min(1),
@@ -52,7 +53,7 @@ export class CreateRecipeController {
         throw result.value;
       }
 
-      return res.status(201).json(result.value.recipe);
+      return res.status(201).json(RecipePresenter.toHTTP(result.value.recipe));
     } catch (error) {
       next(error);
     }
