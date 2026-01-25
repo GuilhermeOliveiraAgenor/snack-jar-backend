@@ -34,17 +34,17 @@ describe("Soft delete Recipe Use Case", () => {
     await inMemoryCategoryRepository.create(category);
 
     const recipe = makeRecipe({
-      createdBy: new UniqueEntityID(user.id.toString()),
+      createdBy: user.id,
     });
     await inMemoryRecipeRepository.create(recipe);
 
-    const result = await sut.execute({ id: recipe.id.toString(), deletedBy: user.id.toString() });
+    const result = await sut.execute({ id: recipe.id.toString(), userId: user.id.toString() });
 
     expect(result.isSuccess()).toBe(true);
     if (result.isSuccess()) {
       expect(result.value.recipe).toMatchObject({
         status: RecipeStatus.INACTIVE,
-        deletedBy: new UniqueEntityID(user.id.toString()),
+        userId: new UniqueEntityID(user.id.toString()),
       });
     }
   });
@@ -52,7 +52,7 @@ describe("Soft delete Recipe Use Case", () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
-    const result = await sut.execute({ id: "0", deletedBy: user.id.toString() });
+    const result = await sut.execute({ id: "0", userId: user.id.toString() });
 
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
@@ -69,7 +69,7 @@ describe("Soft delete Recipe Use Case", () => {
     });
     await inMemoryRecipeRepository.create(recipe);
 
-    const result = await sut.execute({ id: recipe.id.toString(), deletedBy: user2.id.toString() });
+    const result = await sut.execute({ id: recipe.id.toString(), userId: user2.id.toString() });
 
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
@@ -82,7 +82,7 @@ describe("Soft delete Recipe Use Case", () => {
 
     const result = await sut.execute({
       id: recipe.id.toString(),
-      deletedBy: "user-1",
+      userId: "user-1",
     });
 
     expect(result.isError()).toBe(true);

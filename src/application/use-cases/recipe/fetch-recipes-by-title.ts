@@ -22,7 +22,7 @@ export class FetchRecipesByTitleUseCase {
     userId,
     title,
   }: FetchRecipesByTitleUseCaseRequest): Promise<FetchRecipesByTitleUseCaseResponse> {
-    const recipes = await this.recipeRepository.findManyByTitle(userId, title);
+    const recipes = await this.recipeRepository.findManyByUserIdAndTitle(userId, title);
     if (recipes.length <= 0) {
       return failure(new NotFoundError("recipe"));
     }

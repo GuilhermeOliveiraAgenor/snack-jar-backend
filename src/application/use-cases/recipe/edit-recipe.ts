@@ -13,7 +13,7 @@ interface EditRecipeUseCaseRequest {
   title?: Recipe["title"] | undefined;
   description?: Recipe["description"] | undefined;
   preparationTime?: Recipe["preparationTime"] | undefined;
-  updatedBy: string;
+  userId: string;
 }
 
 type EditRecipeUseCaseResponse = Either<
@@ -30,7 +30,7 @@ export class EditRecipeUseCase {
     title,
     description,
     preparationTime,
-    updatedBy,
+    userId,
   }: EditRecipeUseCaseRequest): Promise<EditRecipeUseCaseResponse> {
     // verify if exists recipe
     const recipe = await this.recipeRepository.findById(id);
@@ -42,12 +42,12 @@ export class EditRecipeUseCase {
       return failure(new NotAllowedError("recipe"));
     }
 
-    if (recipe.createdBy.toString() != updatedBy) {
+    if (recipe.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
     }
 
     if (title !== undefined) {
-      const alreadyExists = await this.recipeRepository.findByTitle(updatedBy, title);
+      const alreadyExists = await this.recipeRepository.findByUserIdAndTitle(userId, title);
 
       if (alreadyExists && alreadyExists.id.toString() != id) {
         return failure(new AlreadyExistsError("recipe"));
@@ -61,7 +61,7 @@ export class EditRecipeUseCase {
     recipe.title = title ?? recipe.title;
     recipe.description = description ?? recipe.description;
     recipe.preparationTime = preparationTime ?? recipe.preparationTime;
-    recipe.updatedBy = new UniqueEntityID(updatedBy);
+    recipe.updatedBy = new UniqueEntityID(userId);
 
     // pass to repository
     await this.recipeRepository.save(recipe);

@@ -46,7 +46,7 @@ describe("Fetch My Recipes Use Case", () => {
       expect(
         // list each item and verify id
         inMemoryRecipeRepository.items.every(
-          (recipe) => recipe.createdBy?.toString() === user.id.toString(),
+          (recipe) => recipe.createdBy.toString() === user.id.toString(),
         ),
       ).toBe(true);
     }
@@ -54,12 +54,10 @@ describe("Fetch My Recipes Use Case", () => {
 
   it("should not be able to fetch recipes when userId does not exist", async () => {
     const category = makeCategory();
-
     await inMemoryCategoryRepository.create(category);
 
-    const recipe1 = makeRecipe();
-
-    await inMemoryRecipeRepository.create(recipe1);
+    const recipe = makeRecipe();
+    await inMemoryRecipeRepository.create(recipe);
 
     const result = await sut.execute({ userId: "0" });
 

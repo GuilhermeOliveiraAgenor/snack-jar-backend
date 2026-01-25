@@ -50,7 +50,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de cenoura",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -126,7 +126,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -179,7 +179,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -211,7 +211,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: "0",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -249,7 +249,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [],
 
@@ -281,7 +281,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -310,7 +310,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de cenoura",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {

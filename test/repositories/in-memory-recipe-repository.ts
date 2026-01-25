@@ -1,5 +1,4 @@
 import { RecipeRepository } from "../../src/application/repositories/recipe-repository";
-import { UniqueEntityID } from "../../src/core/domain/value-objects/unique-entity-id";
 import { Recipe } from "../../src/core/entities/recipe";
 
 export class InMemoryRecipeRepository implements RecipeRepository {
@@ -23,13 +22,13 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     }
     return recipe;
   }
-  async findManyByTitle(userId: string, title: string): Promise<Recipe[]> {
+  async findManyByUserIdAndTitle(userId: string, title: string): Promise<Recipe[]> {
     const recipe = this.items.filter(
       (item) => item.title === title && item.createdBy.toString() == userId.toString(),
     );
     return recipe;
   }
-  async findByTitle(userId: string, title: string): Promise<Recipe | null> {
+  async findByUserIdAndTitle(userId: string, title: string): Promise<Recipe | null> {
     const recipe = this.items.find(
       (item) => item.title === title && item.createdBy.toString() == userId.toString(),
     );

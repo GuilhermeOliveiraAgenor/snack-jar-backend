@@ -18,7 +18,7 @@ export class CreateFavoriteRecipeController {
 
       const result = await this.createFavoriteRecipeUseCase.execute({
         recipeId,
-        createdBy: userId,
+        userId,
       });
 
       if (result.isError()) {
