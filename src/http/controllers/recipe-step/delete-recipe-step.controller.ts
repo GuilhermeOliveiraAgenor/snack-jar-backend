@@ -14,7 +14,7 @@ export class DeleteRecipeStepController {
       const userId = req.user.id;
       const { stepId } = requestParams.parse(req.params);
 
-      const result = await this.deleteRecipeStepUseCase.execute({ id: stepId, deletedBy: userId });
+      const result = await this.deleteRecipeStepUseCase.execute({ id: stepId, userId });
 
       if (result.isError()) {
         throw result.value;

@@ -22,7 +22,7 @@ export class EditRecipeStepController {
 
       const data = {
         id: stepId,
-        updatedBy: userId,
+        userId,
         ...body,
       };
 

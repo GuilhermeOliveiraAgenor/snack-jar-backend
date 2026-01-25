@@ -26,7 +26,7 @@ export class CreateRecipeStepController {
         step,
         description,
         recipeId,
-        createdBy: userId,
+        userId,
       });
 
       if (result.isError()) {
