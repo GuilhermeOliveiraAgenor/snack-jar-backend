@@ -1,5 +1,5 @@
 import { User } from "../../core/entities/user";
-import { BasePresenter } from "./base-presenter";
+import { BasePresenter } from "./base/base-presenter";
 
 export class UserPresenter {
   private static map(raw: User) {

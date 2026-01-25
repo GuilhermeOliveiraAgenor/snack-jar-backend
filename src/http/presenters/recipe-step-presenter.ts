@@ -1,6 +1,6 @@
 import { RecipeStep } from "../../core/entities/recipeStep";
-import { BasePresenter } from "./base-presenter";
-import { PaginationMeta } from "./pagination.meta";
+import { BasePresenter } from "./base/base-presenter";
+import { PaginationMeta } from "./base/pagination-meta";
 
 export class RecipeStepPresenter {
   private static map(raw: RecipeStep) {

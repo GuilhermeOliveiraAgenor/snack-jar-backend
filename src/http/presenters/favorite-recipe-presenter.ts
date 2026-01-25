@@ -1,6 +1,6 @@
 import { FavoriteRecipe } from "../../core/entities/favoriteRecipe";
-import { BasePresenter } from "./base-presenter";
-import { PaginationMeta } from "./pagination.meta";
+import { BasePresenter } from "./base/base-presenter";
+import { PaginationMeta } from "./base/pagination-meta";
 
 export class FavoriteRecipePresenter {
   private static map(raw: FavoriteRecipe) {

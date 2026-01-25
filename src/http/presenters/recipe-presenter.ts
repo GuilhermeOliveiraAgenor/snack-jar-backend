@@ -1,6 +1,6 @@
 import { Recipe } from "../../core/entities/recipe";
-import { BasePresenter } from "./base-presenter";
-import { PaginationMeta } from "./pagination.meta";
+import { BasePresenter } from "./base/base-presenter";
+import { PaginationMeta } from "./base/pagination-meta";
 
 export class RecipePresenter {
   private static map(raw: Recipe) {

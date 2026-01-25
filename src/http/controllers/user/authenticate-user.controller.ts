@@ -26,7 +26,6 @@ export class AuthenticateUserController {
 
       const userId = result.value.userId.toString();
 
-      // sign user in jwt
       const token = this.jwtService.sign(userId);
 
       return res.status(200).json({ userId, token });

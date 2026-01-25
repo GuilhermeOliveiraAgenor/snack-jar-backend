@@ -1,6 +1,6 @@
 import { Either, failure, success } from "../../../core/either";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
-import { PaginationMeta } from "../../../http/presenters/pagination.meta";
+import { PaginationMeta } from "../../../http/presenters/base/pagination-meta";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
 import { RecipeRepository } from "../../repositories/recipe-repository";

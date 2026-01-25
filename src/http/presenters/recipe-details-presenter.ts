@@ -1,7 +1,7 @@
 import { Recipe } from "../../core/entities/recipe";
 import { RecipeIngredient } from "../../core/entities/recipeIngredient";
 import { RecipeStep } from "../../core/entities/recipeStep";
-import { BasePresenter } from "./base-presenter";
+import { BasePresenter } from "./base/base-presenter";
 
 export class RecipeDetailsPresenter {
   private static mapRecipe(raw: Recipe) {

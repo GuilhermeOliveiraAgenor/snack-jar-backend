@@ -1,6 +1,6 @@
 import { Either, success } from "../../../core/either";
 import { Category } from "../../../core/entities/category";
-import { PaginationMeta } from "../../../http/presenters/pagination.meta";
+import { PaginationMeta } from "../../../http/presenters/base/pagination-meta";
 import { CategoryRepository } from "../../repositories/category-repository";
 
 type FetchCategoriesUseCaseResponse = Either<
