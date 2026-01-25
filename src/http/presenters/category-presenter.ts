@@ -9,7 +9,7 @@ export class CategoryPresenter {
       name: raw.name,
       description: raw.description,
       createdAt: raw.createdAt,
-      updateAt: raw.updatedAt,
+      updatedAt: raw.updatedAt,
     };
   }
 
