@@ -12,7 +12,7 @@ interface EditRecipeStepUseCaseRequest {
   id: string;
   step?: RecipeStep["step"] | undefined;
   description?: RecipeStep["description"] | undefined;
-  updatedBy: string;
+  userId: string;
 }
 
 type EditRecipeStepUseCaseResponse = Either<
@@ -31,14 +31,14 @@ export class EditRecipeStepUseCase {
     id,
     step,
     description,
-    updatedBy,
+    userId,
   }: EditRecipeStepUseCaseRequest): Promise<EditRecipeStepUseCaseResponse> {
     const recipeStep = await this.recipeStepRepository.findById(id);
     if (!recipeStep) {
       return failure(new NotFoundError("recipeStep"));
     }
 
-    if (recipeStep.createdBy.toString() != updatedBy) {
+    if (recipeStep.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
     }
 
@@ -67,7 +67,7 @@ export class EditRecipeStepUseCase {
 
     recipeStep.step = step ?? recipeStep.step;
     recipeStep.description = description ?? recipeStep.description;
-    recipeStep.updatedBy = new UniqueEntityID(updatedBy);
+    recipeStep.updatedBy = new UniqueEntityID(userId);
 
     await this.recipeStepRepository.save(recipeStep);
 

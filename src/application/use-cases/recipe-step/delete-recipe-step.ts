@@ -6,7 +6,7 @@ import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface DeleteRecipeStepUseCaseRequest {
   id: string;
-  deletedBy: string;
+  userId: string;
 }
 
 type DeleteRecipeStepUseCaseResponse = Either<NotFoundError | NotAllowedError, null>;
@@ -18,14 +18,14 @@ export class DeleteRecipeStepUseCase {
   ) {}
   async execute({
     id,
-    deletedBy,
+    userId,
   }: DeleteRecipeStepUseCaseRequest): Promise<DeleteRecipeStepUseCaseResponse> {
     const recipeStep = await this.recipeStepRepository.findById(id);
     if (!recipeStep) {
       return failure(new NotFoundError("recipeStep"));
     }
 
-    if (recipeStep.createdBy.toString() != deletedBy) {
+    if (recipeStep.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
     }
 
