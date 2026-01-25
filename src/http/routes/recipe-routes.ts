@@ -31,7 +31,7 @@ recipeRoutes.get("/recipes", (req, res, next) => {
   return makeFetchRecipesByTitleController().handle(req, res, next);
 });
 
-recipeRoutes.get("/recipes/details", (req, res, next) => {
+recipeRoutes.get("/recipes/details/:recipeId", (req, res, next) => {
   return makeGetDetailsByRecipeIdController().handle(req, res, next);
 });
 

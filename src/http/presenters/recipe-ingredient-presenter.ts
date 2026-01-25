@@ -13,7 +13,7 @@ export class RecipeIngredientPresenter {
       createdAt: raw.createdAt,
       createdBy: raw.createdBy.toString(),
       updatedAt: raw.updatedAt,
-      updatedBy: raw.updatedBy.toString(),
+      updatedBy: raw.updatedBy?.toString(),
     };
   }
   static toHTTP(recipeIngredient: RecipeIngredient) {

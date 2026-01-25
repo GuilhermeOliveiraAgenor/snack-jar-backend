@@ -38,7 +38,7 @@ export class PrismaRecipeStepRepository implements RecipeStepRepository {
         where: {
           recipeId,
         },
-        orderBy: { createdAt: "asc" },
+        orderBy: { step: "asc" },
         skip,
         take: perPage,
       }),
