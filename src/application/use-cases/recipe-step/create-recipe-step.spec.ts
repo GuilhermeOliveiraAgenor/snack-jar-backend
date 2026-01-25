@@ -39,7 +39,7 @@ describe("Create Recipe Step Use Case", () => {
       recipeId: recipe.id.toString(),
       step: 1,
       description: "Jogue o açucar na bandeja",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -56,7 +56,7 @@ describe("Create Recipe Step Use Case", () => {
       recipeId: "0",
       step: 1,
       description: "Jogue a farinha na bandeja",
-      createdBy: "user-1",
+      userId: "user-1",
     });
 
     expect(result.isError()).toBe(true);
@@ -79,7 +79,7 @@ describe("Create Recipe Step Use Case", () => {
       step: 1,
       description: "Jogue na bandeja",
       recipeId: recipe.id.toString(),
-      createdBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -107,7 +107,7 @@ describe("Create Recipe Step Use Case", () => {
       recipeId: recipe.id.toString(),
       step: 1,
       description: "Jogue na bandeja",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -128,7 +128,7 @@ describe("Create Recipe Step Use Case", () => {
       step: 1,
       description: "Jogue a farinha na bandeja",
       recipeId: recipe.id.toString(),
-      createdBy: "user-1,",
+      userId: "user-1,",
     });
 
     expect(result.isError()).toBe(true);
