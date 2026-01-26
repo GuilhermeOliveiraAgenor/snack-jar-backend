@@ -8,6 +8,7 @@ import { FetchStepsByRecipeUseCase } from "./fetch-steps-by-recipe";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -78,6 +79,30 @@ describe("Fetch My Recipe Steps By Recipe Id Use Case", () => {
 
     expect(result.isError()).toBe(true);
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+  it("should not be able to fetch steps when recipe is not active", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipe = makeRecipe({
+      createdBy: user.id,
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+
+    const recipeStep = makeRecipeStep({
+      createdBy: user.id,
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeStepRepository.create(recipeStep);
+
+    const result = await sut.execute({
+      recipeId: recipe.id.toString(),
+      userId: user.id.toString(),
+    });
+    console.log(recipe.status);
+    expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });

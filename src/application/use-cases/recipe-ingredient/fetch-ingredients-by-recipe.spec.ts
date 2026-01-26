@@ -8,6 +8,7 @@ import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-
 import { makeUser } from "../../../../test/factories/make-user";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { FetchIngredientsByRecipeUseCase } from "./fetch-ingredients-by-recipe";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -15,7 +16,7 @@ let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
 let sut: FetchIngredientsByRecipeUseCase;
 
-describe("Fetch  Recipe Ingredients By Recipe Id", () => {
+describe("Fetch Recipe Ingredients By Recipe Id", () => {
   beforeEach(() => {
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
@@ -27,7 +28,7 @@ describe("Fetch  Recipe Ingredients By Recipe Id", () => {
     );
   });
 
-  it("should be able to fetch  recipe ingredients by recipe id", async () => {
+  it("should be able to fetch recipe ingredients by recipe id", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -56,7 +57,7 @@ describe("Fetch  Recipe Ingredients By Recipe Id", () => {
       ).toBe(true);
     }
   });
-  it("should not be able to fetch  recipe ingredients when recipe id does not exists", async () => {
+  it("should not be able to fetch recipe ingredients when recipe id does not exists", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -65,7 +66,7 @@ describe("Fetch  Recipe Ingredients By Recipe Id", () => {
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to fetch  recipe ingredients when user is not creator", async () => {
+  it("should not be able to fetch recipe ingredients when user is not creator", async () => {
     const user1 = makeUser();
     await inMemoryUserRepository.create(user1);
 
@@ -89,6 +90,30 @@ describe("Fetch  Recipe Ingredients By Recipe Id", () => {
 
     expect(result.isError()).toBe(true);
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+  it("should not be able to fetch ingredients when recipe is not active", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipe = makeRecipe({
+      createdBy: user.id,
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+
+    const recipeIngredient = makeRecipeIngredient({
+      createdBy: user.id,
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeIngredientRepository.create(recipeIngredient);
+
+    const result = await sut.execute({
+      recipeId: recipe.id.toString(),
+      userId: user.id.toString(),
+    });
+
+    expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });
