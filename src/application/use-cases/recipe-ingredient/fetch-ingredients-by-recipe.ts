@@ -39,6 +39,10 @@ export class FetchIngredientsByRecipeUseCase {
       return failure(new NotAllowedError("user"));
     }
 
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
     const result = await this.recipeIngredientRepository.findManyByRecipeId(
       recipe.id.toString(),
       page,

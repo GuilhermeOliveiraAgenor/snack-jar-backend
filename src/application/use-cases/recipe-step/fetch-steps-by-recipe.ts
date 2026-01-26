@@ -40,6 +40,10 @@ export class FetchStepsByRecipeUseCase {
       return failure(new NotAllowedError("user"));
     }
 
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
     const result = await this.recipeStepRepository.findManyByRecipeId(
       recipe.id.toString(),
       page,
