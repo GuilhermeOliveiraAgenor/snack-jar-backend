@@ -15,9 +15,8 @@
     
     recipes Recipe[]
 
-    createdAt DateTime?  @default(now()) @map("created_at")
+    createdAt DateTime   @default(now()) @map("created_at")
     updatedAt DateTime?  @updatedAt      @map("updated_at")
-    deletedAt DateTime?                 @map("deleted_at")
 
     @@map("categories")
   }
@@ -29,35 +28,55 @@
     email         String  @unique
     password      String
 
-    createdAt DateTime?  @default(now()) @map("created_at")
+    createdAt DateTime   @default(now()) @map("created_at")
     updatedAt DateTime?  @updatedAt      @map("updated_at")
 
-    favoriteRecipe FavoriteRecipe[]
+    createdRecipes Recipe[] @relation("CreatedByRelation")
+    updatedRecipes Recipe[] @relation("UpdatedByRelation")
+    deletedRecipes Recipe[] @relation("DeletedByRelation")
+
+    createdRecipeIngredients RecipeIngredient[] @relation("CreatedByRelation")
+    updatedRecipeIngredients RecipeIngredient[] @relation("UpdatedByRelation")
+
+    createdRecipeSteps RecipeStep[] @relation("CreatedByRelation")
+    updatedRecipeSteps RecipeStep[] @relation("UpdatedByRelation")
+
+    favoriteRecipe FavoriteRecipe[] @relation("CreatedByRelation")
 
     @@map("users")
   }
+
+  enum RecipeStatus{
+      ACTIVE
+      INACTIVE
+    }
 
   model Recipe{
     id  String @id @default(uuid())
     title String
     description String
     preparationTime Int
-    status String
+    status RecipeStatus
 
     categoryId String @map("category_id")
     category Category @relation(fields: [categoryId], references: [id] )
 
+    createdAt DateTime   @default(now()) @map("created_at")
+    updatedAt DateTime?  @updatedAt      @map("updated_at")
+    deletedAt DateTime?                  @map("deleted_at")
+
     createdBy String  @map("created_by")
+    creator User @relation("CreatedByRelation",fields:[createdBy], references: [id])
+
     updatedBy String? @map("updated_by")
+    updater User? @relation("UpdatedByRelation", fields:[updatedBy], references:[id])
+
     deletedBy String? @map("deleted_by")
-    
+    deleter User? @relation("DeletedByRelation", fields:[deletedBy], references:[id])
+
     recipeIngredient RecipeIngredient[]
     recipeStep RecipeStep[]
     favoriteRecipe FavoriteRecipe[]
-
-    createdAt DateTime?  @default(now()) @map("created_at")
-    updatedAt DateTime?  @updatedAt      @map("updated_at")
-    deletedAt DateTime?                 @map("deleted_at")
 
     @@index([status])
     @@index([categoryId])
@@ -69,38 +88,42 @@
 
   }
 
-  enum EnumUnit {
-    g
-    kg
-    mg
-    ml
-    l
-    un
-    colher
-    colher_cha
-    colher_sopa
-    xicara
-    pitada
+
+  enum MeasurementUnit {
+    G
+    KG
+    MG
+    ML
+    L
+    UN
+    COLHER
+    COLHER_CHA
+    COLHER_SOPA
+    XICARA
+    PITADA
   }
 
   model RecipeIngredient{
     id String @id @default(uuid())
     ingredient String
     amount String
-    unit EnumUnit
+    unit MeasurementUnit
 
     recipeId String @map("recipe_id")
     recipe Recipe @relation(fields:[recipeId], references:[id])
 
-    createdBy String  @map("created_by")
-    updatedBy String? @map("updated_by")
-    deletedBy String? @map("deleted_by")
-
-    createdAt DateTime?  @default(now()) @map("created_at")
+    createdAt DateTime   @default(now()) @map("created_at")
     updatedAt DateTime?  @updatedAt      @map("updated_at")
-    deletedAt DateTime?                 @map("deleted_at")
+
+    createdBy String  @map("created_by")
+    creator User @relation("CreatedByRelation",fields:[createdBy], references: [id])
+
+    updatedBy String? @map("updated_by")
+    updater User? @relation("UpdatedByRelation", fields:[updatedBy], references:[id])
 
     @@index([recipeId])
+    @@index([createdBy])
+    @@index([updatedBy])
 
     @@map("recipe_ingredients")
 
@@ -114,15 +137,18 @@
     recipeId String @map("recipe_id")
     recipe Recipe @relation(fields:[recipeId], references:[id])
 
-    createdBy String  @map("created_by")
-    updatedBy String? @map("updated_by")
-    deletedBy String? @map("deleted_by")
-
-    createdAt DateTime? @default(now()) @map("created_at")
+    createdAt DateTime  @default(now()) @map("created_at")
     updatedAt DateTime? @updatedAt      @map("updated_at")
-    deletedAt DateTime?                 @map("deleted_at")
+
+    createdBy String  @map("created_by")
+    creator User @relation("CreatedByRelation",fields:[createdBy], references: [id])
+
+    updatedBy String? @map("updated_by")
+    updater User? @relation("UpdatedByRelation", fields:[updatedBy], references:[id])
 
     @@index([recipeId])
+    @@index([createdBy])
+    @@index([updatedBy])
 
     @@map("recipe_steps")
 
@@ -135,16 +161,14 @@ model FavoriteRecipe{
   recipe Recipe @relation(fields:[recipeId], references:[id])
 
   createdBy String @map("created_by")
-  user User @relation(fields:[createdBy], references:[id])
+  user User @relation("CreatedByRelation", fields:[createdBy], references:[id])
 
-  createdAt DateTime?  @default(now()) @map("created_at")
-  updatedAt DateTime?  @updatedAt      @map("updated_at")
-  deletedAt DateTime?                  @map("deleted_at")
+  createdAt DateTime   @default(now()) @map("created_at")
 
   @@index([recipeId])
   @@index([createdBy])
 
-  @@map("favorite_recipe")
+  @@map("favorite_recipes")
 
 }
 

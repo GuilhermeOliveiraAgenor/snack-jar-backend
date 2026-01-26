@@ -3,22 +3,21 @@ import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memor
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
-import { GetRecipeByTitleUseCase } from "./get-recipe-by-title";
-import { NotFoundError } from "../../errors/resource-not-found-error";
+import { FetchRecipesByTitleUseCase } from "./fetch-recipes-by-title";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 
-let sut: GetRecipeByTitleUseCase;
+let sut: FetchRecipesByTitleUseCase;
 
-describe("Get Recipe By Title Use Case", () => {
+describe("Fetch Recipes By Title Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
-    sut = new GetRecipeByTitleUseCase(inMemoryRecipeRepository);
+    sut = new FetchRecipesByTitleUseCase(inMemoryRecipeRepository);
   });
 
-  it("should be able to get recipes by title", async () => {
+  it("should be able to fetch recipes by title", async () => {
     const user = makeUser();
 
     await inMemoryUserRepository.create(user);
@@ -51,23 +50,5 @@ describe("Get Recipe By Title Use Case", () => {
         title: "Bolo de chocolate",
       });
     }
-  });
-  it("should not be able to get recipes by title when title does not exists", async () => {
-    const user = makeUser();
-    await inMemoryUserRepository.create(user);
-
-    const recipe = makeRecipe({
-      title: "Bolo de Chocolate",
-      createdBy: user.id,
-    });
-
-    await inMemoryRecipeRepository.create(recipe);
-
-    const result = await sut.execute({ userId: user.id.toString(), title: "Bolo de Laranja" });
-    console.log(result);
-
-    expect(result.isError()).toBe(true);
-    expect(inMemoryRecipeRepository.items).toHaveLength(1);
-    expect(result.value).toBeInstanceOf(NotFoundError);
   });
 });

@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { EditRecipeIngredientUseCase } from "../../../application/use-cases/recipe-ingredient/edit-recipe-ingredient";
 import z from "zod";
-import { MeasurementUnit } from "../../../core/enum/enum-unit";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { RecipeIngredientPresenter } from "../../presenters/recipe-ingredient-presenter";
 
 const requestParams = z.object({
-  id: z.string(),
+  ingredientId: z.string(),
 });
 
 const editRecipeIngredientSchema = z.object({
@@ -12,8 +13,9 @@ const editRecipeIngredientSchema = z.object({
   amount: z.string().trim().min(1).optional(),
   unit: z
     .string()
-    .transform((val) => val.toLocaleLowerCase())
-    .pipe(z.nativeEnum(MeasurementUnit)),
+    .transform((val) => val.toLocaleUpperCase())
+    .pipe(z.nativeEnum(MeasurementUnit))
+    .optional(),
 });
 
 export class EditRecipeIngredientController {
@@ -21,22 +23,22 @@ export class EditRecipeIngredientController {
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user.id;
-      const { id } = requestParams.parse(req.params);
-      const { ingredient, amount, unit } = editRecipeIngredientSchema.parse(req.body);
+      const { ingredientId } = requestParams.parse(req.params);
+      const body = editRecipeIngredientSchema.parse(req.body);
 
-      const result = await this.editRecipeIngredientUseCase.execute({
-        id,
-        ingredient,
-        amount,
-        unit,
-        updatedBy: userId,
-      });
+      const data = {
+        id: ingredientId,
+        userId,
+        ...body,
+      };
+
+      const result = await this.editRecipeIngredientUseCase.execute(data);
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(200).json(result.value.recipeIngredient);
+      return res.status(200).json(RecipeIngredientPresenter.toHTTP(result.value.recipeIngredient));
     } catch (error) {
       next(error);
     }

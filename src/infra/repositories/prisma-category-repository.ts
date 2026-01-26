@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import { CategoriesRepository } from "../../application/repositories/categories-repository";
+import { CategoryRepository } from "../../application/repositories/category-repository";
 import { Category } from "../../core/entities/category";
 import { PrismaCategoryMapper } from "../mappers/prisma-category-mapper";
 
-export class PrismaCategoryRepository implements CategoriesRepository {
+export class PrismaCategoryRepository implements CategoryRepository {
   constructor(private readonly prisma: PrismaClient) {}
+
   async create(category: Category): Promise<void> {
     await this.prisma.category.create({
       data: PrismaCategoryMapper.toPersistency(category),
@@ -16,9 +17,23 @@ export class PrismaCategoryRepository implements CategoriesRepository {
       data: PrismaCategoryMapper.toPersistency(category),
     });
   }
-  async findMany(): Promise<Category[]> {
-    const categories = await this.prisma.category.findMany();
-    return categories.map(PrismaCategoryMapper.toDomain);
+  async findMany(
+    page: number,
+    perPage: number,
+  ): Promise<{ categories: Category[]; totalCount: number }> {
+    const skip = (page - 1) * perPage;
+
+    const [totalCount, categories] = await Promise.all([
+      this.prisma.category.count(),
+      this.prisma.category.findMany({
+        skip,
+        take: perPage,
+      }),
+    ]);
+    return {
+      categories: categories.map((raw) => PrismaCategoryMapper.toDomain(raw)),
+      totalCount,
+    };
   }
   async findByName(name: string): Promise<Category | null> {
     const category = await this.prisma.category.findFirst({

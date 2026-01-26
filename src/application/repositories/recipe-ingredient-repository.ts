@@ -5,6 +5,11 @@ export interface RecipeIngredientRepository {
   create(recipeIngredient: RecipeIngredient): Promise<void>;
   save(recipeIngredient: RecipeIngredient): Promise<void>;
   delete(recipe: RecipeIngredient): Promise<void>;
-  findManyByRecipeId(id: string): Promise<RecipeIngredient[]>;
+  findManyByRecipeId(
+    recipeId: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipeIngredients: RecipeIngredient[]; totalCount: number }>;
+  findByRecipeId(recipeId: string): Promise<RecipeIngredient[]>;
   findById(id: string): Promise<RecipeIngredient | null>;
 }

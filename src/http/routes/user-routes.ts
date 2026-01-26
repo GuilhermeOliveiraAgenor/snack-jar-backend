@@ -6,7 +6,7 @@ import { makeGetMeController } from "../factories/make-get-me.controller";
 
 const userRoutes = Router();
 
-userRoutes.post("/user", (req, res, next) => {
+userRoutes.post("/users", (req, res, next) => {
   return makeCreateUserController().handle(req, res, next);
 });
 

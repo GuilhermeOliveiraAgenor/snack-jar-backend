@@ -1,4 +1,5 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { Optional } from "../types/optional";
 
 export interface CategoryProps {
   // create interface
@@ -6,7 +7,6 @@ export interface CategoryProps {
   description: string; // fields
   createdAt: Date;
   updatedAt: Date | null;
-  deletedAt: Date | null;
 }
 
 export class Category {
@@ -15,16 +15,13 @@ export class Category {
     private props: CategoryProps, // import fields from interface
   ) {}
 
-  static create(props: { name: string; description: string }, id?: UniqueEntityID) {
-    const category = new Category(
-      id ?? new UniqueEntityID(), // create id
-      {
-        ...props, // import fields
-        createdAt: new Date(),
-        updatedAt: null,
-        deletedAt: null,
-      },
-    );
+  static create(props: Optional<CategoryProps, "createdAt" | "updatedAt">, id?: UniqueEntityID) {
+    const category = new Category(id ?? new UniqueEntityID(), {
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null,
+    });
+
     return category;
   }
 
@@ -49,9 +46,6 @@ export class Category {
     return this.props.updatedAt;
   }
 
-  get deletedAt(): Date | null {
-    return this.props.deletedAt;
-  }
   // set
 
   set name(name: string) {
@@ -71,11 +65,6 @@ export class Category {
 
   set updatedAt(updatedAt: Date) {
     this.props.updatedAt = updatedAt;
-    this.touch();
-  }
-
-  set deletedAt(deletedAt: Date) {
-    this.props.deletedAt = deletedAt;
     this.touch();
   }
 

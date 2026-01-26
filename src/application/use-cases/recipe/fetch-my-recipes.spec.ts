@@ -2,15 +2,15 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { FetchMyRecipesUseCase } from "./fetch-my-recipes";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeCategory } from "../../../../test/factories/make-category";
 import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryCategoryRepository: InMemoryCategoryRepository;
 
 let sut: FetchMyRecipesUseCase;
 
@@ -18,7 +18,7 @@ describe("Fetch My Recipes Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
+    inMemoryCategoryRepository = new InMemoryCategoryRepository();
     sut = new FetchMyRecipesUseCase(inMemoryRecipeRepository, inMemoryUserRepository);
   });
 
@@ -46,7 +46,7 @@ describe("Fetch My Recipes Use Case", () => {
       expect(
         // list each item and verify id
         inMemoryRecipeRepository.items.every(
-          (recipe) => recipe.createdBy?.toString() === user.id.toString(),
+          (recipe) => recipe.createdBy.toString() === user.id.toString(),
         ),
       ).toBe(true);
     }
@@ -54,12 +54,10 @@ describe("Fetch My Recipes Use Case", () => {
 
   it("should not be able to fetch recipes when userId does not exist", async () => {
     const category = makeCategory();
+    await inMemoryCategoryRepository.create(category);
 
-    await inMemoryCategoriesRepository.create(category);
-
-    const recipe1 = makeRecipe();
-
-    await inMemoryRecipeRepository.create(recipe1);
+    const recipe = makeRecipe();
+    await inMemoryRecipeRepository.create(recipe);
 
     const result = await sut.execute({ userId: "0" });
 

@@ -1,6 +1,7 @@
 import z from "zod";
 import { EditRecipeUseCase } from "../../../application/use-cases/recipe/edit-recipe";
 import { Request, Response, NextFunction } from "express";
+import { RecipePresenter } from "../../presenters/recipe-presenter";
 
 const requestParams = z.object({
   id: z.string(),
@@ -22,7 +23,7 @@ export class EditRecipeController {
 
       const data = {
         id,
-        updatedBy: userId,
+        userId,
         ...body,
       };
 
@@ -32,9 +33,8 @@ export class EditRecipeController {
         throw result.value;
       }
 
-      return res.status(201).json(result.value.recipe);
+      return res.status(200).json(RecipePresenter.toHTTP(result.value.recipe));
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

@@ -9,6 +9,7 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { makeFavoriteRecipe } from "../../../../test/factories/make-favorite-recipe";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryFavoriteRecipeRepository: InMemoryFavoriteRecipeRepository;
@@ -26,7 +27,7 @@ describe("Create Favorite Recipe Use Case", () => {
       inMemoryRecipeRepository,
     );
   });
-  it("should be able to create favorite", async () => {
+  it("should be able to create favorite recipe", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -37,7 +38,7 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -50,14 +51,14 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: "0",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
     expect(inMemoryFavoriteRecipeRepository.items).toHaveLength(0);
     expect(result.value).toBeInstanceOf(NotFoundError);
   });
-  it("should not be able to create favorite recipe already exists", async () => {
+  it("should not be able to create favorite recipe already existing", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
@@ -71,7 +72,7 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -91,7 +92,24 @@ describe("Create Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       recipeId: recipe.id.toString(),
-      createdBy: user2.id.toString(),
+      userId: user2.id.toString(),
+    });
+
+    expect(result.isError()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+  it("should not be able to delete recipe is not ACTIVE", async () => {
+    const user = makeUser();
+    await inMemoryUserRepository.create(user);
+
+    const recipe = makeRecipe({
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+
+    const result = await sut.execute({
+      recipeId: recipe.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);

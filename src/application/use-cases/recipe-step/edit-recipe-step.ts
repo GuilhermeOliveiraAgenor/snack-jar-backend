@@ -5,13 +5,14 @@ import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InvalidFieldsError } from "../../errors/invalid-fields-error";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
+import { RecipeRepository } from "../../repositories/recipe-repository";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 
 interface EditRecipeStepUseCaseRequest {
   id: string;
   step?: RecipeStep["step"] | undefined;
   description?: RecipeStep["description"] | undefined;
-  updatedBy: string;
+  userId: string;
 }
 
 type EditRecipeStepUseCaseResponse = Either<
@@ -22,39 +23,51 @@ type EditRecipeStepUseCaseResponse = Either<
 >;
 
 export class EditRecipeStepUseCase {
-  constructor(private recipeStepRepository: RecipeStepRepository) {}
+  constructor(
+    private recipeStepRepository: RecipeStepRepository,
+    private recipeRepository: RecipeRepository,
+  ) {}
   async execute({
     id,
     step,
     description,
-    updatedBy,
+    userId,
   }: EditRecipeStepUseCaseRequest): Promise<EditRecipeStepUseCaseResponse> {
     const recipeStep = await this.recipeStepRepository.findById(id);
     if (!recipeStep) {
       return failure(new NotFoundError("recipeStep"));
     }
 
-    if (recipeStep.createdBy.toString() != updatedBy) {
+    if (recipeStep.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
     }
 
-    const steps = await this.recipeStepRepository.findManyByRecipeId(
-      recipeStep.recipeId.toString(),
-    );
-
-    const stepDuplicated = steps.some((s) => s.step === step && s.id.toString() !== id);
-
-    if (stepDuplicated) {
-      return failure(new AlreadyExistsError("recipeStep"));
+    if (step !== undefined) {
+      if (step <= 0) {
+        return failure(new InvalidFieldsError("recipeStep"));
+      }
+      const stepDuplicated = await this.recipeStepRepository.findByRecipeIdAndStep(
+        recipeStep.recipeId.toString(),
+        step,
+      );
+      if (stepDuplicated && stepDuplicated.id.toString() !== id) {
+        return failure(new AlreadyExistsError("recipeStep"));
+      }
     }
 
-    if (step !== undefined && step <= 0) {
-      return failure(new InvalidFieldsError("recipeStep"));
+    const recipe = await this.recipeRepository.findById(recipeStep.recipeId.toString());
+
+    if (!recipe) {
+      return failure(new NotFoundError("recipe"));
+    }
+
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
     }
 
     recipeStep.step = step ?? recipeStep.step;
     recipeStep.description = description ?? recipeStep.description;
-    recipeStep.updatedBy = new UniqueEntityID(updatedBy);
+    recipeStep.updatedBy = new UniqueEntityID(userId);
 
     await this.recipeStepRepository.save(recipeStep);
 

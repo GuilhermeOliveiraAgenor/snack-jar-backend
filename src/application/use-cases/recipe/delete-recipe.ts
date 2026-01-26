@@ -7,7 +7,7 @@ import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface DeleteRecipeRequest {
   id: string;
-  deletedBy: string;
+  userId: string;
 }
 
 type DeleteRecipeResponse = Either<
@@ -20,19 +20,23 @@ type DeleteRecipeResponse = Either<
 export class DeleteRecipeUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
 
-  async execute({ id, deletedBy }: DeleteRecipeRequest): Promise<DeleteRecipeResponse> {
+  async execute({ id, userId }: DeleteRecipeRequest): Promise<DeleteRecipeResponse> {
     // verify if exists recipe
     const recipe = await this.recipeRepository.findById(id);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
     }
 
-    if (recipe.createdBy.toString() != deletedBy) {
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
+
+    if (recipe.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
     }
     // inactive recipe
     recipe.inactivate();
-    recipe.deletedBy = new UniqueEntityID(deletedBy);
+    recipe.deletedBy = new UniqueEntityID(userId);
 
     await this.recipeRepository.save(recipe);
     return success({

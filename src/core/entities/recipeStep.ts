@@ -1,15 +1,14 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
+import { Optional } from "../types/optional";
 
 export interface RecipeStepProps {
   step: number;
   description: string;
   recipeId: UniqueEntityID;
-  createdAt: Date | null;
+  createdAt: Date;
   createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
-  deletedAt: Date | null;
-  deletedBy: UniqueEntityID | null;
 }
 
 export class RecipeStep {
@@ -19,24 +18,15 @@ export class RecipeStep {
   ) {}
 
   static create(
-    props: {
-      step: number;
-      description: string;
-      recipeId: UniqueEntityID;
-      createdBy: UniqueEntityID;
-    },
+    props: Optional<RecipeStepProps, "createdAt" | "updatedAt" | "updatedBy">,
     id?: UniqueEntityID,
   ) {
     const recipeStep = new RecipeStep(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-      deletedAt: null,
-      createdBy: props.createdBy,
-      updatedBy: null,
-      deletedBy: null,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null,
+      updatedBy: props.updatedBy ?? null,
     });
-
     return recipeStep;
   }
 
@@ -62,19 +52,12 @@ export class RecipeStep {
   get updatedBy(): UniqueEntityID | null {
     return this.props.updatedBy;
   }
-  get deletedBy(): UniqueEntityID | null {
-    return this.props.deletedBy;
-  }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
   get updatedAt(): Date | null {
-    return this.props.updatedAt;
-  }
-
-  get deletedAt(): Date | null {
     return this.props.updatedAt;
   }
 
@@ -98,11 +81,6 @@ export class RecipeStep {
     this.touch();
   }
 
-  set deletedAt(deletedAt: Date) {
-    this.props.deletedAt = deletedAt;
-    this.touch();
-  }
-
   set createdBy(createdBy: UniqueEntityID) {
     this.props.createdBy = createdBy;
     this.touch();
@@ -110,11 +88,6 @@ export class RecipeStep {
 
   set updatedBy(updatedBy: UniqueEntityID) {
     this.props.updatedBy = updatedBy;
-    this.touch();
-  }
-
-  set deletedBy(deletedBy: UniqueEntityID) {
-    this.props.deletedBy = deletedBy;
     this.touch();
   }
 

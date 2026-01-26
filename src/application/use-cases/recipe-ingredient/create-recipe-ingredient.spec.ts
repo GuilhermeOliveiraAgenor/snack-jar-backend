@@ -8,6 +8,9 @@ import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-
 import { makeUser } from "../../../../test/factories/make-user";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { makeRecipeIngredient } from "../../../../test/factories/make-recipe-ingredient";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
@@ -38,9 +41,9 @@ describe("Create Recipe Ingredient Use Case", () => {
     const result = await sut.execute({
       ingredient: "Açucar",
       amount: "1",
-      unit: "Kg",
+      unit: MeasurementUnit.KG,
       recipeId: recipe.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -49,20 +52,20 @@ describe("Create Recipe Ingredient Use Case", () => {
       expect(result.value.recipeIngredient).toMatchObject({
         ingredient: "Açucar",
         amount: "1",
-        unit: "Kg",
+        unit: "KG",
       });
     }
   });
-  it("should not be able to create a recipe ingredient when recipeId does not exist", async () => {
+  it("should not be able to create a recipe ingredient when recipe id does not exist", async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
     const result = await sut.execute({
       ingredient: "Açucar",
       amount: "1",
-      unit: "Kg",
+      unit: MeasurementUnit.KG,
       recipeId: "0",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -84,13 +87,35 @@ describe("Create Recipe Ingredient Use Case", () => {
     const result = await sut.execute({
       ingredient: "Farinha",
       amount: "1000",
-      unit: "G",
+      unit: MeasurementUnit.KG,
       recipeId: recipe.id.toString(),
-      createdBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
     expect(inMemoryRecipeRepository.items).toHaveLength(1);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+  it("should not be able to create ingredient when recipe is not ACTIVE", async () => {
+    const recipe = makeRecipe({
+      status: RecipeStatus.INACTIVE,
+    });
+    await inMemoryRecipeRepository.create(recipe);
+
+    const recipeIngredient = makeRecipeIngredient({
+      recipeId: recipe.id,
+    });
+    await inMemoryRecipeIngredientRepository.create(recipeIngredient);
+
+    const result = await sut.execute({
+      ingredient: "Açucar",
+      amount: "1000",
+      unit: MeasurementUnit.G,
+      recipeId: recipe.id.toString(),
+      userId: "user-1,",
+    });
+
+    expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });

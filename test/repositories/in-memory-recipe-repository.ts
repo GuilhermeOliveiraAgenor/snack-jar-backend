@@ -1,5 +1,4 @@
 import { RecipeRepository } from "../../src/application/repositories/recipe-repository";
-import { UniqueEntityID } from "../../src/core/domain/value-objects/unique-entity-id";
 import { Recipe } from "../../src/core/entities/recipe";
 
 export class InMemoryRecipeRepository implements RecipeRepository {
@@ -12,9 +11,20 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     const itemIndex = this.items.findIndex((item) => item.id === recipe.id);
     this.items[itemIndex] = recipe;
   }
-  async findManyByUserId(id: string): Promise<Recipe[]> {
-    const recipe = this.items.filter((item) => item.createdBy === new UniqueEntityID(id));
-    return recipe;
+  async findManyByUserId(
+    userId: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipes: Recipe[]; totalCount: number }> {
+    const userRecipes = this.items.filter((item) => item.createdBy.toString() === userId);
+    const totalCount = this.items.length;
+
+    const recipes = userRecipes.slice((page - 1) * perPage, page * perPage);
+
+    return {
+      recipes,
+      totalCount,
+    };
   }
   async findById(id: string): Promise<Recipe | null> {
     const recipe = this.items.find((item) => item.id.toString() === id);
@@ -23,15 +33,27 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     }
     return recipe;
   }
-  async findManyByTitle(createdBy: string, title: string): Promise<Recipe[]> {
-    const recipe = this.items.filter(
-      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
+  async findManyByUserIdAndTitle(
+    userId: string,
+    title: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipes: Recipe[]; totalCount: number }> {
+    const userRecipes = this.items.filter(
+      (item) => item.createdBy.toString() === userId && item.title === title,
     );
-    return recipe;
+    const totalCount = this.items.length;
+
+    const recipes = userRecipes.slice((page - 1) * perPage, page * perPage);
+
+    return {
+      recipes,
+      totalCount,
+    };
   }
-  async findByTitle(createdBy: string, title: string): Promise<Recipe | null> {
+  async findByUserIdAndTitle(userId: string, title: string): Promise<Recipe | null> {
     const recipe = this.items.find(
-      (item) => item.title === title && item.createdBy.toString() == createdBy.toString(),
+      (item) => item.title === title && item.createdBy.toString() == userId.toString(),
     );
     if (!recipe) {
       return null;

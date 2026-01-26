@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { FavoriteRecipeRepository } from "../../application/repositories/favorite-recipe-repository";
 import { FavoriteRecipe } from "../../core/entities/favoriteRecipe";
 import { PrismaFavoriteRecipeMapper } from "../mappers/prisma-favorite-recipe-mapper";
+import { RecipeStatus } from "../../core/enum/recipe-status";
 
 export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -17,13 +18,43 @@ export class PrismaFavoriteRecipeRepository implements FavoriteRecipeRepository 
       },
     });
   }
-  async findManyByUserId(id: string): Promise<FavoriteRecipe[]> {
-    const favoriteRecipe = await this.prisma.favoriteRecipe.findMany({
+  async findManyByUserId(
+    userId: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ favoritesRecipes: FavoriteRecipe[]; totalCount: number }> {
+    const skip = (page - 1) * perPage;
+
+    const where = {
+      createdBy: userId,
+      recipe: {
+        status: RecipeStatus.ACTIVE,
+        deletedAt: null,
+      },
+    };
+
+    const [totalCount, favoriteRecipes] = await Promise.all([
+      this.prisma.favoriteRecipe.count({ where }),
+      this.prisma.favoriteRecipe.findMany({
+        where,
+        skip,
+        take: perPage,
+      }),
+    ]);
+    return {
+      favoritesRecipes: favoriteRecipes.map((raw) => PrismaFavoriteRecipeMapper.toDomain(raw)),
+      totalCount,
+    };
+  }
+  async existsByUserAndRecipe(userId: string, recipeId: string): Promise<boolean> {
+    const result = await this.prisma.favoriteRecipe.findFirst({
       where: {
-        createdBy: id,
+        createdBy: userId,
+        recipeId,
       },
     });
-    return favoriteRecipe.map(PrismaFavoriteRecipeMapper.toDomain);
+    if (!result) return false;
+    return true;
   }
   async findById(id: string): Promise<FavoriteRecipe | null> {
     const favoriteRecipe = await this.prisma.favoriteRecipe.findUnique({

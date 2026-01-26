@@ -12,7 +12,7 @@ interface CreateRecipeStepUseCaseRequest {
   recipeId: string;
   step: RecipeStep["step"];
   description: RecipeStep["description"];
-  createdBy: string;
+  userId: string;
 }
 
 type CreateRecipeStepUseCaseResponse = Either<
@@ -32,7 +32,7 @@ export class CreateRecipeStepUseCase {
     recipeId,
     step,
     description,
-    createdBy,
+    userId,
   }: CreateRecipeStepUseCaseRequest): Promise<CreateRecipeStepUseCaseResponse> {
     // verify if recipeId exits
     const recipe = await this.recipeRepository.findById(recipeId);
@@ -40,13 +40,18 @@ export class CreateRecipeStepUseCase {
       return failure(new NotFoundError("recipe"));
     }
 
-    if (recipe.createdBy.toString() !== createdBy) {
+    if (recipe.createdBy.toString() !== userId) {
       return failure(new NotAllowedError("user"));
     }
 
-    const steps = await this.recipeStepRepository.findManyByRecipeId(recipe.id.toString());
-    const stepDuplicated = steps.some((s) => s.step === step);
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
+    }
 
+    const stepDuplicated = await this.recipeStepRepository.findByRecipeIdAndStep(
+      recipe.id.toString(),
+      step,
+    );
     if (stepDuplicated) {
       return failure(new AlreadyExistsError("recipeStep"));
     }
@@ -59,7 +64,7 @@ export class CreateRecipeStepUseCase {
       step,
       description,
       recipeId: recipe.id,
-      createdBy: new UniqueEntityID(createdBy),
+      createdBy: new UniqueEntityID(userId),
     });
 
     await this.recipeStepRepository.create(recipeStep);

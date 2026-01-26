@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { GetMeUseCase } from "../../../application/use-cases/user/get-me";
+import { UserPresenter } from "../../presenters/user-presenter";
 
 export class GetMeController {
   constructor(private readonly getMeUseCase: GetMeUseCase) {}
@@ -14,9 +15,8 @@ export class GetMeController {
         throw result.value;
       }
 
-      return res.status(200).json({ user: result.value.user });
+      return res.status(200).json(UserPresenter.toHTTP(result.value.user));
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

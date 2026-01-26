@@ -1,5 +1,6 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
-import { RecipeStatus } from "../enum/enum-status";
+import { RecipeStatus } from "../enum/recipe-status";
+import { Optional } from "../types/optional";
 
 export interface RecipeProps {
   title: string;
@@ -7,7 +8,7 @@ export interface RecipeProps {
   preparationTime: number;
   status: RecipeStatus;
   categoryId: UniqueEntityID;
-  createdAt: Date | null;
+  createdAt: Date;
   createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
@@ -22,26 +23,20 @@ export class Recipe {
   ) {}
 
   static create(
-    props: {
-      title: string;
-      description: string;
-      preparationTime: number;
-      status: RecipeStatus;
-      categoryId: UniqueEntityID;
-      createdBy: UniqueEntityID;
-    },
+    props: Optional<
+      RecipeProps,
+      "createdAt" | "updatedAt" | "deletedAt" | "updatedBy" | "deletedBy"
+    >,
     id?: UniqueEntityID,
   ) {
     const recipe = new Recipe(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-      deletedAt: null,
-      createdBy: props.createdBy,
-      updatedBy: null,
-      deletedBy: null,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null,
+      deletedAt: props.deletedAt ?? null,
+      updatedBy: props.updatedBy ?? null,
+      deletedBy: props.deletedBy ?? null,
     });
-
     return recipe;
   }
 
@@ -69,7 +64,7 @@ export class Recipe {
     return this.props.categoryId;
   }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
@@ -78,7 +73,7 @@ export class Recipe {
   }
 
   get deletedAt(): Date | null {
-    return this.props.updatedAt;
+    return this.props.deletedAt;
   }
 
   get createdBy(): UniqueEntityID {
@@ -109,7 +104,6 @@ export class Recipe {
 
   set status(status: RecipeStatus) {
     this.props.status = status;
-    this.touch();
   }
 
   set categoryId(categoryId: UniqueEntityID) {
@@ -129,7 +123,6 @@ export class Recipe {
 
   set deletedAt(deletedAt: Date) {
     this.props.deletedAt = deletedAt;
-    this.touch();
   }
 
   set createdBy(createdBy: UniqueEntityID) {
@@ -144,7 +137,6 @@ export class Recipe {
 
   set deletedBy(deletedBy: UniqueEntityID) {
     this.props.deletedBy = deletedBy;
-    this.touch();
   }
 
   private touch() {

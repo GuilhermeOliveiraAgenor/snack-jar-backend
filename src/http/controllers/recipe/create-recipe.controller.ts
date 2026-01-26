@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateRecipeUseCase } from "../../../application/use-cases/recipe/create-recipe";
 import z from "zod";
-import { MeasurementUnit } from "../../../core/enum/enum-unit";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { RecipePresenter } from "../../presenters/recipe-presenter";
 
 const createRecipeSchema = z.object({
   title: z.string().min(1),
@@ -15,7 +16,7 @@ const createRecipeSchema = z.object({
       amount: z.string().min(1),
       unit: z
         .string()
-        .transform((val) => val.toLocaleLowerCase())
+        .transform((val) => val.toLocaleUpperCase())
         .pipe(z.nativeEnum(MeasurementUnit)),
     }),
   ),
@@ -45,16 +46,15 @@ export class CreateRecipeController {
         categoryId,
         recipeIngredient,
         recipeStep,
-        createdBy: userId,
+        userId,
       });
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(201).json(result.value.recipe);
+      return res.status(201).json(RecipePresenter.toHTTP(result.value.recipe));
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

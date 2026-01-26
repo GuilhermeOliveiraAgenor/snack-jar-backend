@@ -5,14 +5,14 @@ import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient
 import { RecipeRepository } from "../../repositories/recipe-repository";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
-import { CategoriesRepository } from "../../repositories/categories-repository";
-import { RecipeStatus } from "../../../core/enum/enum-status";
+import { CategoryRepository } from "../../repositories/category-repository";
 import { RecipeNullError } from "../../errors/recipe-null-error";
 import { RecipeStep } from "../../../core/entities/recipeStep";
 import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { InvalidFieldsError } from "../../errors/invalid-fields-error";
-import { MeasurementUnit } from "../../../core/enum/enum-unit";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { RecipeStatus } from "../../../core/enum/recipe-status";
 
 // create request
 interface CreateRecipeUseCaseRequest {
@@ -21,7 +21,7 @@ interface CreateRecipeUseCaseRequest {
   description: Recipe["description"];
   preparationTime: Recipe["preparationTime"];
   categoryId: string;
-  createdBy: string;
+  userId: string;
 
   // recipe ingredient list
   recipeIngredient: {
@@ -49,7 +49,7 @@ export class CreateRecipeUseCase {
     private recipeRepository: RecipeRepository,
     private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeStepRepository: RecipeStepRepository,
-    private categoryRepository: CategoriesRepository,
+    private categoryRepository: CategoryRepository,
   ) {}
 
   async execute({
@@ -59,7 +59,7 @@ export class CreateRecipeUseCase {
     categoryId,
     recipeIngredient,
     recipeStep,
-    createdBy,
+    userId,
   }: CreateRecipeUseCaseRequest): Promise<CreateRecipeUseCaseResponse> {
     // verify if exists category
 
@@ -73,7 +73,7 @@ export class CreateRecipeUseCase {
       return failure(new RecipeNullError("ingredientOrStepNull"));
     }
 
-    const alreadyExists = await this.recipeRepository.findByTitle(createdBy, title);
+    const alreadyExists = await this.recipeRepository.findByUserIdAndTitle(userId, title);
     if (alreadyExists) {
       return failure(new AlreadyExistsError("recipe"));
     }
@@ -89,7 +89,7 @@ export class CreateRecipeUseCase {
       preparationTime,
       status: RecipeStatus.ACTIVE,
       categoryId: new UniqueEntityID(categoryId),
-      createdBy: new UniqueEntityID(createdBy),
+      createdBy: new UniqueEntityID(userId),
     });
 
     // map recipe ingredient created
@@ -99,7 +99,7 @@ export class CreateRecipeUseCase {
         amount: item.amount,
         unit: item.unit,
         recipeId: recipe.id,
-        createdBy: new UniqueEntityID(recipe.createdBy?.toString()),
+        createdBy: new UniqueEntityID(recipe.createdBy.toString()),
       }),
     );
 
@@ -109,7 +109,7 @@ export class CreateRecipeUseCase {
         step: item.step,
         description: item.description,
         recipeId: recipe.id,
-        createdBy: new UniqueEntityID(createdBy),
+        createdBy: new UniqueEntityID(userId),
       }),
     );
 

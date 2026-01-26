@@ -7,6 +7,7 @@ export class PrismaFavoriteRecipeMapper {
     return FavoriteRecipe.create(
       {
         recipeId: new UniqueEntityID(raw.recipeId),
+        createdAt: raw.createdAt,
         createdBy: new UniqueEntityID(raw.createdBy),
       },
       new UniqueEntityID(raw.id),
@@ -16,9 +17,8 @@ export class PrismaFavoriteRecipeMapper {
     return {
       id: raw.id.toString(),
       recipeId: raw.recipeId.toString(),
-      createdBy: raw.createdBy.toString(),
       createdAt: raw.createdAt,
-      deletedAt: raw.deletedAt,
+      createdBy: raw.createdBy.toString(),
     };
   }
 }

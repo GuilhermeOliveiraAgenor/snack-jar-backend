@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
 import { CreateRecipeStepUseCase } from "../../../application/use-cases/recipe-step/create-recipe-step";
+import { RecipeStepPresenter } from "../../presenters/recipe-step-presenter";
 
 const requestParams = z.object({
   recipeId: z.string(),
 });
 
 const createRecipeStepSchema = z.object({
-  step: z.number().min(1),
+  step: z.number(),
   description: z.string().trim().min(1),
 });
 
@@ -25,14 +26,14 @@ export class CreateRecipeStepController {
         step,
         description,
         recipeId,
-        createdBy: userId,
+        userId,
       });
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(201).json(result.value.recipeStep);
+      return res.status(201).json(RecipeStepPresenter.toHTTP(result.value.recipeStep));
     } catch (error) {
       next(error);
     }

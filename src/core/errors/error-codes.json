@@ -16,7 +16,7 @@
         "recipe": "RECIPE_ALREADY_EXISTS"
     },
     "unauthorized": {
-        "invalidCredentials": "EMAIL_OR_PASSWORD_INVALID"
+        "user": "EMAIL_OR_PASSWORD_INVALID"
     },
     "validationFields":{
         "recipe": "PREPARATION_TIME_CANT_BE_0",
@@ -24,7 +24,8 @@
         "ingredientOrStepNull": "INGREDIENT_OR_STEP_CANT_BE_NULL"
     },
     "forbidden": {
-        "user": "USER_NOT_ALLOWED"
+        "user": "USER_NOT_ALLOWED",
+        "recipe": "RECIPE_INACTIVE"
     },
     "internal": "INTERNAL_SERVER_ERROR"
 

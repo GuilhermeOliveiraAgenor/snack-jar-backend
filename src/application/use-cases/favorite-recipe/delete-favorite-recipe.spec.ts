@@ -30,7 +30,7 @@ describe("Delete Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       id: favoriteRecipe.id.toString(),
-      deletedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isSuccess()).toBe(true);
@@ -48,7 +48,7 @@ describe("Delete Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       id: "0",
-      deletedBy: user.id.toString(),
+      userId: user.id.toString(),
     });
 
     expect(result.isError()).toBe(true);
@@ -69,7 +69,7 @@ describe("Delete Favorite Recipe Use Case", () => {
 
     const result = await sut.execute({
       id: favoriteRecipe.id.toString(),
-      deletedBy: user2.id.toString(),
+      userId: user2.id.toString(),
     });
 
     expect(result.isError()).toBe(true);

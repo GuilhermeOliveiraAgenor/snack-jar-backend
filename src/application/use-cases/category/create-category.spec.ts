@@ -1,16 +1,16 @@
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
 import { describe, it, expect, beforeEach } from "vitest";
 import { CreateCategoryUseCase } from "./create-category";
 import { makeCategory } from "../../../../test/factories/make-category";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let sut: CreateCategoryUseCase;
 
 describe("Category Use Case", () => {
   beforeEach(() => {
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository(); // define repository
-    sut = new CreateCategoryUseCase(inMemoryCategoriesRepository); // use case receive repository
+    inMemoryCategoryRepository = new InMemoryCategoryRepository(); // define repository
+    sut = new CreateCategoryUseCase(inMemoryCategoryRepository); // use case receive repository
   });
   it("should be able to create a category", async () => {
     const result = await sut.execute({
@@ -19,7 +19,7 @@ describe("Category Use Case", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    expect(inMemoryCategoriesRepository.items).toHaveLength(1);
+    expect(inMemoryCategoryRepository.items).toHaveLength(1);
     if (result.isSuccess()) {
       expect(result.value.category).toMatchObject({
         name: "Salgados",
@@ -33,7 +33,7 @@ describe("Category Use Case", () => {
       name: "Salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category1);
+    await inMemoryCategoryRepository.create(category1);
 
     const result = await sut.execute({
       name: "Salgados",
@@ -41,7 +41,7 @@ describe("Category Use Case", () => {
     });
 
     expect(result.isError()).toBe(true);
-    expect(inMemoryCategoriesRepository.items).toHaveLength(1);
+    expect(inMemoryCategoryRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(AlreadyExistsError);
   });
 });

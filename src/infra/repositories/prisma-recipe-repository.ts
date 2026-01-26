@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { QueryMode, PrismaClient } from "@prisma/client";
 import { RecipeRepository } from "../../application/repositories/recipe-repository";
 import { Recipe } from "../../core/entities/recipe";
 import { PrismaRecipeMapper } from "../mappers/prisma-recipe-mapper";
+import { RecipeStatus } from "../../core/enum/recipe-status";
 
 export class PrismaRecipeRepository implements RecipeRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -17,11 +18,29 @@ export class PrismaRecipeRepository implements RecipeRepository {
       data: PrismaRecipeMapper.toPersistency(recipe),
     });
   }
-  async findManyByUserId(id: string): Promise<Recipe[]> {
-    const recipes = await this.prisma.recipe.findMany({
-      where: { createdBy: id },
-    });
-    return recipes.map(PrismaRecipeMapper.toDomain);
+  async findManyByUserId(
+    userId: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipes: Recipe[]; totalCount: number }> {
+    const skip = (page - 1) * perPage;
+
+    const where = { createdBy: userId, status: RecipeStatus.ACTIVE, deletedAt: null };
+
+    const [totalCount, recipes] = await Promise.all([
+      this.prisma.recipe.count({ where }),
+      this.prisma.recipe.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: perPage,
+      }),
+    ]);
+
+    return {
+      recipes: recipes.map((raw) => PrismaRecipeMapper.toDomain(raw)),
+      totalCount,
+    };
   }
   async findById(id: string): Promise<Recipe | null> {
     const recipe = await this.prisma.recipe.findUnique({
@@ -30,26 +49,48 @@ export class PrismaRecipeRepository implements RecipeRepository {
     if (!recipe) return null;
     return PrismaRecipeMapper.toDomain(recipe);
   }
-  async findManyByTitle(createdBy: string, title: string): Promise<Recipe[]> {
-    const recipes = await this.prisma.recipe.findMany({
-      where: {
-        createdBy,
-        title: {
-          contains: title,
-          mode: "insensitive",
-        },
+  async findManyByUserIdAndTitle(
+    userId: string,
+    title: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ recipes: Recipe[]; totalCount: number }> {
+    const skip = (page - 1) * perPage;
+
+    const where = {
+      createdBy: userId,
+      title: {
+        contains: title,
+        mode: QueryMode.insensitive,
       },
-    });
-    return recipes.map(PrismaRecipeMapper.toDomain);
+      status: RecipeStatus.ACTIVE,
+      deletedAt: null,
+    };
+
+    const [totalCount, recipes] = await Promise.all([
+      this.prisma.recipe.count({ where }),
+      this.prisma.recipe.findMany({
+        where,
+        skip,
+        take: perPage,
+      }),
+    ]);
+
+    return {
+      recipes: recipes.map((raw) => PrismaRecipeMapper.toDomain(raw)),
+      totalCount,
+    };
   }
-  async findByTitle(createdBy: string, title: string): Promise<Recipe | null> {
+  async findByUserIdAndTitle(userId: string, title: string): Promise<Recipe | null> {
     const recipe = await this.prisma.recipe.findFirst({
       where: {
-        createdBy,
+        createdBy: userId,
         title: {
           equals: title,
           mode: "insensitive",
         },
+        status: "ACTIVE",
+        deletedAt: null,
       },
     });
     if (!recipe) return null;

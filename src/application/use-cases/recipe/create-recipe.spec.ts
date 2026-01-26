@@ -2,7 +2,6 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { CreateRecipeUseCase } from "./create-recipe";
 import { InMemoryRecipeIngredientRepository } from "../../../../test/repositories/in-memory-recipe-ingredient";
-import { InMemoryCategoriesRepository } from "../../../../test/repositories/in-memory-categories-repository";
 import { Category } from "../../../core/entities/category";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeNullError } from "../../errors/recipe-null-error";
@@ -13,12 +12,13 @@ import { makeUser } from "../../../../test/factories/make-user";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { UniqueEntityID } from "../../../core/domain/value-objects/unique-entity-id";
 import { AlreadyExistsError } from "../../errors/already-exists-error";
-import { MeasurementUnit } from "../../../core/enum/enum-unit";
+import { MeasurementUnit } from "../../../core/enum/measurement-unit";
+import { InMemoryCategoryRepository } from "../../../../test/repositories/in-memory-category-repository";
 
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
-let inMemoryCategoriesRepository: InMemoryCategoriesRepository;
+let inMemoryCategoryRepository: InMemoryCategoryRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 
 let sut: CreateRecipeUseCase;
@@ -28,13 +28,13 @@ describe("Create Recipe Use Case", () => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryRecipeIngredientRepository = new InMemoryRecipeIngredientRepository();
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
-    inMemoryCategoriesRepository = new InMemoryCategoriesRepository();
+    inMemoryCategoryRepository = new InMemoryCategoryRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
     sut = new CreateRecipeUseCase(
       inMemoryRecipeRepository,
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeStepRepository,
-      inMemoryCategoriesRepository,
+      inMemoryCategoryRepository,
     );
   });
 
@@ -43,14 +43,14 @@ describe("Create Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Cenoura",
       description: "Receita de bolo de cenoura",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -91,12 +91,12 @@ describe("Create Recipe Use Case", () => {
       {
         ingredient: "Açucar",
         amount: "1",
-        unit: "kg",
+        unit: "KG",
       },
       {
         ingredient: "Farinha",
         amount: "1",
-        unit: "kg",
+        unit: "KG",
       },
     ]);
     expect(inMemoryRecipeStepRepository.items).toMatchObject([
@@ -119,14 +119,14 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Laranja",
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -163,7 +163,7 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const recipe = makeRecipe({
       title: "Bolo de Laranja",
@@ -179,7 +179,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -211,7 +211,7 @@ describe("Create Recipe Use Case", () => {
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: "0",
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -242,14 +242,14 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Laranja",
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [],
 
@@ -274,14 +274,14 @@ describe("Create Recipe Use Case", () => {
       description: "Pratos salgados",
     });
 
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Laranja",
       description: "Receita de bolo de laranja",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {
@@ -303,14 +303,14 @@ describe("Create Recipe Use Case", () => {
     await inMemoryUserRepository.create(user);
 
     const category = makeCategory();
-    await inMemoryCategoriesRepository.create(category);
+    await inMemoryCategoryRepository.create(category);
 
     const result = await sut.execute({
       title: "Bolo de Cenoura",
       description: "Receita de bolo de cenoura",
       preparationTime: 60,
       categoryId: category.id.toString(),
-      createdBy: user.id.toString(),
+      userId: user.id.toString(),
 
       recipeIngredient: [
         {

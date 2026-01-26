@@ -1,7 +1,7 @@
 import { UniqueEntityID } from "../../core/domain/value-objects/unique-entity-id";
 import { Prisma, RecipeIngredient as PrismaRecipeIngredient } from "@prisma/client";
 import { RecipeIngredient } from "../../core/entities/recipeIngredient";
-import { MeasurementUnit } from "../../core/enum/enum-unit";
+import { MeasurementUnit } from "../../core/enum/measurement-unit";
 
 export class PrismaRecipeIngredientMapper {
   static toDomain(raw: PrismaRecipeIngredient): RecipeIngredient {
@@ -9,9 +9,12 @@ export class PrismaRecipeIngredientMapper {
       {
         ingredient: raw.ingredient,
         amount: raw.amount,
-        unit: raw.id as MeasurementUnit,
+        unit: raw.unit as MeasurementUnit,
         recipeId: new UniqueEntityID(raw.recipeId),
+        createdAt: raw.createdAt,
         createdBy: new UniqueEntityID(raw.createdBy),
+        updatedAt: raw.updatedAt,
+        updatedBy: raw.updatedBy ? new UniqueEntityID(raw.updatedBy) : null,
       },
       new UniqueEntityID(raw.id),
     );
@@ -23,12 +26,10 @@ export class PrismaRecipeIngredientMapper {
       amount: raw.amount,
       unit: raw.unit,
       recipeId: raw.recipeId.toString(),
-      createdBy: raw.createdBy.toString(),
-      updatedBy: raw.updatedBy ? raw.updatedBy.toString() : null,
-      deletedBy: raw.deletedBy ? raw.deletedBy.toString() : null,
       createdAt: raw.createdAt,
+      createdBy: raw.createdBy.toString(),
       updatedAt: raw.updatedAt,
-      deletedAt: raw.deletedAt,
+      updatedBy: raw.updatedBy ? raw.updatedBy.toString() : null,
     };
   }
 }

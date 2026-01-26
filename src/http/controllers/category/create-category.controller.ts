@@ -1,11 +1,12 @@
 import z from "zod";
 import { CreateCategoryUseCase } from "../../../application/use-cases/category/create-category";
 import { NextFunction, Request, Response } from "express";
+import { CategoryPresenter } from "../../presenters/category-presenter";
 
 // fields validate zod
 const createCategorySchema = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().min(1),
+  description: z.string().min(1),
 });
 
 export class CreateCategoryController {
@@ -24,7 +25,7 @@ export class CreateCategoryController {
         throw result.value;
       }
 
-      return res.status(201).json({ category: result.value.category });
+      return res.status(201).json(CategoryPresenter.toHTTP(result.value.category));
     } catch (error) {
       next(error);
     }

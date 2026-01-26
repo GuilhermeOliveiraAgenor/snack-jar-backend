@@ -4,13 +4,14 @@ import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { NotAllowedError } from "../../errors/not-allowed-error";
 import { NotFoundError } from "../../errors/resource-not-found-error";
 import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
+import { RecipeRepository } from "../../repositories/recipe-repository";
 
 interface EditRecipeIngredientUseCaseRequest {
   id: string;
   ingredient?: RecipeIngredient["ingredient"] | undefined;
   amount?: RecipeIngredient["amount"] | undefined;
   unit?: RecipeIngredient["unit"] | undefined;
-  updatedBy: string;
+  userId: string;
 }
 
 type EditRecipeIngredientUseCaseResponse = Either<
@@ -21,30 +22,42 @@ type EditRecipeIngredientUseCaseResponse = Either<
 >;
 
 export class EditRecipeIngredientUseCase {
-  constructor(private recipeIngredientRepository: RecipeIngredientRepository) {}
+  constructor(
+    private recipeIngredientRepository: RecipeIngredientRepository,
+    private recipeRepository: RecipeRepository,
+  ) {}
 
   async execute({
     id,
     ingredient,
     amount,
     unit,
-    updatedBy,
+    userId,
   }: EditRecipeIngredientUseCaseRequest): Promise<EditRecipeIngredientUseCaseResponse> {
     // verify if recipe exists
-
     const recipeIngredient = await this.recipeIngredientRepository.findById(id);
     if (!recipeIngredient) {
       return failure(new NotFoundError("recipeIngredient"));
     }
 
-    if (recipeIngredient.createdBy.toString() != updatedBy) {
+    if (recipeIngredient.createdBy.toString() != userId) {
       return failure(new NotAllowedError("user"));
+    }
+
+    const recipe = await this.recipeRepository.findById(recipeIngredient.recipeId.toString());
+
+    if (!recipe) {
+      return failure(new NotFoundError("recipe"));
+    }
+
+    if (recipe.status !== "ACTIVE") {
+      return failure(new NotAllowedError("recipe"));
     }
 
     recipeIngredient.ingredient = ingredient ?? recipeIngredient.ingredient;
     recipeIngredient.amount = amount ?? recipeIngredient.amount;
     recipeIngredient.unit = unit ?? recipeIngredient.unit;
-    recipeIngredient.updatedBy = new UniqueEntityID(updatedBy);
+    recipeIngredient.updatedBy = new UniqueEntityID(userId);
 
     await this.recipeIngredientRepository.save(recipeIngredient);
 

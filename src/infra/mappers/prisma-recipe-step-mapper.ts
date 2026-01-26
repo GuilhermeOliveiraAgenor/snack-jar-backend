@@ -9,7 +9,10 @@ export class PrismaRecipeStepMapper {
         step: raw.step,
         description: raw.description,
         recipeId: new UniqueEntityID(raw.recipeId),
+        createdAt: raw.createdAt,
         createdBy: new UniqueEntityID(raw.createdBy),
+        updatedAt: raw.updatedAt,
+        updatedBy: raw.updatedBy ? new UniqueEntityID(raw.updatedBy) : null,
       },
       new UniqueEntityID(raw.id),
     );
@@ -20,12 +23,10 @@ export class PrismaRecipeStepMapper {
       step: raw.step,
       description: raw.description,
       recipeId: raw.recipeId.toString(),
-      createdBy: raw.createdBy.toString(),
-      updatedBy: raw.updatedBy ? raw.updatedBy.toString() : null,
-      deletedBy: raw.deletedBy ? raw.deletedBy.toString() : null,
       createdAt: raw.createdAt,
+      createdBy: raw.createdBy.toString(),
       updatedAt: raw.updatedAt,
-      deletedAt: raw.deletedAt,
+      updatedBy: raw.updatedBy ? raw.updatedBy.toString() : null,
     };
   }
 }

@@ -1,17 +1,16 @@
 import { UniqueEntityID } from "../domain/value-objects/unique-entity-id";
-import { MeasurementUnit } from "../enum/enum-unit";
+import { MeasurementUnit } from "../enum/measurement-unit";
+import { Optional } from "../types/optional";
 
 export interface RecipeIngredientProps {
   ingredient: string;
   amount: string;
   unit: MeasurementUnit;
   recipeId: UniqueEntityID;
-  createdAt: Date | null;
+  createdAt: Date;
   createdBy: UniqueEntityID;
   updatedAt: Date | null;
   updatedBy: UniqueEntityID | null;
-  deletedAt: Date | null;
-  deletedBy: UniqueEntityID | null;
 }
 
 export class RecipeIngredient {
@@ -21,23 +20,14 @@ export class RecipeIngredient {
   ) {}
 
   static create(
-    props: {
-      ingredient: string;
-      amount: string;
-      unit: MeasurementUnit;
-      recipeId: UniqueEntityID;
-      createdBy: UniqueEntityID;
-    },
+    props: Optional<RecipeIngredientProps, "createdAt" | "updatedAt" | "updatedBy">,
     id?: UniqueEntityID,
   ) {
     const recipeIngredient = new RecipeIngredient(id ?? new UniqueEntityID(), {
       ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-      deletedAt: null,
-      createdBy: props.createdBy,
-      updatedBy: null,
-      deletedBy: null,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? null,
+      updatedBy: props.updatedBy ?? null,
     });
 
     return recipeIngredient;
@@ -63,7 +53,7 @@ export class RecipeIngredient {
     return this.props.recipeId;
   }
 
-  get createdAt(): Date | null {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
@@ -73,15 +63,8 @@ export class RecipeIngredient {
   get updatedBy(): UniqueEntityID | null {
     return this.props.updatedBy;
   }
-  get deletedBy(): UniqueEntityID | null {
-    return this.props.deletedBy;
-  }
 
   get updatedAt(): Date | null {
-    return this.props.updatedAt;
-  }
-
-  get deletedAt(): Date | null {
     return this.props.updatedAt;
   }
 
@@ -110,11 +93,6 @@ export class RecipeIngredient {
     this.touch();
   }
 
-  set deletedAt(deletedAt: Date) {
-    this.props.deletedAt = deletedAt;
-    this.touch();
-  }
-
   set createdBy(createdBy: UniqueEntityID) {
     this.props.createdBy = createdBy;
     this.touch();
@@ -122,11 +100,6 @@ export class RecipeIngredient {
 
   set updatedBy(updatedBy: UniqueEntityID) {
     this.props.updatedBy = updatedBy;
-    this.touch();
-  }
-
-  set deletedBy(deletedBy: UniqueEntityID) {
-    this.props.deletedBy = deletedBy;
     this.touch();
   }
 

@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { EditCategoryUseCase } from "../../../application/use-cases/category/edit-category";
 import { z } from "zod";
+import { CategoryPresenter } from "../../presenters/category-presenter";
 
 // zod validation id
 const paramsSchema = z.object({
@@ -8,8 +9,8 @@ const paramsSchema = z.object({
 });
 // zod validation body
 const editCategorySchema = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
 });
 
 export class EditCategoryController {
@@ -19,15 +20,20 @@ export class EditCategoryController {
     try {
       // params and fields json
       const { id } = paramsSchema.parse(req.params);
-      const { name, description } = editCategorySchema.parse(req.body);
+      const body = editCategorySchema.parse(req.body);
 
-      const result = await this.editCategoryUseCase.execute({ name, description, id });
+      const data = {
+        id,
+        ...body,
+      };
+
+      const result = await this.editCategoryUseCase.execute(data);
 
       if (result.isError()) {
         throw result.value;
       }
 
-      return res.status(200).json({ category: result.value.category });
+      return res.status(200).json(CategoryPresenter.toHTTP(result.value.category));
     } catch (error) {
       next(error);
     }
