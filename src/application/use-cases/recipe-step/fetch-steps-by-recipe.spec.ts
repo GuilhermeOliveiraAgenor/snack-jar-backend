@@ -4,7 +4,7 @@ import { makeRecipeStep } from "../../../../test/factories/make-recipe-step";
 import { makeUser } from "../../../../test/factories/make-user";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { NotFoundError } from "../../errors/resource-not-found-error";
-import { FetchRecipeStepsByRecipeIdUseCase } from "./fetch-my-recipe-steps";
+import { FetchStepsByRecipeUseCase } from "./fetch-steps-by-recipe";
 import { InMemoryRecipeRepository } from "../../../../test/repositories/in-memory-recipe-repository";
 import { makeRecipe } from "../../../../test/factories/make-recipe";
 import { NotAllowedError } from "../../errors/not-allowed-error";
@@ -13,17 +13,14 @@ let inMemoryRecipeStepRepository: InMemoryRecipeStepRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
-let sut: FetchRecipeStepsByRecipeIdUseCase;
+let sut: FetchStepsByRecipeUseCase;
 
 describe("Fetch My Recipe Steps By Recipe Id Use Case", () => {
   beforeEach(() => {
     inMemoryRecipeStepRepository = new InMemoryRecipeStepRepository();
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
-    sut = new FetchRecipeStepsByRecipeIdUseCase(
-      inMemoryRecipeStepRepository,
-      inMemoryRecipeRepository,
-    );
+    sut = new FetchStepsByRecipeUseCase(inMemoryRecipeStepRepository, inMemoryRecipeRepository);
   });
   it("should be able to my fetch recipe steps by recipe id", async () => {
     const user = makeUser();

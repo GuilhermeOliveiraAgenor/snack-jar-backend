@@ -1,28 +1,26 @@
 import { Either, failure, success } from "../../../core/either";
-import { RecipeStep } from "../../../core/entities/recipeStep";
+import { RecipeIngredient } from "../../../core/entities/recipeIngredient";
 import { PaginationMeta } from "../../../http/presenters/base/pagination-meta";
-import { NotFoundError } from "../../errors/resource-not-found-error";
-import { RecipeRepository } from "../../repositories/recipe-repository";
-import { RecipeStepRepository } from "../../repositories/recipe-step-repository";
 import { NotAllowedError } from "../../errors/not-allowed-error";
+import { NotFoundError } from "../../errors/resource-not-found-error";
+import { RecipeIngredientRepository } from "../../repositories/recipe-ingredient-repository";
+import { RecipeRepository } from "../../repositories/recipe-repository";
 
-interface FetchRecipeStepsByRecipeIdUseCaseRequest {
+interface FetchIngredientsByRecipeRequest {
   recipeId: string;
   userId: string;
   page?: number;
   perPage?: number;
 }
-type FetchRecipeStepsByRecipeIdResponse = Either<
+
+type FetchIngredientsByRecipeResponse = Either<
   NotFoundError,
-  {
-    recipeSteps: RecipeStep[];
-    meta: PaginationMeta;
-  }
+  { recipeIngredients: RecipeIngredient[]; meta: PaginationMeta }
 >;
 
-export class FetchRecipeStepsByRecipeIdUseCase {
+export class FetchIngredientsByRecipeUseCase {
   constructor(
-    private recipeStepRepository: RecipeStepRepository,
+    private recipeIngredientRepository: RecipeIngredientRepository,
     private recipeRepository: RecipeRepository,
   ) {}
   async execute({
@@ -30,7 +28,8 @@ export class FetchRecipeStepsByRecipeIdUseCase {
     userId,
     page = 1,
     perPage = 10,
-  }: FetchRecipeStepsByRecipeIdUseCaseRequest): Promise<FetchRecipeStepsByRecipeIdResponse> {
+  }: FetchIngredientsByRecipeRequest): Promise<FetchIngredientsByRecipeResponse> {
+    // verify if exists recipe id
     const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       return failure(new NotFoundError("recipe"));
@@ -40,7 +39,7 @@ export class FetchRecipeStepsByRecipeIdUseCase {
       return failure(new NotAllowedError("user"));
     }
 
-    const result = await this.recipeStepRepository.findManyByRecipeId(
+    const result = await this.recipeIngredientRepository.findManyByRecipeId(
       recipe.id.toString(),
       page,
       perPage,
@@ -53,7 +52,7 @@ export class FetchRecipeStepsByRecipeIdUseCase {
     };
 
     return success({
-      recipeSteps: result.recipeSteps,
+      recipeIngredients: result.recipeIngredients,
       meta,
     });
   }

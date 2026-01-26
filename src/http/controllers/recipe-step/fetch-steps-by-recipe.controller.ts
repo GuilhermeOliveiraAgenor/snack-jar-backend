@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import z from "zod";
-import { FetchRecipeStepsByRecipeIdUseCase } from "../../../application/use-cases/recipe-step/fetch-my-recipe-steps";
+import { FetchStepsByRecipeUseCase } from "../../../application/use-cases/recipe-step/fetch-steps-by-recipe";
 import { RecipeStepPresenter } from "../../presenters/recipe-step-presenter";
 
 const requestParams = z.object({
@@ -11,17 +11,15 @@ const fetchRecipeStepQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
 });
 
-export class FetchRecipeStepsByRecipeIdController {
-  constructor(
-    private readonly fetchRecipeStepsByRecipeIdUseCase: FetchRecipeStepsByRecipeIdUseCase,
-  ) {}
+export class FetchStepsByRecipeController {
+  constructor(private readonly fetchStepsByRecipeUseCase: FetchStepsByRecipeUseCase) {}
   async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user.id;
       const { recipeId } = requestParams.parse(req.params);
       const { page } = fetchRecipeStepQuerySchema.parse(req.query);
 
-      const result = await this.fetchRecipeStepsByRecipeIdUseCase.execute({
+      const result = await this.fetchStepsByRecipeUseCase.execute({
         recipeId,
         userId,
         page,

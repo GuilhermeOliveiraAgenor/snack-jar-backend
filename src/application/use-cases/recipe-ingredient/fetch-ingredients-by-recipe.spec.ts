@@ -7,13 +7,13 @@ import { NotFoundError } from "../../errors/resource-not-found-error";
 import { InMemoryUserRepository } from "../../../../test/repositories/in-memory-user-repository";
 import { makeUser } from "../../../../test/factories/make-user";
 import { NotAllowedError } from "../../errors/not-allowed-error";
-import { FetchRecipeIngredientsByRecipeIdUseCase } from "./fetch-recipe-ingredients-by-recipe-id";
+import { FetchIngredientsByRecipeUseCase } from "./fetch-ingredients-by-recipe";
 
 let inMemoryRecipeIngredientRepository: InMemoryRecipeIngredientRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
 let inMemoryRecipeRepository: InMemoryRecipeRepository;
 
-let sut: FetchRecipeIngredientsByRecipeIdUseCase;
+let sut: FetchIngredientsByRecipeUseCase;
 
 describe("Fetch  Recipe Ingredients By Recipe Id", () => {
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe("Fetch  Recipe Ingredients By Recipe Id", () => {
     inMemoryRecipeRepository = new InMemoryRecipeRepository();
     inMemoryUserRepository = new InMemoryUserRepository();
 
-    sut = new FetchRecipeIngredientsByRecipeIdUseCase(
+    sut = new FetchIngredientsByRecipeUseCase(
       inMemoryRecipeIngredientRepository,
       inMemoryRecipeRepository,
     );
