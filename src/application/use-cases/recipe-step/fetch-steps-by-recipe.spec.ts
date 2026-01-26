@@ -101,7 +101,7 @@ describe("Fetch My Recipe Steps By Recipe Id Use Case", () => {
       recipeId: recipe.id.toString(),
       userId: user.id.toString(),
     });
-    console.log(recipe.status);
+
     expect(result.isError()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
